@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import DestinationCard from '../../../components/DestinationCard.astro';
+import Icon from '../../../components/Icon.astro';
+import { fmt, langPaths, pick, url, useTranslations, type Lang } from '../../../i18n';
+import { destinations, regions } from '../../../data/destinations';
+import type { Region } from '../../../data/types';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const regionKeys = Object.keys(regions) as Region[];
+---
+<BaseLayout lang={lang} title={t.nav.destinations} description={t.home.destinationsText} image="cappadocia-balloons">
+  <PageHero lang={lang} title={t.home.destinationsTitle} eyebrow={t.nav.destinations} lead={t.home.destinationsText} image="cappadocia-balloons" crumbs={[{ label: t.nav.destinations }]} />
+
+  <section class="section">
+    <div class="container">
+      <form data-filters="destinations" class="chips" aria-label={t.destination.region} onsubmit="return false">
+        <input type="hidden" name="region" data-match="eq" value="" />
+        <button class="chip" type="button" data-chip="region" data-value="" aria-pressed="true"><Icon name="globe" />{t.destination.allRegions}</button>
+        {regionKeys.map((r) => <button class="chip" type="button" data-chip="region" data-value={r} aria-pressed="false"><Icon name="pin" />{pick(regions[r], lang)}</button>)}
+      </form>
+      <p class="sr-only" data-count aria-live="polite">{fmt(t.common.results, { n: destinations.length })}</p>
+      <div class="dest-row" data-filter-list style="row-gap:56px">
+        {destinations.map((d) => <DestinationCard destination={d} lang={lang} filterable />)}
+      </div>
+      <div class="empty-state" data-empty hidden><p>{t.common.noResults}</p></div>
+    </div>
+  </section>
+
+  <section class="section section--sand section--tight">
+    <div class="container" style="text-align:center">
+      <Icon name="star8" class="ornament" />
+      <h2 style="margin-bottom:14px">{t.home.privateTitle}</h2>
+      <p class="lead" style="margin:0 auto 26px">{t.home.privateText}</p>
+      <a class="btn btn--primary" href={url(lang, 'inquiry')}>{t.home.privateCta} <Icon name="arrow-right" /></a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,304 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Img from '../../components/Img.astro';
+import Icon from '../../components/Icon.astro';
+import SearchPanel from '../../components/SearchPanel.astro';
+import TourCard from '../../components/TourCard.astro';
+import ActivityCard from '../../components/ActivityCard.astro';
+import DestinationCard from '../../components/DestinationCard.astro';
+import Price from '../../components/Price.astro';
+import VehicleIcon from '../../components/VehicleIcon.astro';
+import Newsletter from '../../components/Newsletter.astro';
+import { fmt, hoursLabel, langPaths, pick, url, useTranslations, type Lang } from '../../i18n';
+import { destinations } from '../../data/destinations';
+import { tours } from '../../data/tours';
+import { activities } from '../../data/activities';
+import { vehicles } from '../../data/transfers';
+import { testimonials, inspiration } from '../../data/content';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const h = t.home;
+
+const slides = ['istanbul-skyline', 'cappadocia-balloons', 'pamukkale', 'kas-beach'];
+const featuredDest = destinations.filter((d) => d.featured).slice(0, 5);
+const popular = tours.filter((x) => x.featured).slice(0, 3);
+const offerItems = [
+  ...tours.filter((x) => x.offer).map((x) => ({ kind: 'tour' as const, item: x })),
+  ...activities.filter((x) => x.offer).map((x) => ({ kind: 'activity' as const, item: x })),
+].slice(0, 3);
+const istanbulActs = activities.filter((a) => a.destination === 'istanbul').slice(0, 4);
+const cultural = tours.filter((x) => (x.category === 'historical' || x.category === 'cultural') && !popular.includes(x)).slice(0, 3);
+const trustIcons = ['compass', 'headset', 'users', 'shield'];
+const whyIcons = ['pin', 'globe', 'route', 'briefcase'];
+---
+<BaseLayout lang={lang} title={t.meta.homeTitle} description={t.meta.homeDescription} overlayHeader>
+  <!-- Hero slider -->
+  <section class="hero" data-slider aria-roledescription="carousel" aria-label={h.heroEyebrow}>
+    <div class="hero__slides">
+      {slides.map((img, i) => (
+        <div class:list={['hero__slide', { 'is-active': i === 0 }]} data-slide aria-hidden={i === 0 ? 'false' : 'true'} aria-roledescription="slide">
+          <Img image={img} alt={h.heroSlides[i].title} sizes="100vw" widths={[800, 1280, 1920]} eager={i === 0} />
+        </div>
+      ))}
+    </div>
+    <div class="container hero__content">
+      <div class="hero__text">
+        <span class="eyebrow">{h.heroEyebrow}</span>
+        {h.heroSlides.map((s, i) => (
+          <div class:list={['hero__copy', { 'is-active': i === 0 }]} data-copy>
+            {i === 0 ? <h1 class="hero__title">{s.title}</h1> : <p class="hero__title display" aria-hidden="true">{s.title}</p>}
+            <p class="hero__lead">{s.text}</p>
+          </div>
+        ))}
+        <div class="hero__ctas on-dark">
+          <a class="btn btn--gold" href={url(lang, 'tours')}>{t.nav.allTours} <Icon name="arrow-right" /></a>
+          <a class="btn btn--outline" href={url(lang, 'inquiry')}>{t.nav.planTrip}</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero__controls">
+      <span class="hero__counter"><b data-counter>01</b> / {String(slides.length).padStart(2, '0')}</span>
+      <div class="hero__dots">
+        {slides.map((_, i) => <button class="hero__dot" type="button" data-dot aria-label={`${i + 1} / ${slides.length}`} aria-current={i === 0 ? 'true' : 'false'}></button>)}
+      </div>
+      <button class="circle-btn" type="button" data-prev aria-label={t.common.previous}><Icon name="arrow-left" /></button>
+      <button class="circle-btn" type="button" data-next aria-label={t.common.next}><Icon name="arrow-right" /></button>
+    </div>
+  </section>
+
+  <!-- Search + trust -->
+  <div class="container search-wrap">
+    <SearchPanel lang={lang} />
+    <div class="trust">
+      {h.trust.map((item, i) => (
+        <div class="trust__item reveal">
+          <span class="trust__icon"><Icon name={trustIcons[i]} /></span>
+          <div><h3>{item.title}</h3><p>{item.text}</p></div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Featured destinations -->
+  <section class="section" aria-labelledby="dest-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">{h.destinationsEyebrow}</span>
+          <h2 id="dest-title">{h.destinationsTitle}</h2>
+          <p>{h.destinationsText}</p>
+        </div>
+        <a class="link-arrow" href={url(lang, 'destinations')}>{t.nav.allDestinations} <Icon name="arrow-right" /></a>
+      </div>
+      <div class="dest-row">
+        {featuredDest.map((d) => <DestinationCard destination={d} lang={lang} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular tours -->
+  <section class="section section--sand" aria-labelledby="tours-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">{h.toursEyebrow}</span>
+          <h2 id="tours-title">{h.toursTitle}</h2>
+          <p>{h.toursText}</p>
+        </div>
+        <a class="link-arrow" href={url(lang, 'tours')}>{t.nav.allTours} <Icon name="arrow-right" /></a>
+      </div>
+      <div class="grid grid--3">
+        {popular.map((x) => <div class="reveal"><TourCard tour={x} lang={lang} /></div>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Special offers -->
+  {offerItems.length > 0 && (
+    <section class="section offers-band" aria-labelledby="offers-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">{h.offersEyebrow}</span>
+            <h2 id="offers-title">{h.offersTitle}</h2>
+            <p>{h.offersText}</p>
+          </div>
+          <a class="btn btn--light" href={url(lang, 'offers')}>{t.nav.offers} <Icon name="arrow-right" /></a>
+        </div>
+        <div class="grid grid--3">
+          {offerItems.map((o) => <div class="reveal">{o.kind === 'tour' ? <TourCard tour={o.item} lang={lang} /> : <ActivityCard activity={o.item} lang={lang} />}</div>)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Istanbul experiences -->
+  <section class="section" aria-labelledby="ist-title">
+    <div class="container split">
+      <div class="split__media reveal">
+        <Img image="istanbul-galata" alt={pick(destinations[0].name, lang)} sizes="(max-width: 900px) 90vw, 560px" widths={[500, 800, 1100]} />
+        <Img image="bosphorus" alt="" class="img-frame--small" sizes="240px" widths={[300, 500]} />
+      </div>
+      <div class="reveal">
+        <span class="eyebrow">{h.istanbulEyebrow}</span>
+        <h2 id="ist-title">{h.istanbulTitle}</h2>
+        <p class="lead">{h.istanbulText}</p>
+        <div class="mini-list">
+          {istanbulActs.map((a) => (
+            <a class="mini" href={url(lang, `activities/${a.slug}`)}>
+              <Img image={a.image} alt="" sizes="92px" widths={[200]} />
+              <div><h3>{pick(a.title, lang)}</h3><p>{hoursLabel(lang, a.hours)} · {t.activityCategory[a.category]}</p></div>
+              <Price lang={lang} amount={a.priceFrom} offer={a.offer} />
+            </a>
+          ))}
+        </div>
+        <a class="btn btn--primary" href={`${url(lang, 'activities')}?destination=istanbul`}>{t.nav.allActivities} <Icon name="arrow-right" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cultural & historical tours -->
+  <section class="section section--paper" aria-labelledby="cult-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <div>
+          <Icon name="star8" class="ornament" />
+          <span class="eyebrow">{h.culturalEyebrow}</span>
+          <h2 id="cult-title">{h.culturalTitle}</h2>
+          <p>{h.culturalText}</p>
+        </div>
+      </div>
+      <div class="grid grid--3">
+        {cultural.map((x) => <div class="reveal"><TourCard tour={x} lang={lang} /></div>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Private tours -->
+  <section class="section section--ink" aria-labelledby="priv-title">
+    <div class="container split split--reverse">
+      <div class="split__media reveal">
+        <Img image="istanbul-mosque-dusk" alt="" sizes="(max-width: 900px) 90vw, 560px" widths={[500, 800, 1100]} />
+      </div>
+      <div class="reveal on-dark">
+        <span class="eyebrow">{h.privateEyebrow}</span>
+        <h2 id="priv-title">{h.privateTitle}</h2>
+        <p class="lead" style="color:#c9d1d4">{h.privateText}</p>
+        <ul class="checklist">
+          {h.privatePoints.map((p) => <li><Icon name="check-circle" />{p}</li>)}
+        </ul>
+        <div class="hero__ctas">
+          <a class="btn btn--gold" href={`${url(lang, 'inquiry')}?product=tour:private-istanbul-day-tour`}>{h.privateCta} <Icon name="arrow-right" /></a>
+          <a class="btn btn--outline" href={`${url(lang, 'tours')}?type=private`}>{t.nav.privateTours}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Airport transfers -->
+  <section class="section section--sand" aria-labelledby="tr-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">{h.transfersEyebrow}</span>
+          <h2 id="tr-title">{h.transfersTitle}</h2>
+          <p>{h.transfersText}</p>
+        </div>
+        <div class="hero__ctas">
+          <a class="btn btn--primary" href={url(lang, 'transfers/book')}>{t.nav.bookTransfer} <Icon name="arrow-right" /></a>
+          <a class="btn btn--outline" href={url(lang, 'transfers')}>{t.common.learnMore}</a>
+        </div>
+      </div>
+      <div class="grid grid--4">
+        {vehicles.slice(0, 4).map((v) => (
+          <div class="vehicle reveal">
+            <div class="vehicle__icon"><VehicleIcon type={v.icon} /></div>
+            <h3>{pick(v.name, lang)}</h3>
+            <p class="vehicle__models">{v.models}</p>
+            <div class="vehicle__caps">
+              <span><Icon name="users" />{v.passengers}</span>
+              <span><Icon name="luggage" />{v.luggage}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why choose -->
+  <section class="section" aria-labelledby="why-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <div>
+          <Icon name="star8" class="ornament" />
+          <span class="eyebrow">{h.whyEyebrow}</span>
+          <h2 id="why-title">{h.whyTitle}</h2>
+        </div>
+      </div>
+      <div class="grid grid--4">
+        {h.why.map((w, i) => (
+          <div class="feature reveal">
+            <div class="feature__icon"><Icon name={whyIcons[i]} /></div>
+            <h3>{w.title}</h3>
+            <p>{w.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section section--paper" aria-labelledby="test-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">{h.testimonialsEyebrow}</span>
+          <h2 id="test-title">{h.testimonialsTitle}</h2>
+        </div>
+      </div>
+      <div class="grid grid--3">
+        {testimonials.map((q) => {
+          const tour = tours.find((x) => x.slug === q.tour);
+          return (
+            <figure class="quote-card reveal" style="margin:0">
+              <div class="quote-card__stars" aria-label={`${q.rating}/5`}>{'★'.repeat(q.rating)}</div>
+              <blockquote>“{pick(q.text, lang)}”</blockquote>
+              <footer>
+                <span class="quote-card__avatar" aria-hidden="true">{q.name.charAt(0)}</span>
+                <figcaption><strong>{q.name}</strong><span>{pick(q.country, lang)}{tour && <> · {pick(tour.title, lang)}</>}</span></figcaption>
+              </footer>
+            </figure>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- Inspiration -->
+  <section class="section" aria-labelledby="insp-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">{h.inspirationEyebrow}</span>
+          <h2 id="insp-title">{h.inspirationTitle}</h2>
+        </div>
+      </div>
+      <div class="grid grid--3">
+        {inspiration.map((it) => (
+          <a class="insp reveal" href={url(lang, it.href)}>
+            <Img image={it.image} alt="" sizes="(max-width: 640px) 100vw, 400px" />
+            <div class="insp__body">
+              <span class="badge">{pick(it.tag, lang)}</span>
+              <h3>{pick(it.title, lang)}</h3>
+              <p>{pick(it.text, lang)}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Newsletter lang={lang} />
+</BaseLayout>

@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import { fmt, langPaths, url, useTranslations, type Lang } from '../../i18n';
+import { site, whatsappLink } from '../../config/site';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const c = t.contact;
+const f = t.form;
+const consent = fmt(f.consent, { privacy: `<a href="${url(lang, 'privacy')}" target="_blank">${t.footer.privacy}</a>` });
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: c.title,
+  mainEntity: { '@type': 'TravelAgency', name: site.name, email: site.contact.email, telephone: site.contact.phoneDisplay },
+};
+---
+<BaseLayout lang={lang} title={c.title} description={c.intro} image="istanbul-skyline" jsonLd={ld}>
+  <PageHero lang={lang} title={c.title} eyebrow="WellXplore" lead={c.intro} image="istanbul-tram" crumbs={[{ label: c.title }]} />
+
+  <section class="section">
+    <div class="container detail">
+      <form class="form-card" id="contact-form" data-form="contact" data-summary-title={`WellXplore — ${c.formTitle}`} novalidate>
+        <h2>{c.formTitle}</h2>
+        <p class="notice notice--warn error-summary" data-error-summary role="alert"></p>
+        <div class="form-grid" style="margin-top:20px">
+          <div class="field span-2">
+            <label for="c-subject">{c.subject}</label>
+            <select class="input" id="c-subject" name="subject" data-prefill>
+              {c.subjects.map((s, i) => <option value={String(i)}>{s}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="c-name">{f.name}<span class="req" aria-hidden="true">*</span></label>
+            <input class="input" id="c-name" name="name" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="c-email">{f.email}<span class="req" aria-hidden="true">*</span></label>
+            <input class="input" id="c-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="c-phone">{f.phone} <span class="hint">({f.optional})</span></label>
+            <input class="input" id="c-phone" name="phone" type="tel" autocomplete="tel" data-phone />
+          </div>
+          <div class="field">
+            <label for="c-company">{f.agencyName} <span class="hint">({f.optional})</span></label>
+            <input class="input" id="c-company" name="company" autocomplete="organization" />
+          </div>
+          <div class="field span-2">
+            <label for="c-message">{f.message}<span class="req" aria-hidden="true">*</span></label>
+            <textarea class="input" id="c-message" name="message" rows="6" required></textarea>
+          </div>
+          <div class="field span-2 consent">
+            <label class="check"><input type="checkbox" name="consent" required data-consent /> <span set:html={consent} /></label>
+          </div>
+          <div class="span-2"><button class="btn btn--primary btn--block" type="submit">{t.common.sendInquiry} <Icon name="arrow-right" /></button></div>
+        </div>
+      </form>
+
+      <aside class="detail__aside">
+        <div class="box">
+          <h2 style="font:600 1.05rem var(--sans);margin-bottom:18px">{c.office}</h2>
+          <ul class="contact-list">
+            <li><Icon name="pin" /><span><strong>{c.office}</strong>{site.contact.address.line1}<br />{site.contact.address.line2}<br />{site.contact.address.country}<br /><a class="link-arrow" href={site.contact.mapUrl} target="_blank" rel="noopener" style="font-size:.88rem">{c.directions} <Icon name="arrow-right" /></a></span></li>
+            <li><Icon name="phone" /><span><strong>{c.phone}</strong><a href={`tel:${site.contact.phoneHref}`}>{site.contact.phoneDisplay}</a></span></li>
+            <li><Icon name="whatsapp" /><span><strong>{c.whatsapp}</strong><a href={whatsappLink()} target="_blank" rel="noopener">{t.common.chatWhatsapp}</a></span></li>
+            <li><Icon name="mail" /><span><strong>{c.email}</strong><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></span></li>
+            <li><Icon name="clock" /><span><strong>{c.hours}</strong>{site.contact.hours}</span></li>
+            {site.social.wechat && <li><Icon name="globe" /><span><strong>WeChat</strong>{site.social.wechat}</span></li>}
+          </ul>
+        </div>
+        <div class="price-box" id="partners">
+          <Icon name="briefcase" class="ornament" />
+          <h2 style="color:#fff;font-size:1.6rem;margin-bottom:10px">{c.partnersTitle}</h2>
+          <p style="color:#c9d1d4;margin:0">{c.partnersText}</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { formatDate, langs, pick, useTranslations, type Lang } from '../../i18n';
+import { legal, legalUpdated, type LegalKey } from '../../i18n/pages/legal';
+import { site } from '../../config/site';
+
+export function getStaticPaths() {
+  return langs.flatMap((lang) => (Object.keys(legal) as LegalKey[]).map((doc) => ({ params: { lang, doc } })));
+}
+const lang = Astro.params.lang as Lang;
+const doc = Astro.params.doc as LegalKey;
+const t = useTranslations(lang);
+const d = pick(legal[doc], lang);
+---
+<BaseLayout lang={lang} title={d.title} description={d.intro}>
+  <PageHero lang={lang} title={d.title} eyebrow={t.footer.legal} crumbs={[{ label: d.title }]} />
+  <section class="section">
+    <div class="container">
+      <article class="prose">
+        <p class="hint">{formatDate(legalUpdated, lang)}</p>
+        <p class="lead">{d.intro}</p>
+        {d.sections.map((s) => (
+          <>
+            <h2>{s.h}</h2>
+            {s.p?.map((p) => <p>{p}</p>)}
+            {s.list && <ul>{s.list.map((li) => <li>{li}</li>)}</ul>}
+          </>
+        ))}
+        <h2>{t.footer.contact}</h2>
+        <p>{site.legalName}<br />{site.contact.address.line1}, {site.contact.address.line2}, {site.contact.address.country}<br /><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

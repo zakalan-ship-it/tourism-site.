@@ -1,0 +1,130 @@
+---
+import Icon from './Icon.astro';
+import { languages, langs, pick, url, switchLangPath, useTranslations, type Lang } from '../i18n';
+import { destinations } from '../data/destinations';
+import { activityCategories } from '../data/activities';
+import { whatsappLink } from '../config/site';
+
+interface Props {
+  lang: Lang;
+  overlay?: boolean;
+}
+const { lang, overlay = false } = Astro.props;
+const t = useTranslations(lang);
+const path = Astro.url.pathname;
+const section = path.split('/')[2] ?? '';
+
+type Item = { label: string; href: string; key: string; children?: { label: string; href: string }[]; all?: { label: string; href: string }; grid?: boolean };
+const items: Item[] = [
+  {
+    key: 'tours',
+    label: t.nav.tours,
+    href: url(lang, 'tours'),
+    children: [
+      { label: t.nav.multiDay, href: url(lang, 'tours') + '?type=group' },
+      { label: t.nav.dayTours, href: url(lang, 'tours') + '?type=day' },
+      { label: t.nav.privateTours, href: url(lang, 'tours') + '?type=private' },
+      { label: t.nav.offers, href: url(lang, 'offers') },
+    ],
+    all: { label: t.nav.allTours, href: url(lang, 'tours') },
+  },
+  {
+    key: 'destinations',
+    label: t.nav.destinations,
+    href: url(lang, 'destinations'),
+    grid: true,
+    children: destinations.map((d) => ({ label: pick(d.name, lang), href: url(lang, `destinations/${d.slug}`) })),
+    all: { label: t.nav.allDestinations, href: url(lang, 'destinations') },
+  },
+  {
+    key: 'activities',
+    label: t.nav.activities,
+    href: url(lang, 'activities'),
+    grid: true,
+    children: activityCategories.map((c) => ({ label: t.activityCategory[c.id], href: url(lang, 'activities') + `?category=${c.id}` })),
+    all: { label: t.nav.allActivities, href: url(lang, 'activities') },
+  },
+  {
+    key: 'transfers',
+    label: t.nav.transfers,
+    href: url(lang, 'transfers'),
+    children: [
+      { label: t.nav.airportTransfers, href: url(lang, 'transfers') + '#services' },
+      { label: t.nav.privateTransfers, href: url(lang, 'transfers') + '#routes' },
+      { label: t.nav.bookTransfer, href: url(lang, 'transfers/book') },
+    ],
+  },
+  { key: 'offers', label: t.nav.offers, href: url(lang, 'offers') },
+  {
+    key: 'about',
+    label: t.nav.company,
+    href: url(lang, 'about'),
+    children: [
+      { label: t.nav.about, href: url(lang, 'about') },
+      { label: t.nav.catalogue, href: url(lang, 'catalogue') },
+      { label: t.nav.contact, href: url(lang, 'contact') },
+    ],
+  },
+];
+const activeKeys: Record<string, string> = { tours: 'tours', destinations: 'destinations', activities: 'activities', transfers: 'transfers', offers: 'offers', about: 'about', catalogue: 'about', contact: 'about' };
+const activeKey = activeKeys[section];
+---
+<header class:list={['site-header', { 'site-header--overlay': overlay }]} data-header>
+  <div class="container header-inner">
+    <a class="brand" href={url(lang)} aria-label="WellXplore — home">
+      <Icon name="star8" class="brand__mark" />
+      <span class="brand__name">Well<b>Xplore</b></span>
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label={t.nav.menu} data-nav>
+      <ul>
+        {items.map((item, i) => (
+          <li class="nav-item">
+            {item.children ? (
+              <>
+                <button class="nav-link" type="button" aria-expanded="false" aria-controls={`dd-${i}`} data-dropdown-toggle aria-current={activeKey === item.key ? 'page' : undefined}>
+                  {item.label}
+                  <Icon name="chevron-down" />
+                </button>
+                <ul class:list={['dropdown', { 'dropdown--grid': item.grid }]} id={`dd-${i}`}>
+                  {item.children.map((c) => (<li><a href={c.href}>{c.label}</a></li>))}
+                  {item.all && <li class="dropdown__all-li" style={item.grid ? 'grid-column:1/-1' : undefined}><a class="dropdown__all" href={item.all.href}>{item.all.label} →</a></li>}
+                </ul>
+              </>
+            ) : (
+              <a class="nav-link" href={item.href} aria-current={activeKey === item.key ? 'page' : undefined}>{item.label}</a>
+            )}
+          </li>
+        ))}
+      </ul>
+      <div class="mobile-cta">
+        <a class="btn btn--primary" href={url(lang, 'inquiry')}>{t.nav.planTrip}</a>
+        <a class="btn btn--whatsapp" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" />{t.common.chatWhatsapp}</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch nav-item">
+        <button class="lang-switch__btn" type="button" aria-expanded="false" aria-controls="lang-menu" data-dropdown-toggle aria-label={`${t.nav.language}: ${languages[lang].label}`}>
+          <Icon name="globe" />
+          <span>{languages[lang].short}</span>
+        </button>
+        <ul class="dropdown lang-switch__menu" id="lang-menu">
+          {langs.map((l) => (
+            <li>
+              <a href={switchLangPath(path, l)} hreflang={languages[l].htmlLang} lang={languages[l].htmlLang} aria-current={l === lang ? 'true' : undefined} data-lang-link={l}>
+                {languages[l].label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <a class="header-wa" href={whatsappLink()} target="_blank" rel="noopener" aria-label={t.common.chatWhatsapp}><Icon name="whatsapp" /></a>
+      <a class="btn btn--primary btn--sm header-cta" href={url(lang, 'inquiry')}>{t.nav.planTrip}</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-menu-toggle>
+        <span></span><span></span><span></span>
+        <span class="sr-only">{t.nav.menu}</span>
+      </button>
+    </div>
+  </div>
+</header>

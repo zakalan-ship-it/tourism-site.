@@ -1,0 +1,100 @@
+---
+import Icon from './Icon.astro';
+import { pick, url, useTranslations, type Lang } from '../i18n';
+import { destinations } from '../data/destinations';
+import { activityCategories } from '../data/activities';
+import { locationSuggestions } from '../data/transfers';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const s = t.search;
+const destOptions = destinations.map((d) => ({ value: d.slug, label: pick(d.name, lang) }));
+---
+<div class="search-panel" data-tabs>
+  <h2 class="sr-only">{s.title}</h2>
+  <div class="search-tabs" role="tablist" aria-label={s.title}>
+    <button class="search-tab" role="tab" id="tab-tours" aria-controls="panel-tours" aria-selected="true" type="button"><Icon name="compass" />{s.tabTours}</button>
+    <button class="search-tab" role="tab" id="tab-acts" aria-controls="panel-acts" aria-selected="false" tabindex="-1" type="button"><Icon name="balloon" />{s.tabActivities}</button>
+    <button class="search-tab" role="tab" id="tab-transfers" aria-controls="panel-transfers" aria-selected="false" tabindex="-1" type="button"><Icon name="car" />{s.tabTransfers}</button>
+  </div>
+
+  <form class="search-form" id="panel-tours" role="tabpanel" aria-labelledby="tab-tours" action={url(lang, 'tours')} method="get">
+    <div class="field">
+      <label for="s-dest">{s.destination}</label>
+      <select id="s-dest" name="destination">
+        <option value="">{s.allDestinations}</option>
+        {destOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+      </select>
+    </div>
+    <div class="field">
+      <label for="s-date">{s.departure}</label>
+      <input class="input" id="s-date" name="date" type="date" />
+    </div>
+    <div class="field">
+      <label for="s-dur">{s.duration}</label>
+      <select id="s-dur" name="duration">
+        <option value="">{s.anyDuration}</option>
+        <option value="1">{s.dur1}</option>
+        <option value="2-5">{s.dur2to5}</option>
+        <option value="6-9">{s.dur6to9}</option>
+        <option value="10+">{s.dur10}</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="s-type">{t.filters.type}</label>
+      <select id="s-type" name="type">
+        <option value="">{t.common.any}</option>
+        <option value="group">{t.tourType.group}</option>
+        <option value="private">{t.tourType.private}</option>
+        <option value="day">{t.tourType.day}</option>
+      </select>
+    </div>
+    <button class="btn btn--primary" type="submit"><Icon name="search" />{s.submit}</button>
+  </form>
+
+  <form class="search-form" id="panel-acts" role="tabpanel" aria-labelledby="tab-acts" action={url(lang, 'activities')} method="get" hidden>
+    <div class="field">
+      <label for="a-dest">{s.destination}</label>
+      <select id="a-dest" name="destination">
+        <option value="">{s.allDestinations}</option>
+        {destOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+      </select>
+    </div>
+    <div class="field">
+      <label for="a-cat">{s.category}</label>
+      <select id="a-cat" name="category">
+        <option value="">{s.allCategories}</option>
+        {activityCategories.map((c) => <option value={c.id}>{t.activityCategory[c.id]}</option>)}
+      </select>
+    </div>
+    <div class="field" style="grid-column: span 2">
+      <label for="a-q">{s.keyword}</label>
+      <input class="input" id="a-q" name="q" type="search" placeholder="Bosphorus, hammam…" />
+    </div>
+    <button class="btn btn--primary" type="submit"><Icon name="search" />{s.submit}</button>
+  </form>
+
+  <form class="search-form" id="panel-transfers" role="tabpanel" aria-labelledby="tab-transfers" action={url(lang, 'transfers/book')} method="get" hidden>
+    <div class="field">
+      <label for="t-from">{s.pickup}</label>
+      <input class="input" id="t-from" name="pickup" list="loc-list" placeholder={t.transfers.pickupPlaceholder} />
+    </div>
+    <div class="field">
+      <label for="t-to">{s.dropoff}</label>
+      <input class="input" id="t-to" name="dropoff" list="loc-list" placeholder={t.transfers.pickupPlaceholder} />
+    </div>
+    <div class="field">
+      <label for="t-date">{s.date}</label>
+      <input class="input" id="t-date" name="date" type="date" />
+    </div>
+    <div class="field">
+      <label for="t-pax">{s.passengers}</label>
+      <input class="input" id="t-pax" name="passengers" type="number" min="1" max="46" value="2" />
+    </div>
+    <button class="btn btn--primary" type="submit"><Icon name="search" />{s.submit}</button>
+    <datalist id="loc-list">
+      {locationSuggestions.map((l) => <option value={pick(l, lang)} />)}
+    </datalist>
+  </form>
+</div>

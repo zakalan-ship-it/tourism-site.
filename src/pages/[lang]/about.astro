@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Img from '../../components/Img.astro';
+import Icon from '../../components/Icon.astro';
+import { langPaths, pick, url, useTranslations, type Lang } from '../../i18n';
+import { about } from '../../i18n/pages/about';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const a = pick(about, lang);
+const icons = ['compass', 'shield', 'headset', 'heart'];
+---
+<BaseLayout lang={lang} title={t.about.title} description={a.lead} image="istanbul-galata">
+  <PageHero lang={lang} title={t.about.title} eyebrow={t.about.eyebrow} lead={a.lead} image="istanbul-galata" crumbs={[{ label: t.nav.about }]} />
+
+  <section class="section">
+    <div class="container split">
+      <div class="split__media reveal">
+        <Img image="istanbul-blue-mosque" alt="" sizes="(max-width: 900px) 90vw, 560px" widths={[500, 800, 1100]} />
+        <Img image="bosphorus-ferry" alt="" class="img-frame--small" sizes="240px" widths={[300, 500]} />
+      </div>
+      <div class="reveal">
+        <span class="eyebrow">WellXplore</span>
+        <h2 style="margin-bottom:20px">{a.story.title}</h2>
+        {a.story.paragraphs.map((p) => <p style="color:var(--ink-soft)">{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand">
+    <div class="container">
+      <div class="grid grid--4">
+        {a.values.map((v, i) => (
+          <div class="feature reveal">
+            <div class="feature__icon"><Icon name={icons[i]} /></div>
+            <h3>{v.title}</h3>
+            <p>{v.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two-col" style="gap:48px">
+      <div class="reveal">
+        <span class="eyebrow">{t.nav.company}</span>
+        <h2 style="margin-bottom:20px">{a.services.title}</h2>
+        <ul class="checklist">{a.services.items.map((s) => <li><Icon name="check-circle" />{s}</li>)}</ul>
+      </div>
+      <div class="price-box reveal" style="align-self:start">
+        <Icon name="briefcase" class="ornament" />
+        <h2 style="color:#fff;font-size:1.9rem;margin-bottom:12px">{a.b2b.title}</h2>
+        <p style="color:#c9d1d4">{a.b2b.text}</p>
+        <a class="btn btn--gold btn--block" href={url(lang, 'catalogue') + '#b2b'}>{t.catalogue.b2bCta} <Icon name="arrow-right" /></a>
+        <a class="btn btn--outline btn--block" style="margin-top:10px;color:#fff" href={url(lang, 'contact')}>{t.nav.contact}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

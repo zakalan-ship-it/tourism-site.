@@ -1,0 +1,86 @@
+---
+import Icon from './Icon.astro';
+import { languages, langs, pick, url, switchLangPath, useTranslations, type Lang } from '../i18n';
+import { destinations } from '../data/destinations';
+import { site, whatsappLink } from '../config/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const path = Astro.url.pathname;
+const year = new Date().getFullYear();
+const socials = (['instagram', 'facebook', 'linkedin', 'youtube'] as const).filter((k) => site.social[k]);
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href={url(lang)}>
+          <Icon name="star8" class="brand__mark" />
+          <span class="brand__name">Well<b>Xplore</b></span>
+        </a>
+        <p>{t.footer.about}</p>
+        {socials.length > 0 && (
+          <div class="socials" aria-label={t.footer.follow}>
+            {socials.map((s) => (<a href={site.social[s]} target="_blank" rel="noopener" aria-label={s}><Icon name={s} /></a>))}
+          </div>
+        )}
+        <nav class="footer-langs" aria-label={t.nav.language}>
+          {langs.map((l) => (
+            <a href={switchLangPath(path, l)} lang={languages[l].htmlLang} hreflang={languages[l].htmlLang} aria-current={l === lang ? 'true' : undefined} data-lang-link={l}>{languages[l].label}</a>
+          ))}
+        </nav>
+      </div>
+
+      <div>
+        <h2>{t.footer.explore}</h2>
+        <ul>
+          <li><a href={url(lang, 'tours')}>{t.nav.tours}</a></li>
+          <li><a href={url(lang, 'activities')}>{t.nav.activities}</a></li>
+          <li><a href={url(lang, 'transfers')}>{t.nav.transfers}</a></li>
+          <li><a href={url(lang, 'offers')}>{t.nav.offers}</a></li>
+          <li><a href={url(lang, 'catalogue')}>{t.nav.catalogue}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>{t.nav.destinations}</h2>
+        <ul>
+          {destinations.slice(0, 6).map((d) => (<li><a href={url(lang, `destinations/${d.slug}`)}>{pick(d.name, lang)}</a></li>))}
+          <li><a href={url(lang, 'destinations')}>{t.nav.allDestinations} →</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>{t.footer.company}</h2>
+        <ul>
+          <li><a href={url(lang, 'about')}>{t.nav.about}</a></li>
+          <li><a href={url(lang, 'contact')}>{t.nav.contact}</a></li>
+          <li><a href={url(lang, 'inquiry')}>{t.nav.inquiry}</a></li>
+          <li><a href={url(lang, 'contact') + '#partners'}>{t.contact.partnersTitle}</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact">
+        <h2>{t.footer.contact}</h2>
+        <ul class="contact-list">
+          <li><Icon name="pin" /><span>{site.contact.address.line1}<br />{site.contact.address.line2}, {site.contact.address.country}</span></li>
+          <li><Icon name="phone" /><a href={`tel:${site.contact.phoneHref}`}>{site.contact.phoneDisplay}</a></li>
+          <li><Icon name="whatsapp" /><a href={whatsappLink()} target="_blank" rel="noopener">{t.common.chatWhatsapp}</a></li>
+          <li><Icon name="mail" /><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© {year} {site.legalName}. {t.footer.rights}{site.licence && <> · {t.footer.licence}: {site.licence}</>}</span>
+      <nav aria-label={t.footer.legal}>
+        <a href={url(lang, 'privacy')}>{t.footer.privacy}</a>
+        <a href={url(lang, 'terms')}>{t.footer.terms}</a>
+        <a href={url(lang, 'cookies')}>{t.footer.cookies}</a>
+        <button type="button" data-cookie-open>{t.footer.cookieSettings}</button>
+        <a href={url(lang, 'credits')}>{t.footer.credits}</a>
+      </nav>
+    </div>
+  </div>
+</footer>

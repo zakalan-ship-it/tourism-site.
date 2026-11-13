@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Img from '../../components/Img.astro';
+import Icon from '../../components/Icon.astro';
+import Price from '../../components/Price.astro';
+import { daysLabel, formatPrice, hoursLabel, langPaths, pick, url, useTranslations, type Lang } from '../../i18n';
+import { tours } from '../../data/tours';
+import { activities } from '../../data/activities';
+import { routes, vehicles } from '../../data/transfers';
+import { getDestination } from '../../data/destinations';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const c = t.catalogue;
+const categories = Object.keys(t.tourCategory) as (keyof typeof t.tourCategory)[];
+const cheapest = (prices: Partial<Record<string, number>>) => Math.min(...Object.values(prices).filter((v): v is number => typeof v === 'number'));
+---
+<BaseLayout lang={lang} title={c.title} description={c.intro} image="pamukkale">
+  <PageHero lang={lang} title={c.title} eyebrow="WellXplore" lead={c.intro} image="ephesus" crumbs={[{ label: c.title }]}>
+    <div class="hero__ctas on-dark no-print" style="margin-top:26px">
+      <button class="btn btn--gold" type="button" data-print><Icon name="print" />{t.common.printable}</button>
+      <a class="btn btn--outline" href="#b2b">{c.b2bCta}</a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="container detail">
+      <div>
+        <div class="cat-section" id="cat-tours">
+          <span class="eyebrow">{c.collection}</span>
+          <h2 style="margin-bottom:10px">{c.toursSection}</h2>
+          {categories.map((cat) => {
+            const list = tours.filter((x) => x.category === cat);
+            return list.length > 0 && (
+              <div style="margin-top:28px">
+                <h3 style="color:var(--gold);text-transform:uppercase;letter-spacing:.14em;font-size:.8rem">{t.tourCategory[cat]}</h3>
+                {list.map((x) => (
+                  <a class="cat-row" href={url(lang, `tours/${x.slug}`)}>
+                    <Img image={x.image} alt="" sizes="180px" widths={[360]} />
+                    <div>
+                      <h3>{pick(x.title, lang)}</h3>
+                      <p>{daysLabel(lang, x.days)} · {x.destinations.map((d) => pick(getDestination(d)?.name, lang)).join(' · ')}</p>
+                      <p>{pick(x.summary, lang)}</p>
+                    </div>
+                    <Price lang={lang} amount={x.priceFrom} offer={x.offer} />
+                  </a>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+
+        <div class="cat-section" id="cat-acts">
+          <h2 style="margin-bottom:10px">{c.activitiesSection}</h2>
+          {activities.map((a) => (
+            <a class="cat-row" href={url(lang, `activities/${a.slug}`)}>
+              <Img image={a.image} alt="" sizes="180px" widths={[360]} />
+              <div>
+                <h3>{pick(a.title, lang)}</h3>
+                <p>{t.activityCategory[a.category]} · {hoursLabel(lang, a.hours)} · {pick(getDestination(a.destination)?.name, lang)}</p>
+                <p>{pick(a.summary, lang)}</p>
+              </div>
+              <Price lang={lang} amount={a.priceFrom} offer={a.offer} />
+            </a>
+          ))}
+        </div>
+
+        <div class="cat-section" id="cat-transfers">
+          <h2 style="margin-bottom:18px">{c.transfersSection}</h2>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th scope="col">{t.transfers.route}</th><th scope="col">{t.common.from}</th></tr></thead>
+              <tbody>
+                {routes.map((r) => <tr><td>{pick(r.from, lang)} → {pick(r.to, lang)}</td><td style="white-space:nowrap;font-weight:600">{formatPrice(cheapest(r.prices), lang)} <span class="hint">{t.common.perVehicle}</span></td></tr>)}
+              </tbody>
+            </table>
+          </div>
+          <p class="hint" style="margin-top:10px">{vehicles.map((v) => `${pick(v.name, lang)} (${v.passengers})`).join(' · ')}</p>
+        </div>
+      </div>
+
+      <aside class="detail__aside no-print">
+        <nav class="box" aria-label={c.contents}>
+          <h2 style="font:600 1rem var(--sans);margin-bottom:12px">{c.contents}</h2>
+          <ul style="list-style:none;padding:0;margin:0;display:grid;gap:8px">
+            <li><a class="link-arrow" href="#cat-tours">{c.toursSection} <Icon name="arrow-right" /></a></li>
+            <li><a class="link-arrow" href="#cat-acts">{c.activitiesSection} <Icon name="arrow-right" /></a></li>
+            <li><a class="link-arrow" href="#cat-transfers">{c.transfersSection} <Icon name="arrow-right" /></a></li>
+          </ul>
+        </nav>
+        <div class="price-box" id="b2b">
+          <Icon name="briefcase" class="ornament" />
+          <h2 style="font-size:1.7rem;color:#fff;margin-bottom:10px">{c.b2bTitle}</h2>
+          <p style="color:#c9d1d4">{c.b2bText}</p>
+          <a class="btn btn--gold btn--block" href={`${url(lang, 'contact')}?subject=3#contact-form`}>{c.b2bCta} <Icon name="arrow-right" /></a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

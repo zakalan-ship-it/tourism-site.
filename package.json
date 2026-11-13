@@ -1,0 +1,23 @@
+{
+  "name": "wellxplore-site",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check:i18n": "esbuild scripts/check-i18n.ts --bundle --platform=node --format=esm --outfile=node_modules/.cache/check-i18n.mjs --log-level=warning && node node_modules/.cache/check-i18n.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "test:e2e": "node scripts/e2e.mjs",
+    "test": "npm run check:i18n && astro build && npm run check:links"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^5.18.2",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.12"
+  }
+}

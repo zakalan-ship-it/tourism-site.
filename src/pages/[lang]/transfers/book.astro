@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import Icon from '../../../components/Icon.astro';
+import { fmt, langPaths, pick, url, useTranslations, type Lang } from '../../../i18n';
+import { locationSuggestions, routes, vehicles } from '../../../data/transfers';
+import { site, whatsappLink } from '../../../config/site';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const tr = t.transfers;
+const f = t.form;
+const consent = fmt(f.consent, { privacy: `<a href="${url(lang, 'privacy')}" target="_blank">${t.footer.privacy}</a>` });
+const times: string[] = [];
+for (let h = 0; h < 24; h++) for (const m of [0, 15, 30, 45]) times.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
+---
+<BaseLayout lang={lang} title={tr.bookTitle} description={tr.bookIntro} image="istanbul-skyline">
+  <PageHero lang={lang} title={tr.bookTitle} eyebrow={t.nav.transfers} lead={tr.bookIntro} crumbs={[{ label: t.nav.transfers, href: url(lang, 'transfers') }, { label: tr.bookTitle }]} />
+
+  <section class="section">
+    <div class="container detail">
+      <form class="form-card" id="transfer-form" data-form="transfer" data-transfer-form data-summary-title={`WellXplore — ${tr.bookTitle}`} novalidate>
+        <div class="notice"><Icon name="info" /><span>{f.notice}</span></div>
+        <p class="notice notice--warn error-summary" data-error-summary role="alert"></p>
+        <div class="form-grid">
+          <fieldset class="span-2" style="border:0;padding:0;margin:0">
+            <legend class="label" style="font-weight:600;font-size:.86rem;margin-bottom:6px">{tr.tripType}</legend>
+            <div class="segmented">
+              <label><input type="radio" name="tripType" value="oneway" checked /><span>{tr.oneWay}</span></label>
+              <label><input type="radio" name="tripType" value="round" /><span>{tr.roundTrip}</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field span-2">
+            <label for="tf-route">{tr.routes} <span class="hint">({f.optional})</span></label>
+            <select class="input" id="tf-route" name="route" data-prefill>
+              <option value="">—</option>
+              {routes.map((r) => <option value={r.id} data-from={pick(r.from, lang)} data-to={pick(r.to, lang)} data-prices={JSON.stringify(r.prices)}>{pick(r.from, lang)} → {pick(r.to, lang)}</option>)}
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="tf-pickup">{tr.pickup}<span class="req" aria-hidden="true">*</span></label>
+            <input class="input" id="tf-pickup" name="pickup" list="tf-locs" placeholder={tr.pickupPlaceholder} required data-prefill />
+          </div>
+          <div class="field">
+            <label for="tf-dropoff">{tr.dropoff}<span class="req" aria-hidden="true">*</span></label>
+            <input class="input" id="tf-dropoff" name="dropoff" list="tf-locs" placeholder={tr.pickupPlaceholder} required data-prefill data-different-from="#tf-pickup" />
+          </div>
+          <datalist id="tf-locs">{locationSuggestions.map((l) => <option value={pick(l, lang)} />)}</datalist>
+
+          <div class="field">
+            <label for="tf-date">{tr.date}<span class="req" aria-hidden="true">*</span></label>
+            <input class="input" id="tf-date" name="date" type="date" required data-future data-prefill />
+          </div>
+          <div class="field">
+            <label for="tf-time">{tr.time}<span class="req" aria-hidden="true">*</span></label>
+            <select class="input" id="tf-time" name="time" required>
+              <option value="">—</option>
+              {times.map((x) => <option>{x}</option>)}
+            </select>
+          </div>
+
+          <div class="span-2 form-grid" data-return hidden style="padding:16px;border-radius:12px;background:var(--ivory)">
+            <div class="field">
+              <label for="tf-rdate">{tr.returnDate}<span class="req" aria-hidden="true">*</span></label>
+              <input class="input" id="tf-rdate" name="returnDate" type="date" data-future data-after="#tf-date" />
+            </div>
+            <div class="field">
+              <label for="tf-rtime">{tr.returnTime}<span class="req" aria-hidden="true">*</span></label>
+              <input class="input" id="tf-rtime" name="returnTime" type="time" step="900" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="tf-pax">{tr.passengers2}<span class="req" aria-hidden="true">*</span></label>
+            <div class="stepper" data-stepper>
+              <button type="button" data-step="-1" aria-label="−1">−</button>
+              <input id="tf-pax" name="passengers" type="number" min="1" max="46" value="2" required inputmode="numeric" data-prefill />
+              <button type="button" data-step="1" aria-label="+1">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="tf-bags">{tr.luggage2}</label>
+            <div class="stepper" data-stepper>
+              <button type="button" data-step="-1" aria-label="−1">−</button>
+              <input id="tf-bags" name="luggage" type="number" min="0" max="60" value="2" inputmode="numeric" />
+              <button type="button" data-step="1" aria-label="+1">+</button>
+            </div>
+          </div>
+
+          <div class="field span-2">
+            <label for="tf-vehicle">{tr.vehicle}</label>
+            <select class="input" id="tf-vehicle" name="vehicle" data-capacity-for="#tf-pax" data-prefill>
+              <option value="">{tr.vehicleAny}</option>
+              {vehicles.map((v) => <option value={v.id} data-capacity={v.passengers}>{pick(v.name, lang)} — {fmt(tr.upToPax, { n: v.passengers })}, {fmt(tr.upToBags, { n: v.luggage })}</option>)}
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="tf-flight">{tr.flight}</label>
+            <input class="input" id="tf-flight" name="flight" autocomplete="off" aria-describedby="tf-flight-hint" style="text-transform:uppercase" />
+            <span class="hint" id="tf-flight-hint">{tr.flightHint}</span>
+          </div>
+          <div class="field" style="justify-content:center">
+            <label class="check"><input type="checkbox" name="childSeat" /> {tr.childSeat}</label>
+          </div>
+
+          <div class="span-2" data-estimate hidden>
+            <div class="box" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+              <div><strong>{tr.estimate}</strong><p class="hint" style="margin:0">{tr.estimateNote}</p></div>
+              <div class="price"><strong data-estimate-value></strong></div>
+            </div>
+          </div>
+
+          <h2 class="span-2" style="font-size:1.6rem;margin-top:10px">{t.footer.contact}</h2>
+          <div class="field">
+            <label for="tf-name">{f.name}<span class="req" aria-hidden="true">*</span></label>
+            <input class="input" id="tf-name" name="name" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="tf-email">{f.email}<span class="req" aria-hidden="true">*</span></label>
+            <input class="input" id="tf-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="field span-2">
+            <label for="tf-phone">{f.phone}<span class="req" aria-hidden="true">*</span></label>
+            <input class="input" id="tf-phone" name="phone" type="tel" autocomplete="tel" required data-phone aria-describedby="tf-phone-hint" />
+            <span class="hint" id="tf-phone-hint">{f.phoneHint}</span>
+          </div>
+          <div class="field span-2">
+            <label for="tf-msg">{f.message} <span class="hint">({f.optional})</span></label>
+            <textarea class="input" id="tf-msg" name="message" rows="3"></textarea>
+          </div>
+          <div class="field span-2 consent">
+            <label class="check"><input type="checkbox" name="consent" required data-consent /> <span set:html={consent} /></label>
+          </div>
+          <div class="span-2"><button class="btn btn--primary btn--block" type="submit">{f.submit} <Icon name="arrow-right" /></button></div>
+        </div>
+      </form>
+
+      <aside class="detail__aside">
+        <div class="price-box">
+          <h2 style="font-size:1.6rem;color:#fff;margin-bottom:14px">{tr.included}</h2>
+          <ul>{tr.includedList.map((i) => <li><Icon name="check" />{i}</li>)}</ul>
+          <a class="btn btn--whatsapp btn--block" href={whatsappLink(tr.bookTitle)} target="_blank" rel="noopener"><Icon name="whatsapp" />{t.common.chatWhatsapp}</a>
+          <a class="btn btn--outline btn--block on-dark" style="margin-top:10px;color:#fff" href={`tel:${site.contact.phoneHref}`}><Icon name="phone" />{site.contact.phoneDisplay}</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

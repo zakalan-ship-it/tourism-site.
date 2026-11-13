@@ -1,0 +1,39 @@
+---
+import { Picture } from 'astro:assets';
+import { getImage } from '../data/images';
+import Icon from './Icon.astro';
+
+interface Props {
+  image?: string;
+  alt: string;
+  class?: string;
+  /** Approximate rendered width, e.g. '(max-width: 640px) 100vw, 33vw' */
+  sizes?: string;
+  widths?: number[];
+  eager?: boolean;
+}
+const { image, alt, class: className = '', sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw', widths = [400, 700, 1000, 1400], eager = false } = Astro.props;
+const meta = getImage(image);
+const usable = meta ? widths.filter((w) => w <= meta.width) : [];
+if (meta && usable.length === 0) usable.push(meta.width);
+---
+{meta ? (
+  <div class={`img-frame ${className}`}>
+    <Picture
+      src={meta}
+      alt={alt}
+      widths={usable}
+      sizes={sizes}
+      formats={['webp']}
+      fallbackFormat="jpg"
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+      decoding="async"
+      quality={72}
+    />
+  </div>
+) : (
+  <div class={`img-frame img-frame--placeholder ${className}`} role="img" aria-label={alt}>
+    <Icon name="star8" />
+  </div>
+)}

@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import TourCard from '../../components/TourCard.astro';
+import ActivityCard from '../../components/ActivityCard.astro';
+import Newsletter from '../../components/Newsletter.astro';
+import Icon from '../../components/Icon.astro';
+import { langPaths, useTranslations, type Lang } from '../../i18n';
+import { tours } from '../../data/tours';
+import { activities } from '../../data/activities';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+// Only offers that can still be booked at build time are shown.
+const today = new Date().toISOString().slice(0, 10);
+const tourOffers = tours.filter((x) => x.offer && x.offer.validUntil >= today);
+const actOffers = activities.filter((x) => x.offer && x.offer.validUntil >= today);
+const none = tourOffers.length + actOffers.length === 0;
+---
+<BaseLayout lang={lang} title={t.offers.title} description={t.offers.intro} image="cappadocia-balloons">
+  <PageHero lang={lang} title={t.offers.title} eyebrow={t.home.offersEyebrow} lead={t.offers.intro} image="kas-beach" crumbs={[{ label: t.offers.title }]} />
+
+  <section class="section">
+    <div class="container">
+      {none && <div class="empty-state"><Icon name="tag" /><p>{t.offers.none}</p></div>}
+      {tourOffers.length > 0 && (
+        <>
+          <div class="section-head"><div><span class="eyebrow">{t.nav.tours}</span><h2>{t.home.offersTitle}</h2></div></div>
+          <div class="grid grid--3" style="margin-bottom:64px">{tourOffers.map((x) => <TourCard tour={x} lang={lang} />)}</div>
+        </>
+      )}
+      {actOffers.length > 0 && (
+        <>
+          <div class="section-head"><div><span class="eyebrow">{t.nav.activities}</span><h2>{t.nav.activities}</h2></div></div>
+          <div class="grid grid--3">{actOffers.map((x) => <ActivityCard activity={x} lang={lang} />)}</div>
+        </>
+      )}
+      <div class="notice" style="margin-top:48px"><Icon name="info" /><span><strong>{t.offers.conditions}.</strong> {t.offers.conditionsText}</span></div>
+    </div>
+  </section>
+  <Newsletter lang={lang} />
+</BaseLayout>

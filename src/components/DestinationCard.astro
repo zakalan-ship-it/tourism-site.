@@ -1,0 +1,22 @@
+---
+import Img from './Img.astro';
+import { pick, url, type Lang } from '../i18n';
+import { regions } from '../data/destinations';
+import type { Destination } from '../data/types';
+
+interface Props {
+  destination: Destination;
+  lang: Lang;
+  filterable?: boolean;
+}
+const { destination: d, lang, filterable = false } = Astro.props;
+const attrs = filterable ? { 'data-item': '', 'data-region': d.region } : {};
+---
+<a class="dest-card reveal" href={url(lang, `destinations/${d.slug}`)} {...attrs}>
+  <Img image={d.image} alt={pick(d.name, lang)} sizes="(max-width: 640px) 50vw, (max-width: 1100px) 33vw, 260px" widths={[360, 600, 900]} />
+  <div class="dest-card__body">
+    <span class="dest-card__region">{pick(regions[d.region], lang)}</span>
+    <h3>{pick(d.name, lang)}</h3>
+    <p>{pick(d.tagline, lang)}</p>
+  </div>
+</a>

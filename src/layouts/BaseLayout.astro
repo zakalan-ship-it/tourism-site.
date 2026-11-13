@@ -1,0 +1,113 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import { languages, langs, switchLangPath, url, useTranslations, type Lang } from '../i18n';
+import { site, whatsappLink } from '../config/site';
+import { getImage } from '../data/images';
+import { getImage as getAstroImage } from 'astro:assets';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  image?: string;
+  overlayHeader?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+}
+const { lang, title, description, image, overlayHeader = false, jsonLd, noindex = false } = Astro.props;
+const t = useTranslations(lang);
+const path = Astro.url.pathname;
+const canonical = new URL(path, Astro.site ?? site.url).href;
+const fullTitle = title.includes('WellXplore') ? title : `${title} | WellXplore`;
+
+const ogMeta = getImage(image ?? 'istanbul-skyline');
+const ogImage = ogMeta ? new URL((await getAstroImage({ src: ogMeta, width: 1200, format: 'jpg' })).src, Astro.site ?? site.url).href : undefined;
+
+const orgLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TravelAgency',
+  name: site.name,
+  url: site.url,
+  email: site.contact.email,
+  telephone: site.contact.phoneDisplay,
+  address: { '@type': 'PostalAddress', streetAddress: site.contact.address.line1, addressLocality: 'Istanbul', addressCountry: 'TR' },
+  areaServed: 'TR',
+  availableLanguage: ['en', 'zh', 'de', 'tr'],
+};
+const ld = [orgLd, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [])];
+
+// Strings the browser scripts need (validation, form states, counters).
+const clientI18n = {
+  lang,
+  locale: languages[lang].htmlLang,
+  validation: t.validation,
+  form: t.form,
+  newsletter: t.newsletter,
+  common: { results: t.common.results, result: t.common.result },
+  tour: { dateAvailable: t.tour.dateAvailable, dateUnavailable: t.tour.dateUnavailable },
+  config: { endpoint: site.forms.endpoint, newsletterEndpoint: site.forms.newsletterEndpoint, whatsapp: site.contact.whatsapp, email: site.contact.email, currency: site.currency },
+};
+---
+<!doctype html>
+<html lang={languages[lang].htmlLang} dir={languages[lang].dir} class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    {langs.map((l) => (
+      <link rel="alternate" hreflang={languages[l].htmlLang} href={new URL(switchLangPath(path, l), Astro.site ?? site.url).href} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={new URL(switchLangPath(path, 'en'), Astro.site ?? site.url).href} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="WellXplore" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={languages[lang].ogLocale} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0f1c24" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script is:inline>document.documentElement.classList.remove('no-js');</script>
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    <script type="application/json" id="i18n-data" set:html={JSON.stringify(clientI18n)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.nav.skipToContent}</a>
+    <Header lang={lang} overlay={overlayHeader} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+
+    <a class="wa-float" href={whatsappLink()} target="_blank" rel="noopener" aria-label={t.common.chatWhatsapp}><Icon name="whatsapp" /></a>
+
+    <div class="cookie" role="dialog" aria-live="polite" aria-label={t.footer.cookieSettings} data-cookie hidden>
+      <p>{t.cookie.text} <a href={url(lang, 'cookies')}>{t.cookie.more}</a></p>
+      <div class="cookie__prefs" data-cookie-prefs hidden>
+        <label class="check"><input type="checkbox" checked disabled /> <span><strong>{t.cookie.catNecessary}</strong><small>{t.cookie.catNecessaryText}</small></span></label>
+        <label class="check"><input type="checkbox" data-cookie-cat="analytics" /> <span><strong>{t.cookie.catAnalytics}</strong><small>{t.cookie.catAnalyticsText}</small></span></label>
+        <label class="check"><input type="checkbox" data-cookie-cat="marketing" /> <span><strong>{t.cookie.catMarketing}</strong><small>{t.cookie.catMarketingText}</small></span></label>
+      </div>
+      <div class="cookie__actions">
+        <button class="btn btn--primary btn--sm" type="button" data-cookie-accept>{t.cookie.accept}</button>
+        <button class="btn btn--outline btn--sm" type="button" data-cookie-necessary>{t.cookie.necessary}</button>
+        <button class="btn btn--outline btn--sm" type="button" data-cookie-settings>{t.cookie.settings}</button>
+        <button class="btn btn--primary btn--sm" type="button" data-cookie-save hidden>{t.cookie.save}</button>
+      </div>
+    </div>
+
+    <script>
+      import '../scripts/site';
+    </script>
+  </body>
+</html>

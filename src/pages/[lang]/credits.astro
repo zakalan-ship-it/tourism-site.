@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { langPaths, useTranslations, type Lang } from '../../i18n';
+import { imageCredits } from '../../data/images';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+---
+<BaseLayout lang={lang} title={t.credits.title} description={t.credits.intro} noindex>
+  <PageHero lang={lang} title={t.credits.title} lead={t.credits.intro} crumbs={[{ label: t.credits.title }]} />
+  <section class="section">
+    <div class="container">
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th scope="col">{t.common.photo}</th><th scope="col">{t.credits.by}</th><th scope="col">{t.credits.licence}</th><th scope="col">{t.credits.source}</th></tr></thead>
+          <tbody>
+            {imageCredits.map((c) => (
+              <tr>
+                <td>{c.title}</td>
+                <td>{c.author}</td>
+                <td>{c.licenseUrl ? <a href={c.licenseUrl} target="_blank" rel="noopener license">{c.license}</a> : c.license}</td>
+                <td><a href={c.source} target="_blank" rel="noopener">{new URL(c.source).hostname.replace('www.', '')}</a></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

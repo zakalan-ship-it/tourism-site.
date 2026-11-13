@@ -1,0 +1,44 @@
+---
+import Img from './Img.astro';
+import Icon from './Icon.astro';
+import Price from './Price.astro';
+import { fmt, hoursLabel, pick, url, useTranslations, type Lang } from '../i18n';
+import { getDestination } from '../data/destinations';
+import type { Activity } from '../data/types';
+
+interface Props {
+  activity: Activity;
+  lang: Lang;
+  filterable?: boolean;
+  headingLevel?: 'h2' | 'h3';
+}
+const { activity: a, lang, filterable = false, headingLevel = 'h3' } = Astro.props;
+const t = useTranslations(lang);
+const Heading = headingLevel;
+const href = url(lang, `activities/${a.slug}`);
+const place = pick(getDestination(a.destination)?.name, lang);
+const attrs = filterable ? { 'data-item': '', 'data-category': a.category, 'data-destination': a.destination, 'data-price': a.priceFrom ?? '', 'data-search': [pick(a.title, lang), pick(a.summary, lang), place].join(' ').toLowerCase() } : {};
+---
+<article class="card" {...attrs}>
+  <div style="position:relative">
+    <Img image={a.image} alt={pick(a.title, lang)} sizes="(max-width: 680px) 100vw, (max-width: 1024px) 50vw, 400px" />
+    <div class="card__badges">
+      <span class="badge">{t.activityCategory[a.category]}</span>
+      {a.offer && <span class="badge badge--offer"><Icon name="tag" />{fmt(t.common.save, { n: a.offer.discount })}</span>}
+    </div>
+  </div>
+  <div class="card__body">
+    <div class="card__meta">
+      <span><Icon name="clock" />{hoursLabel(lang, a.hours)}</span>
+      <span><Icon name="pin" />{place}</span>
+    </div>
+    <Heading><a href={href}>{pick(a.title, lang)}</a></Heading>
+    <p class="card__text">{pick(a.summary, lang)}</p>
+    <div class="card__foot">
+      <Price lang={lang} amount={a.priceFrom} offer={a.offer} />
+      <div class="card__actions">
+        <a class="btn btn--primary btn--sm" href={`${url(lang, 'inquiry')}?product=activity:${a.slug}`}>{t.common.inquire}</a>
+      </div>
+    </div>
+  </div>
+</article>

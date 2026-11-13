@@ -1,0 +1,133 @@
+---
+import Icon from './Icon.astro';
+import { fmt, pick, url, useTranslations, type Lang } from '../i18n';
+import { tours } from '../data/tours';
+import { activities } from '../data/activities';
+
+interface Props {
+  lang: Lang;
+  /** Pre-selected product, e.g. 'tour:istanbul-highlights-4-days' */
+  product?: string;
+  /** Show the product selector (general inquiry page) */
+  showProduct?: boolean;
+  title?: string;
+  compact?: boolean;
+  id?: string;
+}
+const { lang, product = '', showProduct = false, title, compact = false, id = 'inquiry-form' } = Astro.props;
+const t = useTranslations(lang);
+const f = t.form;
+const privacyLink = `<a href="${url(lang, 'privacy')}" target="_blank">${t.footer.privacy}</a>`;
+const consentHtml = fmt(f.consent, { privacy: privacyLink });
+const productLabel = (() => {
+  const [kind, slug] = product.split(':');
+  if (kind === 'tour') return pick(tours.find((x) => x.slug === slug)?.title, lang);
+  if (kind === 'activity') return pick(activities.find((x) => x.slug === slug)?.title, lang);
+  return '';
+})();
+const summaryTitle = `WellXplore — ${f.title}${productLabel ? `: ${productLabel}` : ''}`;
+const guideLangs = ['English', '中文', 'Deutsch', 'Türkçe', 'Español', 'Français', 'Русский', 'العربية'];
+---
+<form class="form-card" id={id} data-form="inquiry" data-summary-title={summaryTitle} novalidate>
+  {title && <h2>{title}</h2>}
+  {!compact && <p class="lead" style="font-size:1rem">{f.intro}</p>}
+  <div class="notice"><Icon name="info" /><span>{f.notice}</span></div>
+  <p class="notice notice--warn error-summary" data-error-summary role="alert"></p>
+
+  <div class="form-grid">
+    {showProduct ? (
+      <div class="field span-2">
+        <label for={`${id}-product`}>{f.product}</label>
+        <select class="input" id={`${id}-product`} name="product" data-prefill>
+          <option value="">{f.productGeneral}</option>
+          <optgroup label={t.nav.tours}>
+            {tours.map((x) => <option value={`tour:${x.slug}`} selected={product === `tour:${x.slug}`}>{pick(x.title, lang)}</option>)}
+          </optgroup>
+          <optgroup label={t.nav.activities}>
+            {activities.map((x) => <option value={`activity:${x.slug}`} selected={product === `activity:${x.slug}`}>{pick(x.title, lang)}</option>)}
+          </optgroup>
+        </select>
+      </div>
+    ) : (
+      <>
+        <input type="hidden" name="product" value={product} />
+        {productLabel && <input type="hidden" name="productName" value={productLabel} />}
+      </>
+    )}
+
+    <div class="field">
+      <label for={`${id}-name`}>{f.name}<span class="req" aria-hidden="true">*</span></label>
+      <input class="input" id={`${id}-name`} name="name" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for={`${id}-email`}>{f.email}<span class="req" aria-hidden="true">*</span></label>
+      <input class="input" id={`${id}-email`} name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for={`${id}-phone`}>{f.phone}<span class="req" aria-hidden="true">*</span></label>
+      <input class="input" id={`${id}-phone`} name="phone" type="tel" autocomplete="tel" inputmode="tel" required data-phone aria-describedby={`${id}-phone-hint`} />
+      <span class="hint" id={`${id}-phone-hint`}>{f.phoneHint}</span>
+    </div>
+    <div class="field">
+      <label for={`${id}-country`}>{f.country}</label>
+      <input class="input" id={`${id}-country`} name="country" autocomplete="country-name" />
+    </div>
+    <div class="field">
+      <label for={`${id}-date`}>{f.travelDate}<span class="req" aria-hidden="true">*</span></label>
+      <input class="input" id={`${id}-date`} name="travelDate" type="date" required data-future data-prefill />
+    </div>
+    <div class="field" style="justify-content:flex-end">
+      <label class="check"><input type="checkbox" name="flexible" /> {f.flexibleDates}</label>
+    </div>
+    <div class="field">
+      <label for={`${id}-adults`}>{f.adults}<span class="req" aria-hidden="true">*</span></label>
+      <div class="stepper" data-stepper>
+        <button type="button" data-step="-1" aria-label="−1">−</button>
+        <input id={`${id}-adults`} name="adults" type="number" min="1" max="60" value="2" inputmode="numeric" required data-prefill />
+        <button type="button" data-step="1" aria-label="+1">+</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for={`${id}-children`}>{f.children}</label>
+      <div class="stepper" data-stepper>
+        <button type="button" data-step="-1" aria-label="−1">−</button>
+        <input id={`${id}-children`} name="children" type="number" min="0" max="20" value="0" inputmode="numeric" data-prefill />
+        <button type="button" data-step="1" aria-label="+1">+</button>
+      </div>
+    </div>
+    {!compact && (
+      <div class="field">
+        <label for={`${id}-hotel`}>{f.hotelCategory}</label>
+        <select class="input" id={`${id}-hotel`} name="hotel">
+          <option value="">{t.common.any}</option>
+          <option value="3">{f.hotel3}</option>
+          <option value="4">{f.hotel4}</option>
+          <option value="5">{f.hotel5}</option>
+        </select>
+      </div>
+    )}
+    <div class:list={['field', { 'span-2': compact }]}>
+      <label for={`${id}-guide`}>{f.language}</label>
+      <select class="input" id={`${id}-guide`} name="guideLanguage">
+        {guideLangs.map((g, i) => <option selected={(lang === 'zh' && i === 1) || (lang === 'de' && i === 2) || (lang === 'tr' && i === 3) || (lang === 'en' && i === 0)}>{g}</option>)}
+      </select>
+    </div>
+    <div class="field span-2">
+      <label for={`${id}-message`}>{f.message} <span class="hint">({f.optional})</span></label>
+      <textarea class="input" id={`${id}-message`} name="message" rows="4" data-prefill placeholder={f.messagePlaceholder}></textarea>
+    </div>
+    <div class="field span-2">
+      <label class="check"><input type="checkbox" name="agency" data-toggles={`#${id}-agency-wrap`} /> {f.agency}</label>
+    </div>
+    <div class="field span-2" id={`${id}-agency-wrap`} hidden>
+      <label for={`${id}-agencyName`}>{f.agencyName}</label>
+      <input class="input" id={`${id}-agencyName`} name="agencyName" autocomplete="organization" />
+    </div>
+    <div class="field span-2 consent">
+      <label class="check"><input type="checkbox" name="consent" required data-consent /> <span set:html={consentHtml} /></label>
+    </div>
+    <div class="span-2">
+      <button class="btn btn--primary btn--block" type="submit">{f.submit} <Icon name="arrow-right" /></button>
+    </div>
+  </div>
+</form>

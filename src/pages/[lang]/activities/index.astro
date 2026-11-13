@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import ActivityCard from '../../../components/ActivityCard.astro';
+import Icon from '../../../components/Icon.astro';
+import { fmt, langPaths, pick, url, useTranslations, type Lang } from '../../../i18n';
+import { activities, activityCategories } from '../../../data/activities';
+import { destinations } from '../../../data/destinations';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const usedDest = destinations.filter((d) => activities.some((a) => a.destination === d.slug));
+---
+<BaseLayout lang={lang} title={t.nav.activities} description={t.home.istanbulText} image="bosphorus">
+  <PageHero lang={lang} title={t.nav.activities} eyebrow={t.home.istanbulEyebrow} lead={t.home.istanbulText} image="istanbul-tram" crumbs={[{ label: t.nav.activities }]} />
+
+  <section class="section section--tight">
+    <div class="container">
+      <form data-filters="activities" onsubmit="return false" aria-label={t.activity.filterCategory}>
+        <input type="hidden" name="category" data-match="eq" value="" />
+        <div class="chips" role="group" aria-label={t.activity.filterCategory}>
+          <button class="chip" type="button" data-chip="category" data-value="" aria-pressed="true"><Icon name="star8" />{t.search.allCategories}</button>
+          {activityCategories.map((c) => <button class="chip" type="button" data-chip="category" data-value={c.id} aria-pressed="false"><Icon name={c.icon} />{t.activityCategory[c.id]}</button>)}
+        </div>
+        <div class="listing__bar">
+          <p class="listing__count" data-count aria-live="polite">{fmt(t.common.results, { n: activities.length })}</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+            <div class="field">
+              <label for="a-dest">{t.activity.filterDestination}</label>
+              <select class="input" id="a-dest" name="destination" data-match="eq" style="min-height:40px;padding-block:6px">
+                <option value="">{t.search.allDestinations}</option>
+                {usedDest.map((d) => <option value={d.slug}>{pick(d.name, lang)}</option>)}
+              </select>
+            </div>
+            <div class="field">
+              <label class="sr-only" for="a-q">{t.search.keyword}</label>
+              <input class="input" id="a-q" name="q" type="search" data-match="text" placeholder={t.search.keyword} style="min-height:40px;padding-block:6px" />
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="grid grid--3" data-filter-list>
+        {activities.map((a) => <ActivityCard activity={a} lang={lang} filterable headingLevel="h2" />)}
+      </div>
+      <div class="empty-state" data-empty hidden>
+        <Icon name="compass" />
+        <p>{t.common.noResults}</p>
+        <div class="hero__ctas" style="justify-content:center">
+          <button class="btn btn--outline" type="button" data-reset>{t.common.resetFilters}</button>
+          <a class="btn btn--primary" href={url(lang, 'inquiry')}>{t.nav.planTrip}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

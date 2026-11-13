@@ -1,0 +1,26 @@
+---
+import { formatPrice, useTranslations, type Lang } from '../i18n';
+import { offerPrice } from '../data/tours';
+import type { Offer } from '../data/types';
+
+interface Props {
+  lang: Lang;
+  amount: number | null;
+  offer?: Offer;
+  unit?: 'person' | 'vehicle';
+  class?: string;
+}
+const { lang, amount, offer, unit = 'person', class: className = '' } = Astro.props;
+const t = useTranslations(lang);
+const final = amount !== null && offer ? offerPrice(amount, offer.discount) : amount;
+---
+{amount === null ? (
+  <div class={`price price--request ${className}`}><strong>{t.common.priceOnRequest}</strong></div>
+) : (
+  <div class={`price ${className}`}>
+    <small>{t.common.from}</small>
+    {offer && <s>{formatPrice(amount, lang)}</s>}
+    <strong>{formatPrice(final!, lang)}</strong>
+    <em> {unit === 'person' ? t.common.perPerson : t.common.perVehicle}</em>
+  </div>
+)}

@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import TourCard from '../../../components/TourCard.astro';
+import Icon from '../../../components/Icon.astro';
+import { formatPrice, fmt, langPaths, pick, url, useTranslations, type Lang } from '../../../i18n';
+import { tours } from '../../../data/tours';
+import { destinations } from '../../../data/destinations';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const f = t.filters;
+const maxPrice = Math.ceil(Math.max(...tours.map((x) => x.priceFrom ?? 0)) / 100) * 100;
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: tours.map((x, i) => ({ '@type': 'ListItem', position: i + 1, url: new URL(url(lang, `tours/${x.slug}`), Astro.site).href, name: pick(x.title, lang) })),
+};
+---
+<BaseLayout lang={lang} title={t.nav.allTours} description={`${t.home.toursText} ${t.meta.siteTagline}.`} image="pamukkale" jsonLd={ld}>
+  <PageHero lang={lang} title={t.home.toursTitle} eyebrow={t.nav.tours} lead={t.home.toursText} image="istanbul-hagia-sophia" crumbs={[{ label: t.nav.tours }]} />
+
+  <section class="section section--tight">
+    <div class="container listing">
+      <aside class="filters" id="tour-filters" data-filter-panel aria-label={f.title}>
+        <form data-filters="tours" class="filters-form" style="display:grid;gap:18px">
+          <h2>{f.title} <button class="circle-btn filters__close" style="color:var(--ink);border-color:var(--line)" type="button" data-filter-close aria-label={t.common.close}><Icon name="x" /></button></h2>
+          <div class="field">
+            <label for="f-q">{t.search.keyword}</label>
+            <input class="input" id="f-q" name="q" type="search" data-match="text" />
+          </div>
+          <div class="field">
+            <label for="f-dest">{f.destination}</label>
+            <select class="input" id="f-dest" name="destination" data-match="list">
+              <option value="">{t.search.allDestinations}</option>
+              {destinations.map((d) => <option value={d.slug}>{pick(d.name, lang)}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-date">{f.date}</label>
+            <input class="input" id="f-date" name="date" type="date" data-match="date" />
+          </div>
+          <div class="field">
+            <label for="f-dur">{f.duration}</label>
+            <select class="input" id="f-dur" name="duration" data-match="duration">
+              <option value="">{t.search.anyDuration}</option>
+              <option value="1">{t.search.dur1}</option>
+              <option value="2-5">{t.search.dur2to5}</option>
+              <option value="6-9">{t.search.dur6to9}</option>
+              <option value="10+">{t.search.dur10}</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-cat">{f.category}</label>
+            <select class="input" id="f-cat" name="category" data-match="eq">
+              <option value="">{t.search.allCategories}</option>
+              {(Object.keys(t.tourCategory) as (keyof typeof t.tourCategory)[]).map((c) => <option value={c}>{t.tourCategory[c]}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-type">{f.type}</label>
+            <select class="input" id="f-type" name="type" data-match="eq">
+              <option value="">{t.common.any}</option>
+              {(Object.keys(t.tourType) as (keyof typeof t.tourType)[]).map((c) => <option value={c}>{t.tourType[c]}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-pax">{f.travellers}</label>
+            <input class="input" id="f-pax" name="travellers" type="number" min="1" max="60" inputmode="numeric" data-match="capacity" placeholder={t.common.any} />
+          </div>
+          <div class="field">
+            <label for="f-price">{f.price}: <span class="range-value" data-range-out data-any={f.priceAny}>{f.priceAny}</span></label>
+            <input id="f-price" name="price" type="range" min="100" max={maxPrice} step="50" value={maxPrice} data-match="max" aria-valuetext={f.priceAny} style="accent-color:var(--teal)" />
+            <div class="hint" style="display:flex;justify-content:space-between"><span>{formatPrice(100, lang)}</span><span>{formatPrice(maxPrice, lang)}+</span></div>
+          </div>
+          <button class="btn btn--outline btn--sm" type="button" data-reset>{t.common.resetFilters}</button>
+          <button class="btn btn--primary filters__apply" type="submit">{f.apply}</button>
+        </form>
+      </aside>
+
+      <div>
+        <div class="listing__bar">
+          <p class="listing__count" data-count aria-live="polite">{fmt(t.common.results, { n: tours.length })}</p>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <button class="btn btn--outline btn--sm filters-toggle" type="button" data-filter-open aria-controls="tour-filters" aria-expanded="false"><Icon name="filter" />{f.show}</button>
+            <div class="field">
+              <label for="sort">{f.sort}</label>
+              <select class="input" id="sort" data-sort style="min-height:40px;padding-block:6px">
+                <option value="">{f.sortRecommended}</option>
+                <option value="price-asc">{f.sortPriceAsc}</option>
+                <option value="price-desc">{f.sortPriceDesc}</option>
+                <option value="duration">{f.sortDuration}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="listing__grid" data-filter-list>
+          {tours.map((x) => <TourCard tour={x} lang={lang} filterable headingLevel="h2" />)}
+        </div>
+        <div class="empty-state" data-empty hidden>
+          <Icon name="compass" />
+          <p>{t.common.noResults}</p>
+          <div class="hero__ctas" style="justify-content:center">
+            <button class="btn btn--outline" type="button" data-reset>{t.common.resetFilters}</button>
+            <a class="btn btn--primary" href={url(lang, 'inquiry')}>{t.home.privateCta}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

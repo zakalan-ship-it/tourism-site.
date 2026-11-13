@@ -1,0 +1,21 @@
+---
+/** Simple side-view line drawings of each vehicle class. */
+interface Props { type: 'sedan' | 'van' | 'vip' | 'minibus' | 'coach' }
+const { type } = Astro.props;
+const bodies: Record<Props['type'], string> = {
+  sedan: '<path d="M8 36h104v-6c0-3-2-5-5-6l-18-4-12-9c-2-1-4-2-7-2H45c-3 0-5 1-7 3l-11 9-14 3c-3 1-5 3-5 6z"/><path d="M33 20h56M47 11v9M70 11v9"/>',
+  van: '<path d="M8 36h104v-12c0-3-1-5-3-7l-8-8c-2-2-4-3-7-3H14c-3 0-6 3-6 6z"/><path d="M8 20h104M40 6v14M68 6v14M94 7v13"/>',
+  vip: '<path d="M8 36h104v-12c0-3-1-5-3-7l-8-8c-2-2-4-3-7-3H14c-3 0-6 3-6 6z"/><path d="M8 20h104M40 6v14M68 6v14M94 7v13"/><path d="M50 28h20" stroke-width="3"/>',
+  minibus: '<path d="M6 36h108v-14c0-3-1-6-3-8l-6-7c-2-2-4-3-7-3H12c-3 0-6 3-6 6z"/><path d="M6 19h108M26 4v15M44 4v15M62 4v15M80 4v15M98 5v14"/>',
+  coach: '<path d="M4 36h112V9c0-3-2-5-5-5H9C6 4 4 6 4 9z"/><path d="M4 18h112M20 4v14M36 4v14M52 4v14M68 4v14M84 4v14M100 4v14"/>',
+};
+const wheels: Record<Props['type'], [number, number]> = { sedan: [30, 92], van: [28, 92], vip: [28, 92], minibus: [26, 94], coach: [24, 96] };
+const [w1, w2] = wheels[type];
+---
+<svg viewBox="0 0 120 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <g set:html={bodies[type]} />
+  <circle cx={w1} cy="37" r="7" fill="var(--paper, #fff)" />
+  <circle cx={w2} cy="37" r="7" fill="var(--paper, #fff)" />
+  <circle cx={w1} cy="37" r="2" />
+  <circle cx={w2} cy="37" r="2" />
+</svg>

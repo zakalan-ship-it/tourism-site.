@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import Icon from '../../../components/Icon.astro';
+import VehicleIcon from '../../../components/VehicleIcon.astro';
+import { fmt, formatPrice, langPaths, pick, url, useTranslations, type Lang } from '../../../i18n';
+import { routes, vehicles } from '../../../data/transfers';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const tr = t.transfers;
+const services = [
+  { icon: 'plane', title: tr.serviceAirportPickup, text: tr.serviceAirportPickupText },
+  { icon: 'luggage', title: tr.serviceAirportDropoff, text: tr.serviceAirportDropoffText },
+  { icon: 'car', title: tr.servicePrivate, text: tr.servicePrivateText },
+  { icon: 'route', title: tr.serviceIntercity, text: tr.serviceIntercityText },
+];
+const tableVehicles = vehicles.filter((v) => routes.some((r) => r.prices[v.id]));
+const mins = (m: number) => (m >= 60 ? `${Math.floor(m / 60)} h${m % 60 ? ` ${m % 60} min` : ''}` : `${m} min`);
+---
+<BaseLayout lang={lang} title={tr.title} description={tr.intro} image="istanbul-skyline">
+  <PageHero lang={lang} title={tr.title} eyebrow={t.nav.transfers} lead={tr.intro} image="istanbul-skyline" crumbs={[{ label: t.nav.transfers }]}>
+    <div class="hero__ctas on-dark" style="margin-top:26px">
+      <a class="btn btn--gold" href={url(lang, 'transfers/book')}>{t.nav.bookTransfer} <Icon name="arrow-right" /></a>
+      <a class="btn btn--outline" href="#routes">{tr.routes}</a>
+    </div>
+  </PageHero>
+
+  <section class="section" id="services" aria-labelledby="h-serv">
+    <div class="container">
+      <div class="section-head"><div><span class="eyebrow">{t.nav.transfers}</span><h2 id="h-serv">{tr.services}</h2></div></div>
+      <div class="grid grid--4">
+        {services.map((s) => (
+          <div class="feature reveal">
+            <div class="feature__icon"><Icon name={s.icon} /></div>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ink" id="fleet" aria-labelledby="h-fleet">
+    <div class="container">
+      <div class="section-head"><div><span class="eyebrow">{tr.fleet}</span><h2 id="h-fleet">{tr.fleet}</h2></div></div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(210px,1fr))">
+        {vehicles.map((v) => (
+          <div class="vehicle reveal">
+            <div class="vehicle__icon"><VehicleIcon type={v.icon} /></div>
+            <h3>{pick(v.name, lang)}</h3>
+            <p class="vehicle__models">{v.models}</p>
+            <div class="vehicle__caps">
+              <span title={tr.passengers}><Icon name="users" /><span class="sr-only">{tr.passengers}:</span>{v.passengers}</span>
+              <span title={tr.luggage}><Icon name="luggage" /><span class="sr-only">{tr.luggage}:</span>{v.luggage}</span>
+            </div>
+            <ul>{v.features.map((f) => <li>{pick(f, lang)}</li>)}</ul>
+            <a class="link-arrow" style="margin-top:auto;padding-top:16px;color:var(--gold-soft)" href={`${url(lang, 'transfers/book')}?vehicle=${v.id}`}>{t.nav.bookTransfer} <Icon name="arrow-right" /></a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="routes" aria-labelledby="h-routes">
+    <div class="container">
+      <div class="section-head"><div><span class="eyebrow">{t.common.from}</span><h2 id="h-routes">{tr.routes}</h2><p>{tr.routesNote}</p></div></div>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">{tr.route}</th>
+              <th scope="col">{t.common.duration}</th>
+              {tableVehicles.map((v) => <th scope="col">{pick(v.name, lang)}<br /><span style="text-transform:none;letter-spacing:0;color:var(--muted);font-weight:500">{fmt(tr.upToPax, { n: v.passengers })}</span></th>)}
+              <th scope="col"><span class="sr-only">{tr.bookThis}</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {routes.map((r) => (
+              <tr>
+                <td><strong>{pick(r.from, lang)}</strong><br />→ {pick(r.to, lang)}</td>
+                <td style="white-space:nowrap">≈ {mins(r.durationMin)}</td>
+                {tableVehicles.map((v) => <td style="white-space:nowrap;font-weight:600">{r.prices[v.id] ? formatPrice(r.prices[v.id]!, lang) : '—'}</td>)}
+                <td><a class="btn btn--primary btn--sm" href={`${url(lang, 'transfers/book')}?route=${r.id}`}>{tr.bookThis}</a></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand section--tight">
+    <div class="container two-col" style="align-items:center">
+      <div>
+        <h2 style="margin-bottom:18px">{tr.included}</h2>
+        <ul class="checklist">{tr.includedList.map((i) => <li><Icon name="check-circle" />{i}</li>)}</ul>
+      </div>
+      <div class="form-card" style="text-align:center">
+        <Icon name="car" class="ornament" />
+        <h2 style="font-size:2rem">{tr.bookTitle}</h2>
+        <p>{tr.bookIntro}</p>
+        <a class="btn btn--primary" href={url(lang, 'transfers/book')}>{t.nav.bookTransfer} <Icon name="arrow-right" /></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

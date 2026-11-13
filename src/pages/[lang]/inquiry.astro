@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import InquiryForm from '../../components/InquiryForm.astro';
+import Icon from '../../components/Icon.astro';
+import { langPaths, useTranslations, type Lang } from '../../i18n';
+import { site, whatsappLink } from '../../config/site';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+---
+<BaseLayout lang={lang} title={t.form.title} description={t.form.intro} image="pamukkale">
+  <PageHero lang={lang} title={t.form.title} eyebrow={t.nav.planTrip} lead={t.form.intro} crumbs={[{ label: t.form.title }]} />
+  <section class="section">
+    <div class="container detail">
+      <InquiryForm lang={lang} showProduct />
+      <aside class="detail__aside">
+        <div class="price-box">
+          <h2 style="color:#fff;font-size:1.6rem;margin-bottom:14px">{t.home.whyTitle}</h2>
+          <ul>{t.home.trust.map((x) => <li><Icon name="check" /><span><strong style="color:#fff">{x.title}.</strong> {x.text}</span></li>)}</ul>
+          <a class="btn btn--whatsapp btn--block" href={whatsappLink(t.form.title)} target="_blank" rel="noopener"><Icon name="whatsapp" />{t.common.chatWhatsapp}</a>
+          <a class="btn btn--outline btn--block" style="margin-top:10px;color:#fff" href={`mailto:${site.contact.email}`}><Icon name="mail" />{site.contact.email}</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

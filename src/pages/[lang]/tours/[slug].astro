@@ -1,0 +1,211 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import Img from '../../../components/Img.astro';
+import Icon from '../../../components/Icon.astro';
+import Price from '../../../components/Price.astro';
+import TourCard from '../../../components/TourCard.astro';
+import InquiryForm from '../../../components/InquiryForm.astro';
+import { daysLabel, fmt, formatDate, joinList, langs, nightsLabel, pick, url, useTranslations, type Lang } from '../../../i18n';
+import { tours, offerPrice } from '../../../data/tours';
+import { getDestination } from '../../../data/destinations';
+import { phrase } from '../../../data/phrases';
+import { whatsappLink } from '../../../config/site';
+import type { Tour } from '../../../data/types';
+
+export function getStaticPaths() {
+  return langs.flatMap((lang) => tours.map((tour) => ({ params: { lang, slug: tour.slug }, props: { tour } })));
+}
+const { tour } = Astro.props as { tour: Tour };
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const tt = t.tour;
+const title = pick(tour.title, lang);
+const places = tour.destinations.map((d) => getDestination(d)).filter((d) => !!d);
+const durationText = tour.nights > 0 ? `${daysLabel(lang, tour.days)} / ${nightsLabel(lang, tour.nights)}` : daysLabel(lang, tour.days);
+const mealName = { B: tt.mealB, L: tt.mealL, D: tt.mealD };
+const gallery = [tour.image, ...(tour.gallery ?? [])].slice(0, 3);
+const related = tours
+  .filter((x) => x.slug !== tour.slug)
+  .map((x) => ({ x, score: x.destinations.filter((d) => tour.destinations.includes(d)).length + (x.category === tour.category ? 1 : 0) }))
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 3)
+  .map((r) => r.x);
+
+const dep = tour.departures;
+const weekdayNames = dep?.weekdays?.map((d) => t.weekday[d - 1]);
+const sections = [
+  ['overview', tt.overview],
+  ['itinerary', tt.itinerary],
+  ['included', `${tt.included} / ${tt.excluded}`],
+  ...(tour.hotels?.length ? [['hotels', tt.hotels]] : []),
+  ['departures', tt.departures],
+  ['pricing', tt.pricing],
+  ...(tour.important?.length ? [['important', tt.important]] : []),
+  ['inquiry', tt.inquireTitle],
+] as [string, string][];
+
+const finalPrice = tour.priceFrom !== null ? (tour.offer ? offerPrice(tour.priceFrom, tour.offer.discount) : tour.priceFrom) : null;
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristTrip',
+  name: title,
+  description: pick(tour.summary, lang),
+  touristType: t.tourType[tour.type],
+  itinerary: { '@type': 'ItemList', itemListElement: places.map((p, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'Place', name: pick(p!.name, lang) } })) },
+  provider: { '@type': 'TravelAgency', name: 'WellXplore' },
+  ...(finalPrice !== null ? { offers: { '@type': 'Offer', price: finalPrice, priceCurrency: 'EUR', availability: 'https://schema.org/InStock', url: new URL(url(lang, `tours/${tour.slug}`), Astro.site).href } } : {}),
+};
+const waText = `${t.tour.inquireTitle}: ${title}`;
+---
+<BaseLayout lang={lang} title={title} description={pick(tour.summary, lang)} image={tour.image} jsonLd={ld}>
+  <PageHero lang={lang} title={title} eyebrow={t.tourCategory[tour.category]} lead={pick(tour.summary, lang)} image={tour.image} crumbs={[{ label: t.nav.tours, href: url(lang, 'tours') }, { label: title }]}>
+    <div class="page-hero__meta">
+      <span class="badge"><Icon name="clock" />{durationText}</span>
+      <span class="badge"><Icon name="users" />{t.tourType[tour.type]}</span>
+      {tour.maxGroup && <span class="badge"><Icon name="user" />{fmt(t.common.upTo, { n: tour.maxGroup })}</span>}
+      {tour.offer && <span class="badge badge--offer"><Icon name="tag" />{fmt(t.common.save, { n: tour.offer.discount })}</span>}
+    </div>
+  </PageHero>
+
+  <nav class="tabs-nav no-print" aria-label={tt.tabs} data-section-nav>
+    <div class="container">
+      <ul>{sections.map(([id, label]) => <li><a href={`#${id}`}>{label}</a></li>)}</ul>
+    </div>
+  </nav>
+
+  <div class="container detail" style="padding-bottom: 80px">
+    <div>
+      <section class="detail-section" id="overview" aria-labelledby="h-overview">
+        <div class:list={['gallery', `gallery--${gallery.length}`]}>
+          {gallery.map((img, i) => <Img image={img} alt={i === 0 ? title : ''} sizes={i === 0 ? '(max-width: 1024px) 100vw, 560px' : '280px'} widths={i === 0 ? [600, 900, 1300] : [400, 600]} eager={i === 0} />)}
+        </div>
+        <h2 id="h-overview" style="margin-top:36px">{tt.overview}</h2>
+        <p class="lead">{pick(tour.overview, lang)}</p>
+        <dl class="facts">
+          <div><dt>{t.common.duration}</dt><dd>{durationText}</dd></div>
+          <div><dt>{t.common.type}</dt><dd>{t.tourType[tour.type]}</dd></div>
+          <div><dt>{t.common.category}</dt><dd>{t.tourCategory[tour.category]}</dd></div>
+          <div><dt>{t.common.groupSize}</dt><dd>{tour.maxGroup ? fmt(t.common.upTo, { n: tour.maxGroup }) : '—'}</dd></div>
+        </dl>
+        <h3 style="margin-bottom:12px">{t.common.highlights}</h3>
+        <ul class="checklist">{tour.highlights.map((h) => <li><Icon name="check-circle" />{pick(h, lang)}</li>)}</ul>
+        <h3 style="margin-bottom:12px">{tt.destinationsVisited}</h3>
+        <div class="chips" style="margin-bottom:0">
+          {places.map((p) => <a class="chip" href={url(lang, `destinations/${p!.slug}`)}><Icon name="pin" />{pick(p!.name, lang)}</a>)}
+        </div>
+      </section>
+
+      <section class="detail-section" id="itinerary" aria-labelledby="h-itin">
+        <h2 id="h-itin">{tt.itinerary}</h2>
+        <ol class="timeline">
+          {tour.itinerary.map((day, i) => (
+            <li>
+              <span class="timeline__day" aria-hidden="true">{i + 1}</span>
+              <details open={i < 2}>
+                <summary>
+                  <span><small>{fmt(tt.dayN, { n: i + 1 })}</small><strong>{pick(day.title, lang)}</strong></span>
+                  <Icon name="chevron-down" />
+                </summary>
+                <div class="timeline__body">
+                  <p style="margin:0">{pick(day.text, lang)}</p>
+                  {day.meals && day.meals.length > 0 && (
+                    <div class="timeline__meals" aria-label={tt.meals}>{day.meals.map((m) => <span>{mealName[m]}</span>)}</div>
+                  )}
+                </div>
+              </details>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section class="detail-section" id="included" aria-labelledby="h-inc">
+        <h2 id="h-inc" class="sr-only">{tt.included} / {tt.excluded}</h2>
+        <div class="two-col">
+          <div class="box">
+            <h3>{tt.included}</h3>
+            <ul class="checklist" style="margin:0">{tour.included.map((i) => <li><Icon name="check-circle" />{phrase(i, lang)}</li>)}</ul>
+          </div>
+          <div class="box">
+            <h3>{tt.excluded}</h3>
+            <ul class="checklist checklist--cross" style="margin:0">{tour.excluded.map((i) => <li><Icon name="x-circle" />{phrase(i, lang)}</li>)}</ul>
+          </div>
+        </div>
+      </section>
+
+      {tour.hotels && tour.hotels.length > 0 && (
+        <section class="detail-section" id="hotels" aria-labelledby="h-hotels">
+          <h2 id="h-hotels">{tt.hotels}</h2>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th scope="col">{t.common.destination}</th><th scope="col">{tt.hotels}</th></tr></thead>
+              <tbody>
+                {tour.hotels.map((h) => <tr><td><strong>{pick(getDestination(h.city)?.name, lang) || h.city}</strong></td><td>{pick(h.hotel, lang)}</td></tr>)}
+              </tbody>
+            </table>
+          </div>
+          <p class="hint" style="margin-top:10px">{tt.hotelsNote}</p>
+        </section>
+      )}
+
+      <section class="detail-section" id="departures" aria-labelledby="h-dep">
+        <h2 id="h-dep">{tt.departures}</h2>
+        {dep ? (
+          <>
+            <p>{fmt(tt.departuresText, { from: formatDate(dep.from, lang), to: formatDate(dep.to, lang) })} {weekdayNames ? fmt(tt.weekdays, { days: joinList(lang, weekdayNames) }) : tt.daily}</p>
+            <div class="box" data-date-check data-departures={JSON.stringify(dep)}>
+              <label for="date-check" style="font-weight:600">{tt.checkDate}</label>
+              <div class="date-check"><input class="input" id="date-check" type="date" /></div>
+              <p class="date-result" data-date-result aria-live="polite"></p>
+            </div>
+          </>
+        ) : (
+          <p>{tt.onRequest}</p>
+        )}
+      </section>
+
+      <section class="detail-section" id="pricing" aria-labelledby="h-price">
+        <h2 id="h-price">{tt.pricing}</h2>
+        <div class="box" style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap">
+          <Price lang={lang} amount={tour.priceFrom} offer={tour.offer} />
+          {tour.offer && <span class="badge badge--offer">{fmt(t.common.validUntil, { date: formatDate(tour.offer.validUntil, lang) })}</span>}
+        </div>
+        <p class="hint" style="margin-top:10px">{tt.pricingNote}</p>
+      </section>
+
+      {tour.important && tour.important.length > 0 && (
+        <section class="detail-section" id="important" aria-labelledby="h-imp">
+          <h2 id="h-imp">{tt.important}</h2>
+          <ul class="checklist">{tour.important.map((i) => <li><Icon name="info" />{phrase(i, lang)}</li>)}</ul>
+        </section>
+      )}
+
+      <section class="detail-section" id="inquiry" aria-labelledby="h-inq">
+        <h2 id="h-inq" class="sr-only">{tt.inquireTitle}</h2>
+        <InquiryForm lang={lang} product={`tour:${tour.slug}`} title={tt.inquireTitle} />
+      </section>
+    </div>
+
+    <aside class="detail__aside" aria-label={tt.pricing}>
+      <div class="price-box">
+        <Price lang={lang} amount={tour.priceFrom} offer={tour.offer} />
+        <hr />
+        <ul>
+          <li><Icon name="clock" />{durationText}</li>
+          <li><Icon name="pin" />{places.map((p) => pick(p!.name, lang)).join(' · ')}</li>
+          <li><Icon name="calendar" />{dep ? (weekdayNames ? fmt(tt.weekdays, { days: joinList(lang, weekdayNames) }) : tt.daily) : tt.onRequest}</li>
+          <li><Icon name="shield" />{t.form.notice}</li>
+        </ul>
+        <a class="btn btn--gold btn--block" href="#inquiry">{t.common.inquire} <Icon name="arrow-right" /></a>
+        <a class="btn btn--whatsapp btn--block" href={whatsappLink(waText)} target="_blank" rel="noopener"><Icon name="whatsapp" />{t.common.chatWhatsapp}</a>
+      </div>
+    </aside>
+  </div>
+
+  <section class="section section--sand" aria-labelledby="h-related">
+    <div class="container">
+      <div class="section-head"><div><span class="eyebrow">{t.nav.tours}</span><h2 id="h-related">{tt.related}</h2></div></div>
+      <div class="grid grid--3">{related.map((x) => <TourCard tour={x} lang={lang} />)}</div>
+    </div>
+  </section>
+</BaseLayout>

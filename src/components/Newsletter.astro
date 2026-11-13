@@ -1,0 +1,25 @@
+---
+import { fmt, url, useTranslations, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const consent = fmt(t.newsletter.consent, { privacy: `<a href="${url(lang, 'privacy')}">${t.newsletter.privacyLink}</a>` });
+---
+<section class="section section--tight" aria-labelledby="nl-title">
+  <div class="container">
+    <div class="newsletter reveal">
+      <div>
+        <h2 id="nl-title">{t.home.newsletterTitle}</h2>
+        <p>{t.home.newsletterText}</p>
+      </div>
+      <form data-form="newsletter" novalidate>
+        <label class="sr-only" for="nl-email">{t.newsletter.email}</label>
+        <div class="newsletter__row field">
+          <input id="nl-email" name="email" type="email" autocomplete="email" placeholder={t.newsletter.placeholder} required />
+          <button class="btn btn--gold" type="submit">{t.newsletter.submit}</button>
+        </div>
+        <label class="check consent"><input type="checkbox" name="consent" required data-consent /> <span set:html={consent} /></label>
+      </form>
+    </div>
+  </div>
+</section>

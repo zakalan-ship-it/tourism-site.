@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import Img from '../../../components/Img.astro';
+import Icon from '../../../components/Icon.astro';
+import TourCard from '../../../components/TourCard.astro';
+import ActivityCard from '../../../components/ActivityCard.astro';
+import DestinationCard from '../../../components/DestinationCard.astro';
+import { fmt, langs, pick, url, useTranslations, type Lang } from '../../../i18n';
+import { destinations, regions } from '../../../data/destinations';
+import { tours } from '../../../data/tours';
+import { activities } from '../../../data/activities';
+import type { Destination } from '../../../data/types';
+
+export function getStaticPaths() {
+  return langs.flatMap((lang) => destinations.map((destination) => ({ params: { lang, slug: destination.slug }, props: { destination } })));
+}
+const { destination: d } = Astro.props as { destination: Destination };
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const name = pick(d.name, lang);
+const dTours = tours.filter((x) => x.destinations.includes(d.slug));
+const dActs = activities.filter((a) => a.destination === d.slug);
+const others = destinations.filter((x) => x.slug !== d.slug && x.region === d.region).concat(destinations.filter((x) => x.region !== d.region)).slice(0, 4);
+const gallery = d.gallery?.length ? d.gallery.slice(0, 2) : [];
+const ld = { '@context': 'https://schema.org', '@type': 'TouristDestination', name, description: pick(d.intro, lang), touristType: pick(d.tagline, lang), containedInPlace: { '@type': 'Country', name: 'Türkiye' } };
+---
+<BaseLayout lang={lang} title={`${name} — ${pick(d.tagline, lang)}`} description={pick(d.intro, lang)} image={d.image} jsonLd={ld}>
+  <PageHero lang={lang} title={name} eyebrow={pick(regions[d.region], lang)} lead={pick(d.tagline, lang)} image={d.image} crumbs={[{ label: t.nav.destinations, href: url(lang, 'destinations') }, { label: name }]} />
+
+  <section class="section">
+    <div class="container split">
+      <div class="reveal">
+        <span class="eyebrow">{t.destination.eyebrow}</span>
+        <h2 style="margin-bottom:18px">{pick(d.tagline, lang)}</h2>
+        <p class="lead">{pick(d.intro, lang)}</p>
+        <dl class="facts" style="grid-template-columns:1fr">
+          <div><dt>{t.destination.bestTime}</dt><dd style="font-weight:500">{pick(d.bestTime, lang)}</dd></div>
+          <div><dt>{t.destination.gettingThere}</dt><dd style="font-weight:500">{pick(d.gettingThere, lang)}</dd></div>
+        </dl>
+        <div class="hero__ctas">
+          <a class="btn btn--primary" href={`${url(lang, 'tours')}?destination=${d.slug}`}>{fmt(t.destination.toursHere, { name })} <Icon name="arrow-right" /></a>
+          <a class="btn btn--outline" href={`${url(lang, 'inquiry')}?message=${encodeURIComponent(name)}`}>{t.nav.planTrip}</a>
+        </div>
+      </div>
+      <div class="split__media reveal">
+        <Img image={gallery[0] ?? d.image} alt={name} sizes="(max-width: 900px) 90vw, 560px" widths={[500, 800, 1100]} />
+        {gallery[1] && <Img image={gallery[1]} alt="" class="img-frame--small" sizes="240px" widths={[300, 500]} />}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--paper" aria-labelledby="h-attr">
+    <div class="container">
+      <div class="section-head"><div><span class="eyebrow">{name}</span><h2 id="h-attr">{t.destination.attractions}</h2></div></div>
+      <div class="grid grid--2" style="row-gap:36px">
+        {d.attractions.map((a, i) => (
+          <div class="attraction reveal">
+            <span class="attraction__num">{String(i + 1).padStart(2, '0')}</span>
+            <div><h3>{pick(a.name, lang)}</h3><p>{pick(a.text, lang)}</p></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="h-dtours">
+    <div class="container">
+      <div class="section-head"><div><span class="eyebrow">{t.nav.tours}</span><h2 id="h-dtours">{fmt(t.destination.toursHere, { name })}</h2></div></div>
+      {dTours.length ? (
+        <div class="grid grid--3">{dTours.map((x) => <TourCard tour={x} lang={lang} />)}</div>
+      ) : (
+        <div class="empty-state"><p>{t.destination.noTours}</p><a class="btn btn--primary" href={url(lang, 'inquiry')}>{t.home.privateCta}</a></div>
+      )}
+    </div>
+  </section>
+
+  {dActs.length > 0 && (
+    <section class="section" aria-labelledby="h-dacts">
+      <div class="container">
+        <div class="section-head"><div><span class="eyebrow">{t.nav.activities}</span><h2 id="h-dacts">{fmt(t.destination.activitiesHere, { name })}</h2></div><a class="link-arrow" href={`${url(lang, 'activities')}?destination=${d.slug}`}>{t.common.seeAll} <Icon name="arrow-right" /></a></div>
+        <div class="grid grid--3">{dActs.slice(0, 3).map((a) => <ActivityCard activity={a} lang={lang} />)}</div>
+      </div>
+    </section>
+  )}
+
+  <section class="section section--paper" aria-labelledby="h-more">
+    <div class="container">
+      <div class="section-head"><div><span class="eyebrow">{t.nav.destinations}</span><h2 id="h-more">{t.nav.allDestinations}</h2></div><a class="link-arrow" href={url(lang, 'destinations')}>{t.common.seeAll} <Icon name="arrow-right" /></a></div>
+      <div class="dest-row dest-row--4">{others.map((o) => <DestinationCard destination={o} lang={lang} />)}</div>
+    </div>
+  </section>
+</BaseLayout>

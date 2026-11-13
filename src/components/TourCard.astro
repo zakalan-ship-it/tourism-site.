@@ -1,0 +1,68 @@
+---
+import Img from './Img.astro';
+import Icon from './Icon.astro';
+import Price from './Price.astro';
+import { daysLabel, fmt, nightsLabel, pick, url, useTranslations, type Lang } from '../i18n';
+import { getDestination } from '../data/destinations';
+import type { Tour } from '../data/types';
+
+interface Props {
+  tour: Tour;
+  lang: Lang;
+  /** Add data attributes used by the listing filters */
+  filterable?: boolean;
+  headingLevel?: 'h2' | 'h3';
+}
+const { tour, lang, filterable = false, headingLevel = 'h3' } = Astro.props;
+const t = useTranslations(lang);
+const Heading = headingLevel;
+const href = url(lang, `tours/${tour.slug}`);
+const places = tour.destinations.map((d) => pick(getDestination(d)?.name, lang)).filter(Boolean);
+const durationText = tour.nights > 0 ? `${daysLabel(lang, tour.days)} / ${nightsLabel(lang, tour.nights)}` : tour.days === 1 ? t.common.fullDay : daysLabel(lang, tour.days);
+const finalPrice = tour.priceFrom !== null && tour.offer ? Math.round((tour.priceFrom * (1 - tour.offer.discount / 100)) / 5) * 5 : tour.priceFrom;
+const search = [pick(tour.title, lang), pick(tour.summary, lang), ...places, ...tour.highlights.map((h) => pick(h, lang)), tour.title.en, ...tour.destinations].join(' ').toLowerCase();
+const filterAttrs = filterable
+  ? {
+      'data-item': '',
+      'data-destination': tour.destinations.join(' '),
+      'data-days': tour.days,
+      'data-duration': tour.days,
+      'data-category': tour.category,
+      'data-type': tour.type,
+      'data-price': finalPrice ?? '',
+      'data-travellers': tour.maxGroup ?? '',
+      'data-date': '',
+      'data-from': tour.departures?.from ?? '',
+      'data-to': tour.departures?.to ?? '',
+      'data-weekdays': tour.departures?.weekdays?.join(',') ?? '',
+      'data-search': search,
+    }
+  : {};
+---
+<article class="card" {...filterAttrs}>
+  <div style="position:relative">
+    <Img image={tour.image} alt={pick(tour.title, lang)} sizes="(max-width: 680px) 100vw, (max-width: 1024px) 50vw, 400px" />
+    <div class="card__badges">
+      <span class="badge">{t.tourType[tour.type]}</span>
+      {tour.offer && <span class="badge badge--offer"><Icon name="tag" />{tour.offer.label ? pick(tour.offer.label, lang) : fmt(t.common.save, { n: tour.offer.discount })}</span>}
+    </div>
+  </div>
+  <div class="card__body">
+    <div class="card__meta">
+      <span><Icon name="clock" />{durationText}</span>
+      <span><Icon name="pin" />{places.slice(0, 3).join(' · ')}{places.length > 3 ? ' +' + (places.length - 3) : ''}</span>
+    </div>
+    <Heading><a href={href}>{pick(tour.title, lang)}</a></Heading>
+    <p class="card__text">{pick(tour.summary, lang)}</p>
+    <ul class="card__highlights">
+      {tour.highlights.slice(0, 3).map((h) => <li>{pick(h, lang)}</li>)}
+    </ul>
+    <div class="card__foot">
+      <Price lang={lang} amount={tour.priceFrom} offer={tour.offer} />
+      <div class="card__actions">
+        <a class="btn btn--outline btn--sm" href={href}>{t.common.viewDetails}</a>
+        <a class="btn btn--primary btn--sm" href={`${url(lang, 'inquiry')}?product=tour:${tour.slug}`}>{t.common.inquire}</a>
+      </div>
+    </div>
+  </div>
+</article>

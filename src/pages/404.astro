@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { langs, languages, url, useTranslations } from '../i18n';
+
+// One static 404 page; it shows the message in every language.
+const t = useTranslations('en');
+---
+<BaseLayout lang="en" title={t.notFound.title} description={t.notFound.text} noindex>
+  <section class="section" style="padding-top:calc(var(--header-h) + 80px);text-align:center">
+    <div class="container">
+      <Icon name="star8" class="ornament" />
+      <h1 style="margin-bottom:24px">404</h1>
+      <div class="grid grid--2" style="max-width:820px;margin:0 auto;text-align:left">
+        {langs.map((l) => {
+          const tt = useTranslations(l);
+          return (
+            <div class="box" lang={languages[l].htmlLang}>
+              <h2 style="font-size:1.6rem;margin-bottom:6px">{tt.notFound.title}</h2>
+              <p style="color:var(--ink-soft)">{tt.notFound.text}</p>
+              <a class="link-arrow" href={url(l)}>{tt.notFound.home} <Icon name="arrow-right" /></a>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
