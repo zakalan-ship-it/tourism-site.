@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wanderly — Tours &amp; Travel Adventures</title>
+  <meta name="description" content="Wanderly plans guided tours and adventure trips to the world's most beautiful destinations.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&family=Yellowtail&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav" id="nav" aria-label="Main">
+        <ul>
+          <li class="has-sub"><a href="#home">Home</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li class="has-sub"><a href="#destinations">Tours</a></li>
+          <li class="has-sub"><a href="#guides">Pages</a></li>
+          <li class="has-sub"><a href="#blog">Blog</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <a href="#home" class="logo" aria-label="Wanderly home">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><g fill="currentColor"><circle cx="16" cy="16" r="4"/><path d="M16 2l3 7h-6zM16 30l-3-7h6zM2 16l7-3v6zM30 16l-7 3v-6zM6.1 6.1l7 2.8-4.2 4.2zM25.9 25.9l-7-2.8 4.2-4.2zM25.9 6.1l-2.8 7-4.2-4.2zM6.1 25.9l2.8-7 4.2 4.2z"/></g></svg>
+        <span>Wanderly</span>
+      </a>
+
+      <div class="header__actions">
+        <a href="tel:+1234567890" class="header__phone">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a9 9 0 00-9 9v6a3 3 0 003 3h2v-8H5v-1a7 7 0 0114 0v1h-3v8h3v1h-6v2h6a2 2 0 002-2V11a9 9 0 00-9-9z"/></svg>
+          Call : +1 234 567 890
+        </a>
+        <a href="#contact" class="btn btn--sm">Book Now <i class="arrow"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="home">
+      <div class="hero__bg"></div>
+      <div class="container hero__content">
+        <p class="script reveal">Elevate your next travel with us</p>
+        <h1 class="hero__title reveal">Explore</h1>
+
+        <div class="hero__card glass reveal">
+          <p>Discover your next journey with safe, guided trips. Enjoy every moment.</p>
+          <a href="#destinations" class="btn">See Destination <i class="arrow"></i></a>
+        </div>
+
+        <button class="play" aria-label="Watch our video"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></button>
+      </div>
+      <div class="torn torn--bottom"></div>
+    </section>
+
+    <!-- ============ TOP DESTINATIONS (slider) ============ -->
+    <section class="section" id="destinations">
+      <div class="container">
+        <div class="section-head section-head--split">
+          <h2 class="title reveal"><span class="tag">Destination</span> Browse our top destinations</h2>
+          <p class="section-head__text reveal">Hand-picked places our travellers love most, from alpine lakes to tropical islands. Every tour includes a local guide and flexible booking.</p>
+          <div class="slider-nav">
+            <button class="circle-btn" data-dir="-1" aria-label="Previous">&#8249;</button>
+            <button class="circle-btn" data-dir="1" aria-label="Next">&#8250;</button>
+          </div>
+        </div>
+
+        <div class="slider" id="slider">
+          <article class="dest-card">
+            <img src="assets/img/d1.jpg" alt="Wooden boat on a turquoise alpine lake" loading="lazy">
+            <div class="dest-card__body"><span class="dest-card__count">12 Tours</span><h3>Dolomites, Italy</h3></div>
+          </article>
+          <article class="dest-card">
+            <img src="assets/img/d10.jpg" alt="Lakeside temple in Bali at sunrise" loading="lazy">
+            <div class="dest-card__body"><span class="dest-card__count">18 Tours</span><h3>Bali, Indonesia</h3></div>
+          </article>
+          <article class="dest-card">
+            <img src="assets/img/d8.jpg" alt="Eiffel Tower over the Seine at dusk" loading="lazy">
+            <div class="dest-card__body"><span class="dest-card__count">9 Tours</span><h3>Paris, France</h3></div>
+          </article>
+          <article class="dest-card">
+            <img src="assets/img/d11.jpg" alt="Limestone islands in Ha Long Bay" loading="lazy">
+            <div class="dest-card__body"><span class="dest-card__count">14 Tours</span><h3>Ha Long Bay, Vietnam</h3></div>
+          </article>
+          <article class="dest-card">
+            <img src="assets/img/d6.jpg" alt="Hot air balloons over Cappadocia" loading="lazy">
+            <div class="dest-card__body"><span class="dest-card__count">7 Tours</span><h3>Cappadocia, Türkiye</h3></div>
+          </article>
+          <article class="dest-card">
+            <img src="assets/img/d12.jpg" alt="Seaplane beside a Maldives island" loading="lazy">
+            <div class="dest-card__body"><span class="dest-card__count">11 Tours</span><h3>Maldives</h3></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="section about" id="about">
+      <div class="container about__grid">
+        <div class="about__media reveal">
+          <img src="assets/img/d2.jpg" alt="Rowing boat on a clear mountain lake" loading="lazy">
+          <div class="about__badge"><strong>15+</strong><span>Years of<br>experience</span></div>
+        </div>
+        <div class="about__text">
+          <h2 class="title reveal"><span class="tag">About us</span> Travel made simple, trips made unforgettable</h2>
+          <p class="reveal">We design small-group tours and private trips with local experts. You choose the destination; we handle flights, stays, guides and every detail in between.</p>
+          <ul class="checks reveal">
+            <li>Certified local guides</li>
+            <li>Flexible booking &amp; free changes</li>
+            <li>24/7 support while you travel</li>
+            <li>Small groups, real experiences</li>
+          </ul>
+          <a href="#contact" class="btn reveal">Plan My Trip <i class="arrow"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ POPULAR (photo bg) ============ -->
+    <section class="popular">
+      <div class="container">
+        <h2 class="title title--center reveal"><span class="tag">Popular</span> Browse all world<br>popular destinations</h2>
+        <div class="popular__grid">
+          <a href="#contact" class="pop-tile reveal"><img src="assets/img/d4.jpg" alt="Van on a desert road in Utah" loading="lazy"><span>Utah, USA</span></a>
+          <a href="#contact" class="pop-tile reveal"><img src="assets/img/d3.jpg" alt="Alpine peaks above a sea of clouds" loading="lazy"><span>Swiss Alps</span></a>
+          <a href="#contact" class="pop-tile reveal"><img src="assets/img/d9.jpg" alt="Ornate bridge lit at night" loading="lazy"><span>Paris Nights</span></a>
+          <a href="#contact" class="pop-tile reveal"><img src="assets/img/d5.jpg" alt="Empty road through red rock canyon" loading="lazy"><span>Arizona Roads</span></a>
+        </div>
+        <div class="center"><a href="#destinations" class="btn">All Destinations <i class="arrow"></i></a></div>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY ============ -->
+    <section class="section" id="gallery">
+      <div class="container">
+        <div class="section-head section-head--split">
+          <h2 class="title reveal"><span class="tag">Gallery</span> See our travel photography</h2>
+          <div class="stat reveal"><strong data-count="10">0</strong><b>K+</b><span>Happy travellers<br>and counting</span></div>
+        </div>
+        <div class="gallery">
+          <img class="g1 reveal" src="assets/img/d11.jpg" alt="Boats in Ha Long Bay" loading="lazy">
+          <img class="g2 reveal" src="assets/img/d6.jpg" alt="Photographer at Cappadocia" loading="lazy">
+          <img class="g3 reveal" src="assets/img/d12.jpg" alt="Maldives aerial" loading="lazy">
+          <img class="g4 reveal" src="assets/img/d1.jpg" alt="Boat on alpine lake" loading="lazy">
+          <img class="g5 reveal" src="assets/img/d4.jpg" alt="Desert road trip" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GUIDES ============ -->
+    <section class="section section--alt" id="guides">
+      <div class="container">
+        <h2 class="title title--center reveal"><span class="tag">Guides</span> Discover the experts<br>leading through nature &amp; adventure</h2>
+        <div class="guides">
+          <article class="guide reveal"><div class="guide__img"><img src="assets/img/p1.jpg" alt="" loading="lazy"></div><h3>Sofia Marin</h3><span>Mountain Guide</span></article>
+          <article class="guide reveal"><div class="guide__img"><img src="assets/img/p2.jpg" alt="" loading="lazy"></div><h3>Daniel Reyes</h3><span>Island Expert</span></article>
+          <article class="guide reveal"><div class="guide__img"><img src="assets/img/p3.jpg" alt="" loading="lazy"></div><h3>Leah Brooks</h3><span>City Tour Lead</span></article>
+          <article class="guide reveal"><div class="guide__img"><img src="assets/img/p4.jpg" alt="" loading="lazy"></div><h3>Omar Haddad</h3><span>Desert Explorer</span></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS ============ -->
+    <section class="testimonials">
+      <div class="container testimonials__grid">
+        <h2 class="title reveal"><span class="tag">Testimonials</span> Real stories from our travellers</h2>
+        <div class="quotes">
+          <blockquote class="quote reveal">
+            <h3>Smart guides, total peace of mind!</h3>
+            <div class="stars" aria-label="5 stars">★★★★★</div>
+            <p>"Every day was planned perfectly, but never felt rushed. Our guide knew every hidden spot in the Dolomites."</p>
+            <footer><img src="assets/img/p3.jpg" alt=""><div><b>Emma Clarke</b><span>Traveller</span></div></footer>
+          </blockquote>
+          <blockquote class="quote reveal">
+            <h3>Impressive support!</h3>
+            <div class="stars" aria-label="5 stars">★★★★★</div>
+            <p>"Our flight was cancelled and the team rebooked everything within the hour. I won't travel any other way now."</p>
+            <footer><img src="assets/img/p4.jpg" alt=""><div><b>James Patel</b><span>Traveller</span></div></footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROMO ============ -->
+    <section class="promo">
+      <div class="container promo__inner">
+        <h2>Book your next escape<br>with Wanderly</h2>
+        <div class="promo__deal"><strong>30% Off</strong><span>This Winter Season</span></div>
+        <a href="#contact" class="btn btn--dark">All Destinations <i class="arrow"></i></a>
+      </div>
+    </section>
+
+    <!-- ============ BLOG ============ -->
+    <section class="section" id="blog">
+      <div class="container">
+        <h2 class="title title--center reveal"><span class="tag">Blog</span> Read the latest blog<br>from our recent insights</h2>
+        <div class="posts">
+          <article class="post reveal">
+            <img src="assets/img/d7.jpg" alt="Map, camera and travel notebook" loading="lazy">
+            <div class="post__body">
+              <h3>Budget-friendly travel tips for exploring more with less</h3>
+              <div class="post__meta"><span>18 Nov, 2026</span><span>02 Comments</span></div>
+              <a href="#blog" class="link">Explore More <i class="arrow"></i></a>
+            </div>
+          </article>
+          <article class="post reveal">
+            <img src="assets/img/d10.jpg" alt="Temple on a lake in Bali" loading="lazy">
+            <div class="post__body">
+              <h3>Ten quiet places in Bali the crowds haven't found</h3>
+              <div class="post__meta"><span>04 Nov, 2026</span><span>05 Comments</span></div>
+              <a href="#blog" class="link">Explore More <i class="arrow"></i></a>
+            </div>
+          </article>
+          <article class="post reveal">
+            <img src="assets/img/d3.jpg" alt="Mountains above the clouds" loading="lazy">
+            <div class="post__body">
+              <h3>How to pack light for a two-week Alpine trek</h3>
+              <div class="post__meta"><span>22 Oct, 2026</span><span>03 Comments</span></div>
+              <a href="#blog" class="link">Explore More <i class="arrow"></i></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" id="contact">
+    <div class="torn torn--top"></div>
+    <div class="container footer__grid">
+      <div>
+        <a href="#home" class="logo logo--left"><svg viewBox="0 0 32 32" aria-hidden="true"><g fill="currentColor"><circle cx="16" cy="16" r="4"/><path d="M16 2l3 7h-6zM16 30l-3-7h6zM2 16l7-3v6zM30 16l-7 3v-6zM6.1 6.1l7 2.8-4.2 4.2zM25.9 25.9l-7-2.8 4.2-4.2zM25.9 6.1l-2.8 7-4.2-4.2zM6.1 25.9l2.8-7 4.2 4.2z"/></g></svg><span>Wanderly</span></a>
+        <p>Guided tours and adventure trips to the world's most beautiful places, planned by people who've been there.</p>
+        <div class="socials">
+          <a href="#" aria-label="Facebook">f</a><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="Pinterest">P</a><a href="#" aria-label="Instagram">◎</a>
+        </div>
+      </div>
+      <div class="newsletter">
+        <h3>Subscribe to our newsletter for the latest updates and seasonal offers</h3>
+        <form class="newsletter__form" onsubmit="event.preventDefault(); this.querySelector('input').value=''; this.querySelector('button').textContent='Subscribed ✓';">
+          <input type="email" placeholder="Enter your e-mail" required aria-label="Email address">
+          <button class="btn" type="submit">Subscribe</button>
+        </form>
+      </div>
+      <div class="quick">
+        <h3>Quick Links</h3>
+        <ul><li><a href="#about">About Us</a></li><li><a href="#guides">Our Guides</a></li><li><a href="#blog">Latest Blog</a></li><li><a href="#contact">Contact Us</a></li></ul>
+      </div>
+    </div>
+    <div class="footer__brand" aria-hidden="true">Wanderly</div>
+    <div class="footer__copy container">© <span id="year"></span> Wanderly. All rights reserved.</div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
