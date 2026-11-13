@@ -114,7 +114,7 @@ export const destinations: Destination[] = [
     region: 'mediterranean',
     featured: true,
     image: 'antalya',
-    gallery: ['antalya-beach', 'duden', 'kas-beach'],
+    gallery: ['duden', 'kas-beach'],
     name: { en: 'Antalya', zh: '安塔利亚', de: 'Antalya', tr: 'Antalya' },
     tagline: {
       en: 'Old harbour, waterfalls and the Turquoise Coast',

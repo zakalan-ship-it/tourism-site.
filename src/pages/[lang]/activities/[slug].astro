@@ -45,11 +45,10 @@ const ld = {
       <section class="detail-section" aria-labelledby="h-about">
         <h2 id="h-about">{t.activity.about}</h2>
         <p class="lead">{pick(a.description, lang)}</p>
-        <dl class="facts">
+        <dl class="facts facts--3">
           <div><dt>{t.common.duration}</dt><dd>{hoursLabel(lang, a.hours)}</dd></div>
           <div><dt>{t.common.location}</dt><dd>{dest ? <a href={url(lang, `destinations/${dest.slug}`)}>{place}</a> : place}</dd></div>
           <div><dt>{t.common.category}</dt><dd>{t.activityCategory[a.category]}</dd></div>
-          <div><dt>{t.tour.pricing}</dt><dd><Price lang={lang} amount={a.priceFrom} offer={a.offer} /></dd></div>
         </dl>
         <div class="two-col">
           <div class="box">
@@ -58,7 +57,7 @@ const ld = {
           </div>
           <div class="box">
             <h3>{t.activity.meetingPoint}</h3>
-            <p style="display:flex;gap:10px;margin:0"><Icon name="pin" class="" />{pick(a.meetingPoint, lang)}</p>
+            <p style="display:flex;gap:10px;margin:0"><Icon name="pin" class="inline-icon" />{pick(a.meetingPoint, lang)}</p>
           </div>
         </div>
         {a.goodToKnow && a.goodToKnow.length > 0 && (
@@ -73,7 +72,7 @@ const ld = {
       </section>
     </div>
     <aside class="detail__aside">
-      <Img image={a.image} alt={title} sizes="380px" widths={[400, 760]} class="" />
+      <Img image={a.image} alt={title} sizes="380px" widths={[400, 760]} class="aside-img" />
       <div class="price-box">
         <Price lang={lang} amount={a.priceFrom} offer={a.offer} />
         {a.offer && <p class="hint" style="color:#b9c2c6;margin:8px 0 0">{fmt(t.common.validUntil, { date: formatDate(a.offer.validUntil, lang) })}</p>}

@@ -400,7 +400,7 @@ export const tours: Tour[] = [
     destinations: ['antalya'],
     departures: { from: '2027-04-01', to: '2027-10-31', weekdays: [2, 4, 6] },
     image: 'antalya',
-    gallery: ['duden', 'antalya-beach', 'kas-beach'],
+    gallery: ['duden', 'kas-beach', 'rafting'],
     title: { en: 'Antalya & the Turquoise Coast', zh: '安塔利亚与绿松石海岸', de: 'Antalya & die Türkische Riviera', tr: 'Antalya ve Turkuaz Kıyı' },
     summary: {
       en: 'Old town walks, waterfalls, Roman theatres and a boat day along the coast.',

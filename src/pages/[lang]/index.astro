@@ -9,7 +9,7 @@ import DestinationCard from '../../components/DestinationCard.astro';
 import Price from '../../components/Price.astro';
 import VehicleIcon from '../../components/VehicleIcon.astro';
 import Newsletter from '../../components/Newsletter.astro';
-import { fmt, hoursLabel, langPaths, pick, url, useTranslations, type Lang } from '../../i18n';
+import { hoursLabel, langPaths, pick, url, useTranslations, type Lang } from '../../i18n';
 import { destinations } from '../../data/destinations';
 import { tours } from '../../data/tours';
 import { activities } from '../../data/activities';
@@ -139,7 +139,7 @@ const whyIcons = ['pin', 'globe', 'route', 'briefcase'];
     <div class="container split">
       <div class="split__media reveal">
         <Img image="istanbul-galata" alt={pick(destinations[0].name, lang)} sizes="(max-width: 900px) 90vw, 560px" widths={[500, 800, 1100]} />
-        <Img image="bosphorus" alt="" class="img-frame--small" sizes="240px" widths={[300, 500]} />
+        <Img image="istanbul-tram" alt="" class="img-frame--small" sizes="240px" widths={[300, 500]} />
       </div>
       <div class="reveal">
         <span class="eyebrow">{h.istanbulEyebrow}</span>

@@ -47,13 +47,13 @@ export const inspiration: Inspiration[] = [
   {
     href: 'destinations/cappadocia',
     image: 'cappadocia',
-    tag: { en: 'Winter', zh: '冬季', de: 'Winter', tr: 'Kış' },
-    title: { en: 'Cappadocia under snow', zh: '雪中的卡帕多奇亚', de: 'Kappadokien im Schnee', tr: 'Karlar altında Kapadokya' },
+    tag: { en: 'Quiet season', zh: '淡季', de: 'Nebensaison', tr: 'Sakin sezon' },
+    title: { en: 'Cappadocia off-season', zh: '淡季的卡帕多奇亚', de: 'Kappadokien in der Nebensaison', tr: 'Sezon dışında Kapadokya' },
     text: {
-      en: 'Fewer crowds, cosy cave hotels and balloons over white valleys.',
-      zh: '游客更少，洞穴酒店温馨舒适，热气球飘过白色山谷。',
-      de: 'Weniger Besucher, gemütliche Höhlenhotels und Ballons über weißen Tälern.',
-      tr: 'Daha az kalabalık, sıcacık mağara otelleri ve beyaz vadiler üzerinde balonlar.',
+      en: 'Fewer crowds, cosy cave hotels and balloons over quiet valleys — from November to March.',
+      zh: '游客更少，洞穴酒店温馨舒适，热气球飘过静谧山谷——11月至次年3月。',
+      de: 'Weniger Besucher, gemütliche Höhlenhotels und Ballons über stillen Tälern — von November bis März.',
+      tr: 'Daha az kalabalık, sıcacık mağara otelleri ve sessiz vadiler üzerinde balonlar — Kasım’dan Mart’a.',
     },
   },
   {

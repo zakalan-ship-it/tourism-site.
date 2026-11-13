@@ -75,7 +75,7 @@ export const activities: Activity[] = [
     featured: true,
     hours: 2.5,
     priceFrom: 45,
-    image: 'bosphorus',
+    image: 'istanbul-skyline',
     offer: { discount: 20, validUntil: '2027-03-31' },
     title: { en: 'Bosphorus Sunset Cruise', zh: '博斯普鲁斯日落游船', de: 'Bosporus-Fahrt bei Sonnenuntergang', tr: 'Gün Batımında Boğaz Turu' },
     summary: {
@@ -276,7 +276,7 @@ export const activities: Activity[] = [
     destination: 'antalya',
     hours: 6,
     priceFrom: 70,
-    image: 'antalya-beach',
+    image: 'duden',
     title: { en: 'Antalya Family Day: Waterfalls, Old Town & Beach', zh: '安塔利亚亲子日：瀑布、老城与海滩', de: 'Familientag in Antalya: Wasserfälle, Altstadt & Strand', tr: 'Antalya Aile Günü: Şelale, Kaleiçi ve Plaj' },
     summary: {
       en: 'An easy-paced day designed for children — with plenty of ice cream.',

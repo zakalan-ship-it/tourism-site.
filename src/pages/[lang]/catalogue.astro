@@ -35,7 +35,7 @@ const cheapest = (prices: Partial<Record<string, number>>) => Math.min(...Object
             const list = tours.filter((x) => x.category === cat);
             return list.length > 0 && (
               <div style="margin-top:28px">
-                <h3 style="color:var(--gold);text-transform:uppercase;letter-spacing:.14em;font-size:.8rem">{t.tourCategory[cat]}</h3>
+                <h3 style="color:var(--gold-text);text-transform:uppercase;letter-spacing:.14em;font-size:.8rem">{t.tourCategory[cat]}</h3>
                 {list.map((x) => (
                   <a class="cat-row" href={url(lang, `tours/${x.slug}`)}>
                     <Img image={x.image} alt="" sizes="180px" widths={[360]} />
