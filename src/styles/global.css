@@ -138,10 +138,15 @@ p { margin: 0 0 1em; }
 .site-header--overlay.is-scrolled { background: rgba(247, 243, 236, 0.95); backdrop-filter: saturate(1.4) blur(14px); color: var(--ink); }
 .header-inner { height: 100%; display: flex; align-items: center; gap: 28px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; flex: none; }
-.brand__mark { width: 36px; height: 36px; color: var(--gold); }
-.brand__name { font: 600 1.55rem/1 var(--serif); letter-spacing: 0.01em; }
-.brand__name b { font-weight: 600; color: var(--teal); }
-.site-header--overlay:not(.is-scrolled) .brand__name b { color: var(--gold-soft); }
+/* The logo artwork has its own cream background (#f8f5ee); on dark areas it sits on a cream plate. */
+.brand { border-radius: 12px; transition: background 0.3s, padding 0.3s, box-shadow 0.3s; }
+.brand__logo { display: block; width: auto; height: 62px; }
+.site-header--overlay:not(.is-scrolled) .brand { background: #f8f5ee; padding: 4px 10px; box-shadow: 0 6px 20px -8px rgba(0, 0, 0, 0.45); }
+.site-header--overlay:not(.is-scrolled) .brand__logo { height: 56px; }
+body.menu-open .site-header .brand { background: none; padding: 0; box-shadow: none; }
+.brand--plate { background: #f8f5ee; padding: 10px 16px; border-radius: 14px; }
+.brand__logo-full { display: block; width: 220px; height: auto; }
+@media (max-width: 1140px) { .brand__logo { height: 52px; } .site-header--overlay:not(.is-scrolled) .brand__logo { height: 46px; } }
 
 .main-nav { margin-left: auto; }
 .main-nav > ul { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }
@@ -222,7 +227,7 @@ p { margin: 0 0 1em; }
 .mobile-langs div { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .mobile-langs a { display: block; text-align: center; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); font-weight: 600; text-decoration: none; }
 .mobile-langs a[aria-current='true'] { background: var(--ink); color: #fff; border-color: var(--ink); }
-@media (max-width: 420px) { .brand__name { font-size: 1.3rem; } .brand__mark { width: 30px; height: 30px; } .header-wa { display: none; } }
+@media (max-width: 420px) { .header-wa { display: none; } }
 
 /* ---------------------------------------------------------------- Hero slider */
 .hero { position: relative; min-height: 100vh; min-height: 100svh; color: #fff; display: flex; align-items: center; overflow: hidden; background: var(--ink); }
@@ -659,8 +664,7 @@ textarea.input { min-height: 120px; resize: vertical; }
 .site-footer a { text-decoration: none; }
 .site-footer a:hover { color: #fff; }
 .footer-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr) 1.3fr; gap: 40px; padding-bottom: 56px; }
-.footer-brand .brand { color: #fff; margin-bottom: 18px; }
-.footer-brand .brand__name b { color: var(--gold-soft); }
+.footer-brand .brand { margin-bottom: 18px; }
 .footer-brand p { max-width: 36ch; }
 .site-footer h2 { font: 700 0.75rem var(--sans); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 18px; }
 .site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }

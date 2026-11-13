@@ -1,5 +1,7 @@
 ---
 import Icon from './Icon.astro';
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/logo-full.png';
 import { languages, langs, pick, url, switchLangPath, useTranslations, type Lang } from '../i18n';
 import { destinations } from '../data/destinations';
 import { site, whatsappLink } from '../config/site';
@@ -15,9 +17,8 @@ const socials = (['instagram', 'facebook', 'linkedin', 'youtube'] as const).filt
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a class="brand" href={url(lang)}>
-          <Icon name="star8" class="brand__mark" />
-          <span class="brand__name">Well<b>Xplore</b></span>
+        <a class="brand brand--plate" href={url(lang)} aria-label="WellXplore — home">
+          <Image class="brand__logo-full" src={logo} alt="WellXplore — Connecting Cultures, Creating Memories." widths={[240, 480, 720]} sizes="240px" format="webp" quality={90} />
         </a>
         <p>{t.footer.about}</p>
         {socials.length > 0 && (

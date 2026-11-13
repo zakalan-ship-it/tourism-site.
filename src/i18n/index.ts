@@ -21,7 +21,7 @@ export function fmt(template: string, vars: Record<string, string | number> = {}
 /** Base path the site is served from ('' at a domain root, '/tourism-site.' on GitHub Pages). */
 export const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
 
-/** Prefix a root-relative path with the base path: asset('/favicon.svg'). */
+/** Prefix a root-relative path with the base path: asset('/favicon-32.png'). */
 export const asset = (path: string) => `${base}${path}`;
 
 /** Build a localised URL: url('de', 'tours/x') -> /de/tours/x/ */

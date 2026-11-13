@@ -1,5 +1,7 @@
 ---
 import Icon from './Icon.astro';
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/logo-header.png';
 import { languages, langs, pick, url, stripBase, switchLangPath, useTranslations, type Lang } from '../i18n';
 import { destinations } from '../data/destinations';
 import { activityCategories } from '../data/activities';
@@ -72,8 +74,7 @@ const activeKey = activeKeys[section];
 <header class:list={['site-header', { 'site-header--overlay': overlay }]} data-header>
   <div class="container header-inner">
     <a class="brand" href={url(lang)} aria-label="WellXplore — home">
-      <Icon name="star8" class="brand__mark" />
-      <span class="brand__name">Well<b>Xplore</b></span>
+      <Image class="brand__logo" src={logo} alt="WellXplore" widths={[120, 240, 360]} sizes="120px" format="webp" quality={90} loading="eager" fetchpriority="high" />
     </a>
 
     <nav class="main-nav" id="main-nav" aria-label={t.nav.menu} data-nav>
