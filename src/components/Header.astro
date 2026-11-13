@@ -2,6 +2,7 @@
 import Icon from './Icon.astro';
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo-header.png';
+import logoLight from '../assets/brand/logo-header-light.png';
 import { languages, langs, pick, url, stripBase, switchLangPath, useTranslations, type Lang } from '../i18n';
 import { destinations } from '../data/destinations';
 import { activityCategories } from '../data/activities';
@@ -74,7 +75,8 @@ const activeKey = activeKeys[section];
 <header class:list={['site-header', { 'site-header--overlay': overlay }]} data-header>
   <div class="container header-inner">
     <a class="brand" href={url(lang)} aria-label="WellXplore — home">
-      <Image class="brand__logo" src={logo} alt="WellXplore" widths={[120, 240, 360]} sizes="120px" format="webp" quality={90} loading="eager" fetchpriority="high" />
+      <Image class="brand__logo brand__logo--dark" src={logo} alt="WellXplore" widths={[120, 240, 360]} sizes="120px" format="webp" quality={90} loading="eager" fetchpriority="high" />
+      {overlay && <Image class="brand__logo brand__logo--light" src={logoLight} alt="" aria-hidden="true" widths={[120, 240, 360]} sizes="120px" format="webp" quality={90} loading="eager" />}
     </a>
 
     <nav class="main-nav" id="main-nav" aria-label={t.nav.menu} data-nav>
