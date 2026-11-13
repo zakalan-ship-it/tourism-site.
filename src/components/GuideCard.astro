@@ -1,0 +1,32 @@
+---
+import Img from './Img.astro';
+import Icon from './Icon.astro';
+import { pick, useTranslations, type Lang } from '../i18n';
+import { getImage } from '../data/images';
+import type { Guide } from '../data/guides';
+
+interface Props { guide: Guide; lang: Lang }
+const { guide: g, lang } = Astro.props;
+const t = useTranslations(lang);
+const hasPhoto = !!getImage(g.photo);
+---
+<article class="guide-card reveal">
+  <div class="guide-card__photo">
+    {hasPhoto ? (
+      <Img image={g.photo} alt={g.name} sizes="150px" widths={[300, 450]} />
+    ) : (
+      <div class="guide-card__mono" role="img" aria-label={`${g.name} — ${t.home.photoSoon}`}>
+        <b>{g.name.charAt(0)}</b>
+        <small>{t.home.photoSoon}</small>
+      </div>
+    )}
+  </div>
+  <div>
+    <h3>{g.name}</h3>
+    <p class="guide-card__role">{pick(g.role, lang)}</p>
+    <span class="guide-card__langs"><Icon name="globe" />{pick(g.languages, lang)}</span>
+    <p>{pick(g.bio, lang)}</p>
+    {g.specialities.length > 0 && <p><strong>{g.specialities.map((s) => pick(s, lang)).join(' · ')}</strong></p>}
+    {g.licence && <p class="guide-card__licence">{t.home.licenceNo} {g.licence}</p>}
+  </div>
+</article>

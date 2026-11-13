@@ -35,7 +35,7 @@ const attrs = filterable ? { 'data-item': '', 'data-category': a.category, 'data
     <Heading><a href={href}>{pick(a.title, lang)}</a></Heading>
     <p class="card__text">{pick(a.summary, lang)}</p>
     <div class="card__foot">
-      <Price lang={lang} amount={a.priceFrom} offer={a.offer} />
+      <Price lang={lang} amount={a.priceFrom} offer={a.offer} unit={a.priceUnit} />
       <div class="card__actions">
         <a class="btn btn--primary btn--sm" href={`${url(lang, 'inquiry')}?product=activity:${a.slug}`}>{t.common.inquire}</a>
       </div>

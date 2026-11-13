@@ -6,6 +6,17 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# German and Turkish were retired: send old links to the English pages.
+[[redirects]]
+  from = "/de/*"
+  to = "/en/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/tr/*"
+  to = "/en/:splat"
+  status = 301
+
 [[headers]]
   for = "/_astro/*"
   [headers.values]

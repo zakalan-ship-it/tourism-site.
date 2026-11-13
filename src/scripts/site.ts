@@ -195,6 +195,25 @@ function initCookies() {
   $$('[data-cookie-open]').forEach((b) => b.addEventListener('click', () => { box.hidden = false; if (prefs) prefs.hidden = false; if (save) save.hidden = false; }));
 }
 
+/* ---------------- WeChat panel + copy buttons ---------------- */
+function initWeChat() {
+  const dialog = $<HTMLDialogElement>('[data-wechat-dialog]');
+  document.addEventListener('click', async (e) => {
+    const target = e.target as Element;
+    const opener = target.closest('[data-wechat-open]');
+    if (opener && dialog) { e.preventDefault(); dialog.showModal(); return; }
+    const copy = target.closest<HTMLElement>('[data-copy]');
+    if (copy) {
+      const text = copy.dataset.copy ?? document.querySelector(copy.dataset.copyFrom ?? '')?.textContent ?? '';
+      try { await navigator.clipboard.writeText(text); } catch { /* clipboard unavailable */ }
+      const label = copy.textContent;
+      copy.textContent = copy.dataset.copied ?? '✓';
+      setTimeout(() => { copy.textContent = label; }, 2000);
+    }
+  });
+  dialog?.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+}
+
 /* ---------------- Print buttons ---------------- */
 function initPrint() {
   $$('[data-print]').forEach((b) => b.addEventListener('click', () => window.print()));
@@ -210,6 +229,7 @@ function init() {
   initDateCheck();
   initCookies();
   initPrint();
+  initWeChat();
   initForms();
   initFilters();
   initTransferForm();

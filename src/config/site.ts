@@ -19,19 +19,28 @@ export const site = {
       country: 'Türkiye',
     },
     hours: 'Mon–Sat 09:00–19:00 (GMT+3)',
-    /** Google Maps embed is not loaded; this link opens the map in a new tab. */
+    /** Map links (no embeds are loaded). Google Maps is blocked in mainland China, so /zh/ uses Amap. */
     mapUrl: 'https://maps.google.com/?q=Beyoglu+Istanbul',
+    mapUrlZh: 'https://uri.amap.com/search?keyword=Beyoglu%20Istanbul',
+    /**
+     * WeChat ID shown on the Chinese pages (WhatsApp is blocked in mainland China).
+     * Add a QR code image at src/assets/brand/wechat-qr.png and it appears automatically.
+     */
+    wechatId: '',
   },
 
-  /** Shown in the footer only when filled in, e.g. 'TÜRSAB A-0000'. */
+  /** TÜRSAB travel-agency licence, e.g. 'A-0000'. Shown in the footer and on Our Story when filled in. */
   licence: '',
 
+  /** Profile URLs. International channels show on /en/, Chinese channels on /zh/. Empty = hidden. */
   social: {
     instagram: '',
     facebook: '',
-    linkedin: '',
     youtube: '',
-    wechat: '', // WeChat ID, shown as text
+    tripadvisor: '',
+    xiaohongshu: '', // 小红书 (RedNote)
+    douyin: '', // 抖音
+    weibo: '', // 微博
   },
 
   /** Currency used for all displayed prices. */

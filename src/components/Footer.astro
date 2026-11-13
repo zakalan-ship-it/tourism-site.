@@ -1,17 +1,24 @@
 ---
+import ChatButton from './ChatButton.astro';
 import Icon from './Icon.astro';
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo-full-light.png';
 import { languages, langs, pick, url, switchLangPath, useTranslations, type Lang } from '../i18n';
 import { destinations } from '../data/destinations';
-import { site, whatsappLink } from '../config/site';
+import { site } from '../config/site';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const path = Astro.url.pathname;
 const year = new Date().getFullYear();
-const socials = (['instagram', 'facebook', 'linkedin', 'youtube'] as const).filter((k) => site.social[k]);
+// International channels on /en/; Chinese platforms on /zh/ (Facebook, Instagram, YouTube are blocked in mainland China).
+const channelSets = {
+  en: [['instagram', 'Instagram'], ['facebook', 'Facebook'], ['youtube', 'YouTube'], ['tripadvisor', 'Tripadvisor']],
+  zh: [['xiaohongshu', '小红书'], ['douyin', '抖音'], ['weibo', '微博']],
+} as const;
+const socials = channelSets[lang].filter(([k]) => site.social[k]);
+const iconFor: Record<string, string> = { instagram: 'instagram', facebook: 'facebook', youtube: 'youtube' };
 ---
 <footer class="site-footer">
   <div class="container">
@@ -23,7 +30,9 @@ const socials = (['instagram', 'facebook', 'linkedin', 'youtube'] as const).filt
         <p>{t.footer.about}</p>
         {socials.length > 0 && (
           <div class="socials" aria-label={t.footer.follow}>
-            {socials.map((s) => (<a href={site.social[s]} target="_blank" rel="noopener" aria-label={s}><Icon name={s} /></a>))}
+            {socials.map(([k, label]) => (iconFor[k]
+              ? <a href={site.social[k]} target="_blank" rel="noopener" aria-label={label}><Icon name={iconFor[k]} /></a>
+              : <a class="socials__text" href={site.social[k]} target="_blank" rel="noopener">{label}</a>))}
           </div>
         )}
         <nav class="footer-langs" aria-label={t.nav.language}>
@@ -67,14 +76,14 @@ const socials = (['instagram', 'facebook', 'linkedin', 'youtube'] as const).filt
         <ul class="contact-list">
           <li><Icon name="pin" /><span>{site.contact.address.line1}<br />{site.contact.address.line2}, {site.contact.address.country}</span></li>
           <li><Icon name="phone" /><a href={`tel:${site.contact.phoneHref}`}>{site.contact.phoneDisplay}</a></li>
-          <li><Icon name="whatsapp" /><a href={whatsappLink()} target="_blank" rel="noopener">{t.common.chatWhatsapp}</a></li>
+          <li><Icon name={lang === 'zh' ? 'wechat' : 'whatsapp'} /><ChatButton lang={lang} variant="link" class="footer-chat" /></li>
           <li><Icon name="mail" /><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <span>© {year} {site.legalName}. {t.footer.rights}{site.licence && <> · {t.footer.licence}: {site.licence}</>}</span>
+      <span>© {year} {site.legalName}. {t.footer.rights}{site.licence && <> · TÜRSAB {site.licence}</>}</span>
       <nav aria-label={t.footer.legal}>
         <a href={url(lang, 'privacy')}>{t.footer.privacy}</a>
         <a href={url(lang, 'terms')}>{t.footer.terms}</a>

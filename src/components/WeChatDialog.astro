@@ -1,0 +1,35 @@
+---
+/** WeChat contact panel for the Chinese pages: QR code (if provided) and WeChat ID with a copy button. */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icon from './Icon.astro';
+import { useTranslations, type Lang } from '../i18n';
+import { site } from '../config/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const qrFiles = import.meta.glob<{ default: ImageMetadata }>('../assets/brand/wechat-qr.{png,jpg,jpeg,webp}', { eager: true });
+const qr = Object.values(qrFiles)[0]?.default;
+const id = site.contact.wechatId;
+---
+<dialog class="wechat-dialog" data-wechat-dialog aria-labelledby="wechat-title">
+  <form method="dialog"><button class="wechat-dialog__close" aria-label={t.common.close}><Icon name="x" /></button></form>
+  <span class="wechat-dialog__icon"><Icon name="wechat" /></span>
+  <h2 id="wechat-title">{t.contact.wechat}</h2>
+  {qr && (
+    <>
+      <p>{t.contact.wechatScan}</p>
+      <Image src={qr} alt={t.contact.wechatScan} width={220} class="wechat-dialog__qr" />
+    </>
+  )}
+  {id ? (
+    <div class="wechat-dialog__id">
+      <span>{t.contact.wechatId}: <strong data-wechat-id>{id}</strong></span>
+      <button type="button" class="btn btn--outline btn--sm" data-copy={id} data-copied={t.form.copied}>{t.contact.copy}</button>
+    </div>
+  ) : (
+    !qr && <p>{t.contact.wechatSoon}</p>
+  )}
+  <p class="wechat-dialog__alt"><Icon name="mail" /><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></p>
+</dialog>

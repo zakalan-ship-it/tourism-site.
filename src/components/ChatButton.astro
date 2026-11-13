@@ -1,0 +1,38 @@
+---
+/**
+ * "Chat with us" button. English pages use WhatsApp; Chinese pages use WeChat
+ * (WhatsApp is blocked in mainland China) and open the WeChat panel in BaseLayout.
+ */
+import Icon from './Icon.astro';
+import { useTranslations, type Lang } from '../i18n';
+import { whatsappLink } from '../config/site';
+
+interface Props {
+  lang: Lang;
+  /** Prefilled WhatsApp message */
+  text?: string;
+  variant?: 'button' | 'float' | 'icon' | 'link';
+  class?: string;
+}
+const { lang, text = '', variant = 'button', class: extra = '' } = Astro.props;
+const t = useTranslations(lang);
+const wechat = lang === 'zh';
+const label = wechat ? t.common.chatWechat : t.common.chatWhatsapp;
+const icon = wechat ? 'wechat' : 'whatsapp';
+const cls = {
+  button: `btn ${wechat ? 'btn--wechat' : 'btn--whatsapp'} ${extra}`,
+  float: `wa-float ${wechat ? 'wa-float--wechat' : ''} ${extra}`,
+  icon: `header-wa ${wechat ? 'header-wa--wechat' : ''} ${extra}`,
+  link: extra,
+}[variant];
+const showLabel = variant === 'button' || variant === 'link';
+---
+{wechat ? (
+  <button type="button" class={cls} data-wechat-open aria-haspopup="dialog" aria-label={showLabel ? undefined : label}>
+    <Icon name={icon} />{showLabel && label}
+  </button>
+) : (
+  <a class={cls} href={whatsappLink(text)} target="_blank" rel="noopener" aria-label={showLabel ? undefined : label}>
+    <Icon name={icon} />{showLabel && label}
+  </a>
+)}

@@ -7,6 +7,7 @@
  */
 type Dict = Record<string, string>;
 interface I18n {
+  lang: string;
   locale: string;
   validation: Dict;
   form: Dict;
@@ -110,7 +111,7 @@ function summarise(form: HTMLFormElement) {
     }
     if (field instanceof HTMLInputElement && field.type === 'checkbox') {
       if (field.dataset.consent !== undefined || !field.checked) return;
-      lines.push(`✓ ${fieldLabel(form, field)}`);
+      lines.push(field.value && field.value !== 'on' ? `${fieldLabel(form, field)}: ${field.value}` : `✓ ${fieldLabel(form, field)}`);
       return;
     }
     const value = field instanceof HTMLSelectElement ? field.selectedOptions[0]?.textContent?.trim() ?? '' : field.value.trim();
@@ -147,14 +148,19 @@ function readyState(form: HTMLFormElement, data: I18n, summary: string) {
   const wa = `https://wa.me/${data.config.whatsapp}?text=${encodeURIComponent(summary)}`;
   const subject = form.dataset.summaryTitle || f.title;
   const mail = `mailto:${data.config.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(summary)}`;
+  // Chinese pages: WhatsApp is blocked in mainland China, so offer "copy + WeChat" instead.
+  const chat = data.lang === 'zh'
+    ? `<button type="button" class="btn btn--wechat" data-copy-from="#ready-summary" data-copied="${esc(f.copied)}">${esc(f.copyMessage)}</button>
+       <button type="button" class="btn btn--wechat" data-wechat-open>${esc(f.addWechat)}</button>`
+    : `<a class="btn btn--whatsapp" href="${wa}" target="_blank" rel="noopener">${esc(f.sendWhatsapp)}</a>`;
   const box = setStatus(
     form,
     `<div class="form-status form-status--ready">
       <h3>${esc(f.readyTitle)}</h3>
       <p>${esc(f.readyText)}</p>
-      <details><summary>${esc(f.summaryTitle)}</summary><pre class="form-summary">${esc(summary)}</pre></details>
+      <details${data.lang === 'zh' ? ' open' : ''}><summary>${esc(f.summaryTitle)}</summary><pre class="form-summary" id="ready-summary">${esc(summary)}</pre></details>
       <div class="form-status__actions">
-        <a class="btn btn--whatsapp" href="${wa}" target="_blank" rel="noopener">${esc(f.sendWhatsapp)}</a>
+        ${chat}
         <a class="btn btn--outline" href="${mail}">${esc(f.sendEmail)}</a>
         <button class="btn btn--outline" type="button" data-edit>${esc(f.edit)}</button>
       </div>

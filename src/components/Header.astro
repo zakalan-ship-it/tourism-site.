@@ -1,4 +1,5 @@
 ---
+import ChatButton from './ChatButton.astro';
 import Icon from './Icon.astro';
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo-header.png';
@@ -6,7 +7,6 @@ import logoLight from '../assets/brand/logo-header-light.png';
 import { languages, langs, pick, url, stripBase, switchLangPath, useTranslations, type Lang } from '../i18n';
 import { destinations } from '../data/destinations';
 import { activityCategories } from '../data/activities';
-import { whatsappLink } from '../config/site';
 
 interface Props {
   lang: Lang;
@@ -110,7 +110,7 @@ const activeKey = activeKeys[section];
       </nav>
       <div class="mobile-cta">
         <a class="btn btn--primary" href={url(lang, 'inquiry')}>{t.nav.planTrip}</a>
-        <a class="btn btn--whatsapp" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" />{t.common.chatWhatsapp}</a>
+        <ChatButton lang={lang} />
       </div>
     </nav>
 
@@ -130,7 +130,7 @@ const activeKey = activeKeys[section];
           ))}
         </ul>
       </div>
-      <a class="header-wa" href={whatsappLink()} target="_blank" rel="noopener" aria-label={t.common.chatWhatsapp}><Icon name="whatsapp" /></a>
+      <ChatButton lang={lang} variant="icon" />
       <a class="btn btn--primary btn--sm header-cta" href={url(lang, 'inquiry')}>{t.nav.planTrip}</a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-menu-toggle>
         <span></span><span></span><span></span>

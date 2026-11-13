@@ -1,4 +1,5 @@
 ---
+import ChatButton from '../../../components/ChatButton.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHero from '../../../components/PageHero.astro';
 import Img from '../../../components/Img.astro';
@@ -10,7 +11,6 @@ import { fmt, formatDate, hoursLabel, langs, pick, url, useTranslations, type La
 import { activities } from '../../../data/activities';
 import { getDestination } from '../../../data/destinations';
 import { phrase } from '../../../data/phrases';
-import { whatsappLink } from '../../../config/site';
 import type { Activity } from '../../../data/types';
 
 export function getStaticPaths() {
@@ -74,7 +74,7 @@ const ld = {
     <aside class="detail__aside">
       <Img image={a.image} alt={title} sizes="380px" widths={[400, 760]} class="aside-img" />
       <div class="price-box">
-        <Price lang={lang} amount={a.priceFrom} offer={a.offer} />
+        <Price lang={lang} amount={a.priceFrom} offer={a.offer} unit={a.priceUnit} />
         {a.offer && <p class="hint" style="color:#b9c2c6;margin:8px 0 0">{fmt(t.common.validUntil, { date: formatDate(a.offer.validUntil, lang) })}</p>}
         <hr />
         <ul>
@@ -83,7 +83,7 @@ const ld = {
           <li><Icon name="shield" />{t.form.notice}</li>
         </ul>
         <a class="btn btn--gold btn--block" href="#inquiry">{t.common.inquire} <Icon name="arrow-right" /></a>
-        <a class="btn btn--whatsapp btn--block" href={whatsappLink(`${t.activity.inquireTitle}: ${title}`)} target="_blank" rel="noopener"><Icon name="whatsapp" />{t.common.chatWhatsapp}</a>
+        <ChatButton lang={lang} text={`${t.activity.inquireTitle}: ${title}`} class="btn--block" />
       </div>
     </aside>
   </div>

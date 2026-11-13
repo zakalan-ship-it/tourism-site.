@@ -1,5 +1,10 @@
 import type { L } from '../languages';
 
+/**
+ * "Our story" page. Only facts we know are stated here.
+ * TO PERSONALISE: add how you met, years of guiding, favourite regions and why you started
+ * WellXplore — in your own words. Özlem should write or approve the Chinese text.
+ */
 export interface AboutContent {
   lead: string;
   story: { title: string; paragraphs: string[] };
@@ -10,91 +15,61 @@ export interface AboutContent {
 
 export const about: L<AboutContent> = {
   en: {
-    lead: 'We are an Istanbul-based incoming tour operator. Our team plans and runs guided tours, private experiences and transfers across Türkiye for travellers from all over the world — and for the travel agencies who send them.',
+    lead: 'WellXplore was founded by Mesut and Özlem, two licensed tour guides based in Istanbul. One of us guides in English, the other in Chinese — and we lead our tours ourselves.',
     story: {
-      title: 'Built in Istanbul, made for the world',
+      title: 'Your guides are the company',
       paragraphs: [
-        'WellXplore was founded by travel professionals who grew up between Europe and Asia — on the shores of the Bosphorus. We believe a great journey comes from local knowledge, honest advice and attention to the small details that make a trip feel effortless.',
-        'Our name says what we stand for: exploring well. That means carefully designed routes without exhausting drives, hotels chosen for location and comfort, licensed guides who love their country, and support that is there when you need it.',
-        'We welcome independent travellers, families, groups and partner agencies from Europe, Asia and beyond — with service in English, Chinese, German and Turkish.',
+        'We are a husband-and-wife team of licensed professional guides. Mesut guides our English-speaking guests and Özlem our Chinese-speaking guests, in fluent Mandarin.',
+        'We started WellXplore because we wanted to offer the kind of trip we would choose ourselves: small groups, honest prices, no forced shopping stops, and the same guide from the airport welcome to the last goodbye.',
+        'We deliberately keep our numbers low. That way, depending on your dates, one of us can lead your trip in person. In our busiest weeks a trusted, licensed partner guide may lead a tour — and we always tell you before you book.',
+        'Travelling as a family or group that mixes English and Chinese speakers? We can guide together, in both languages.',
       ],
     },
     values: [
-      { title: 'Local expertise', text: 'Every itinerary is designed and operated by our own team in Türkiye.' },
-      { title: 'Honest information', text: 'Clear inclusions, realistic schedules and no hidden extras.' },
-      { title: 'Care on the ground', text: 'A real person to call, 24 hours a day, throughout your trip.' },
-      { title: 'Responsible travel', text: 'We work with local guides, family-run restaurants and small hotels wherever we can.' },
+      { title: 'Licensed guides, not drivers', text: 'Every tour is led by a licensed professional guide — never a driver who translates.' },
+      { title: 'No forced shopping', text: 'No commission shops and no shopping stops you didn’t ask for.' },
+      { title: 'Small and private', text: 'Private tours for your party, or small groups of like-minded travellers.' },
+      { title: 'One guide, start to finish', text: 'The guide who meets you at the airport is the guide who sees you off.' },
     ],
     services: {
-      title: 'What we do',
-      items: ['Scheduled small-group tours across Türkiye', 'Private and tailor-made itineraries', 'Day tours and experiences in Istanbul, Cappadocia and on the coast', 'Airport, city and intercity transfers', 'Groups, incentives and MICE ground handling', 'Services for travel agencies and tour operators (B2B)'],
+      title: 'What we offer',
+      items: [
+        'Private and small-group tours across Türkiye',
+        'Tailor-made itineraries around your dates and interests',
+        'Day tours and experiences in Istanbul, Cappadocia and on the coast',
+        'Airport, city and intercity transfers',
+        'Bilingual (English & Chinese) guiding for mixed groups',
+      ],
     },
-    b2b: { title: 'For travel agencies', text: 'We are a reliable ground partner for agencies worldwide: series departures, FIT services, guides in many languages, transport and hotels at net rates.' },
+    b2b: { title: 'For travel agencies', text: 'We also guide for partner agencies that need licensed English- or Chinese-speaking guides in Türkiye. Get in touch for our partner terms.' },
   },
   zh: {
-    lead: '我们是总部位于伊斯坦布尔的地接旅行社。我们的团队为来自世界各地的旅行者以及组团旅行社，策划并运营土耳其全境的导游线路、私人体验和接送服务。',
+    lead: 'WellXplore 由常驻伊斯坦布尔的两位持证导游 Özlem 和 Mesut 创立。我们一位讲中文，一位讲英语——每一次旅行都由我们亲自带领。',
     story: {
-      title: '扎根伊斯坦布尔，服务全世界',
+      title: '导游就是我们自己',
       paragraphs: [
-        'WellXplore 由在博斯普鲁斯海峡畔、欧亚之间长大的旅游从业者创立。我们相信，一次美好的旅程源于本地知识、真诚的建议，以及让旅行轻松自在的细节关怀。',
-        '我们的名字代表了我们的理念：好好探索。这意味着精心设计、不让人疲惫的路线，按位置和舒适度精选的酒店，热爱祖国的持证导游，以及在您需要时随时在线的支持。',
-        '我们欢迎来自欧洲、亚洲及世界各地的自由行旅客、家庭、团体和合作旅行社，并提供中文、英语、德语和土耳其语服务。',
+        '我们是一对夫妻，都是持证专业导游。Özlem 用流利的普通话带领中文客人，Mesut 带领英语客人。',
+        '创办 WellXplore，是想提供我们自己也愿意选择的旅行：小团出行、价格诚实、没有强制购物，从接机到送机都是同一位导游。',
+        '我们有意只接少量团队，这样根据您的出行日期，我们之中总有一人能亲自带您。旺季时可能由我们信赖的持证合作导游带团——我们一定会在预订前告知您。',
+        '家人或团队中有人讲中文、有人讲英语？我们两人可以一起带团，双语讲解。',
       ],
     },
     values: [
-      { title: '本地专业', text: '每条行程均由我们在土耳其的团队设计和运营。' },
-      { title: '信息透明', text: '包含项目清楚，行程安排合理，没有隐藏费用。' },
-      { title: '全程关怀', text: '旅途中24小时都有真人可以联系。' },
-      { title: '负责任旅行', text: '尽可能与本地导游、家庭餐馆和小型酒店合作。' },
+      { title: '持证导游，不是司机兼翻译', text: '每条线路都由持证专业导游带领，绝不是“会说中文的司机”。' },
+      { title: '无强制购物', text: '不进佣金店，不安排您不想要的购物点。' },
+      { title: '私人小团', text: '只有您一行人的私人团，或少数志趣相投旅客的小团。' },
+      { title: '同一位导游全程陪同', text: '从机场迎接到最后送别，都是同一位导游。' },
     ],
     services: {
       title: '我们的服务',
-      items: ['土耳其全境固定团期小团游', '私人定制行程', '伊斯坦布尔、卡帕多奇亚及沿海地区的一日游和特色体验', '机场、市内及城际接送', '团队、奖励旅游及会展地接', '为旅行社和旅游批发商提供同业服务（B2B）'],
-    },
-    b2b: { title: '旅行社合作', text: '我们是全球旅行社值得信赖的地接伙伴：系列团、散客服务、多语种导游、交通和酒店，均提供同业价格。' },
-  },
-  de: {
-    lead: 'Wir sind ein Incoming-Reiseveranstalter mit Sitz in Istanbul. Unser Team plant und organisiert geführte Rundreisen, private Erlebnisse und Transfers in der ganzen Türkei — für Reisende aus aller Welt und für die Reisebüros, die sie zu uns schicken.',
-    story: {
-      title: 'Zu Hause in Istanbul, für die ganze Welt',
-      paragraphs: [
-        'WellXplore wurde von Reiseprofis gegründet, die zwischen Europa und Asien aufgewachsen sind — an den Ufern des Bosporus. Wir sind überzeugt: Eine großartige Reise entsteht aus lokalem Wissen, ehrlicher Beratung und der Liebe zu den kleinen Details, die eine Reise mühelos machen.',
-        'Unser Name ist Programm: gut entdecken. Das heißt sorgfältig geplante Routen ohne ermüdende Fahrten, Hotels mit guter Lage und Komfort, lizenzierte Reiseleiter, die ihr Land lieben, und Betreuung, die da ist, wenn Sie sie brauchen.',
-        'Wir begrüßen Individualreisende, Familien, Gruppen und Partner-Reisebüros aus Europa, Asien und der ganzen Welt — mit Service auf Deutsch, Englisch, Chinesisch und Türkisch.',
+      items: [
+        '土耳其全境私人团与小团',
+        '按您的日期和兴趣量身定制行程',
+        '伊斯坦布尔、卡帕多奇亚及沿海地区的一日游和特色体验',
+        '机场、市内及城际接送',
+        '为中英文混合团队提供双语导游',
       ],
     },
-    values: [
-      { title: 'Lokale Expertise', text: 'Jede Reise wird von unserem eigenen Team in der Türkei geplant und durchgeführt.' },
-      { title: 'Ehrliche Information', text: 'Klare Leistungen, realistische Zeitpläne und keine versteckten Kosten.' },
-      { title: 'Betreuung vor Ort', text: 'Ein echter Mensch am Telefon — rund um die Uhr, während Ihrer ganzen Reise.' },
-      { title: 'Verantwortungsvoll reisen', text: 'Wo immer möglich arbeiten wir mit lokalen Reiseleitern, Familienrestaurants und kleinen Hotels.' },
-    ],
-    services: {
-      title: 'Was wir anbieten',
-      items: ['Rundreisen in Kleingruppen mit festen Terminen', 'Private und individuelle Reisen', 'Tagesausflüge und Erlebnisse in Istanbul, Kappadokien und an der Küste', 'Flughafen-, Stadt- und Überlandtransfers', 'Abwicklung von Gruppen-, Incentive- und MICE-Reisen', 'Leistungen für Reisebüros und Veranstalter (B2B)'],
-    },
-    b2b: { title: 'Für Reisebüros', text: 'Wir sind ein zuverlässiger Partner vor Ort für Reisebüros weltweit: Serienreisen, Individualleistungen, Reiseleitung in vielen Sprachen, Transport und Hotels zu Nettopreisen.' },
-  },
-  tr: {
-    lead: 'İstanbul merkezli bir incoming tur operatörüyüz. Ekibimiz, dünyanın dört bir yanından gelen gezginler ve onları bize yönlendiren seyahat acenteleri için Türkiye genelinde rehberli turlar, özel deneyimler ve transferler planlar ve yürütür.',
-    story: {
-      title: 'İstanbul’da doğdu, dünyaya hizmet ediyor',
-      paragraphs: [
-        'WellXplore, Boğaz kıyılarında, Avrupa ile Asya arasında büyümüş turizm profesyonelleri tarafından kuruldu. Harika bir yolculuğun yerel bilgiden, dürüst tavsiyeden ve seyahati zahmetsiz kılan küçük ayrıntılara gösterilen özenden doğduğuna inanıyoruz.',
-        'Adımız neyi savunduğumuzu anlatıyor: iyi keşfetmek. Bu; yorucu yolculuklar olmadan özenle tasarlanmış rotalar, konumu ve konforu için seçilmiş oteller, ülkesini seven lisanslı rehberler ve ihtiyaç duyduğunuzda yanınızda olan bir destek demek.',
-        'Avrupa’dan, Asya’dan ve dünyanın her yerinden bireysel gezginleri, aileleri, grupları ve iş ortağı acenteleri Türkçe, İngilizce, Çince ve Almanca hizmetle ağırlıyoruz.',
-      ],
-    },
-    values: [
-      { title: 'Yerel uzmanlık', text: 'Her program Türkiye’deki kendi ekibimiz tarafından tasarlanır ve yürütülür.' },
-      { title: 'Dürüst bilgi', text: 'Net hizmetler, gerçekçi programlar ve gizli ek ücret yok.' },
-      { title: 'Sahada ilgi', text: 'Seyahatiniz boyunca 24 saat ulaşabileceğiniz gerçek bir insan.' },
-      { title: 'Sorumlu turizm', text: 'Mümkün olan her yerde yerel rehberler, aile işletmesi restoranlar ve küçük otellerle çalışıyoruz.' },
-    ],
-    services: {
-      title: 'Neler yapıyoruz',
-      items: ['Türkiye genelinde programlı küçük grup turları', 'Özel ve kişiye özel programlar', 'İstanbul, Kapadokya ve kıyılarda günübirlik turlar ve deneyimler', 'Havalimanı, şehir içi ve şehirlerarası transferler', 'Grup, teşvik ve MICE operasyonları', 'Seyahat acenteleri ve tur operatörleri için hizmetler (B2B)'],
-    },
-    b2b: { title: 'Seyahat acenteleri için', text: 'Dünyanın dört bir yanındaki acenteler için güvenilir bir karşılama ortağıyız: seri kalkışlar, bireysel hizmetler, birçok dilde rehberlik, ulaşım ve net fiyatlı oteller.' },
+    b2b: { title: '旅行社合作', text: '我们也为需要土耳其持证中文或英语导游的合作旅行社提供导游服务。欢迎联系我们了解合作条款。' },
   },
 };

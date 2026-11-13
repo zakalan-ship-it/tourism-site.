@@ -61,8 +61,10 @@ export interface Tour {
   nights: number;
   category: TourCategory;
   type: TourType;
-  /** Starting price per person in site.currency. null = price on request. */
+  /** Starting price in site.currency. null = price on request. */
   priceFrom: number | null;
+  /** Whether priceFrom is per person (default) or for the whole private group. */
+  priceUnit?: 'person' | 'group';
   maxGroup?: number;
   minTravellers?: number;
   departures: Departures | null; // null = on request
@@ -100,6 +102,7 @@ export interface Activity {
   /** Duration in hours (use 8+ for full day) */
   hours: number;
   priceFrom: number | null;
+  priceUnit?: 'person' | 'group';
   includes: (string | L)[];
   meetingPoint: L;
   goodToKnow?: L[];

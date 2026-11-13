@@ -1,4 +1,5 @@
 ---
+import ChatButton from '../../../components/ChatButton.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHero from '../../../components/PageHero.astro';
 import Img from '../../../components/Img.astro';
@@ -10,7 +11,6 @@ import { daysLabel, fmt, formatDate, joinList, langs, nightsLabel, pick, url, us
 import { tours, offerPrice } from '../../../data/tours';
 import { getDestination } from '../../../data/destinations';
 import { phrase } from '../../../data/phrases';
-import { whatsappLink } from '../../../config/site';
 import type { Tour } from '../../../data/types';
 
 export function getStaticPaths() {
@@ -82,6 +82,7 @@ const waText = `${t.tour.inquireTitle}: ${title}`;
         </div>
         <h2 id="h-overview" style="margin-top:36px">{tt.overview}</h2>
         <p class="lead">{pick(tour.overview, lang)}</p>
+        <p class="led-by"><Icon name="user" />{tt.ledBy}</p>
         <dl class="facts">
           <div><dt>{t.common.duration}</dt><dd>{durationText}</dd></div>
           <div><dt>{t.common.type}</dt><dd>{t.tourType[tour.type]}</dd></div>
@@ -167,7 +168,7 @@ const waText = `${t.tour.inquireTitle}: ${title}`;
       <section class="detail-section" id="pricing" aria-labelledby="h-price">
         <h2 id="h-price">{tt.pricing}</h2>
         <div class="box" style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap">
-          <Price lang={lang} amount={tour.priceFrom} offer={tour.offer} />
+          <Price lang={lang} amount={tour.priceFrom} offer={tour.offer} unit={tour.priceUnit} />
           {tour.offer && <span class="badge badge--offer">{fmt(t.common.validUntil, { date: formatDate(tour.offer.validUntil, lang) })}</span>}
         </div>
         <p class="hint" style="margin-top:10px">{tt.pricingNote}</p>
@@ -188,16 +189,18 @@ const waText = `${t.tour.inquireTitle}: ${title}`;
 
     <aside class="detail__aside" aria-label={tt.pricing}>
       <div class="price-box">
-        <Price lang={lang} amount={tour.priceFrom} offer={tour.offer} />
+        <Price lang={lang} amount={tour.priceFrom} offer={tour.offer} unit={tour.priceUnit} />
         <hr />
         <ul>
           <li><Icon name="clock" />{durationText}</li>
           <li><Icon name="pin" />{places.map((p) => pick(p!.name, lang)).join(' · ')}</li>
           <li><Icon name="calendar" />{dep ? (weekdayNames ? fmt(tt.weekdays, { days: joinList(lang, weekdayNames) }) : tt.daily) : tt.onRequest}</li>
+          <li><Icon name="user" />{tt.ledBy}</li>
+          <li><Icon name="bag" />{tt.noShopping}</li>
           <li><Icon name="shield" />{t.form.notice}</li>
         </ul>
         <a class="btn btn--gold btn--block" href="#inquiry">{t.common.inquire} <Icon name="arrow-right" /></a>
-        <a class="btn btn--whatsapp btn--block" href={whatsappLink(waText)} target="_blank" rel="noopener"><Icon name="whatsapp" />{t.common.chatWhatsapp}</a>
+        <ChatButton lang={lang} text={waText} class="btn--block" />
       </div>
     </aside>
   </div>

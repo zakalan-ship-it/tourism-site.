@@ -44,7 +44,7 @@ const cheapest = (prices: Partial<Record<string, number>>) => Math.min(...Object
                       <p>{daysLabel(lang, x.days)} · {x.destinations.map((d) => pick(getDestination(d)?.name, lang)).join(' · ')}</p>
                       <p>{pick(x.summary, lang)}</p>
                     </div>
-                    <Price lang={lang} amount={x.priceFrom} offer={x.offer} />
+                    <Price lang={lang} amount={x.priceFrom} offer={x.offer} unit={x.priceUnit} />
                   </a>
                 ))}
               </div>
@@ -62,7 +62,7 @@ const cheapest = (prices: Partial<Record<string, number>>) => Math.min(...Object
                 <p>{t.activityCategory[a.category]} · {hoursLabel(lang, a.hours)} · {pick(getDestination(a.destination)?.name, lang)}</p>
                 <p>{pick(a.summary, lang)}</p>
               </div>
-              <Price lang={lang} amount={a.priceFrom} offer={a.offer} />
+              <Price lang={lang} amount={a.priceFrom} offer={a.offer} unit={a.priceUnit} />
             </a>
           ))}
         </div>

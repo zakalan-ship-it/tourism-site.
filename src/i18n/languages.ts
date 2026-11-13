@@ -1,8 +1,6 @@
 export const languages = {
   en: { label: 'English', short: 'EN', htmlLang: 'en', ogLocale: 'en_GB', dir: 'ltr' },
   zh: { label: '简体中文', short: '中文', htmlLang: 'zh-CN', ogLocale: 'zh_CN', dir: 'ltr' },
-  de: { label: 'Deutsch', short: 'DE', htmlLang: 'de', ogLocale: 'de_DE', dir: 'ltr' },
-  tr: { label: 'Türkçe', short: 'TR', htmlLang: 'tr', ogLocale: 'tr_TR', dir: 'ltr' },
 } as const;
 
 export type Lang = keyof typeof languages;

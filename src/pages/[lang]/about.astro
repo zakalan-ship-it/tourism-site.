@@ -5,26 +5,36 @@ import Img from '../../components/Img.astro';
 import Icon from '../../components/Icon.astro';
 import { langPaths, pick, url, useTranslations, type Lang } from '../../i18n';
 import { about } from '../../i18n/pages/about';
+import { guides } from '../../data/guides';
+import GuideCard from '../../components/GuideCard.astro';
+import { site } from '../../config/site';
 
 export const getStaticPaths = langPaths;
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 const a = pick(about, lang);
-const icons = ['compass', 'shield', 'headset', 'heart'];
+const icons = ['award', 'bag', 'users', 'route'];
+const orderedGuides = lang === 'zh' ? [...guides].reverse() : guides;
 ---
 <BaseLayout lang={lang} title={t.about.title} description={a.lead} image="istanbul-galata">
-  <PageHero lang={lang} title={t.about.title} eyebrow={t.about.eyebrow} lead={a.lead} image="istanbul-galata" crumbs={[{ label: t.nav.about }]} />
+  <PageHero lang={lang} title={t.about.title} eyebrow={t.about.eyebrow} lead={a.lead} image="istanbul-skyline" crumbs={[{ label: t.nav.about }]} />
 
   <section class="section">
-    <div class="container split">
-      <div class="split__media reveal">
-        <Img image="istanbul-blue-mosque" alt="" sizes="(max-width: 900px) 90vw, 560px" widths={[500, 800, 1100]} />
-        <Img image="bosphorus-ferry" alt="" class="img-frame--small" sizes="240px" widths={[300, 500]} />
+    <div class="container">
+      <div class="guides-intro" style="margin-bottom:56px">
+        {orderedGuides.map((g) => <GuideCard guide={g} lang={lang} />)}
       </div>
-      <div class="reveal">
-        <span class="eyebrow">WellXplore</span>
-        <h2 style="margin-bottom:20px">{a.story.title}</h2>
-        {a.story.paragraphs.map((p) => <p style="color:var(--ink-soft)">{p}</p>)}
+      <div class="split">
+        <div class="reveal">
+          <span class="eyebrow">{t.about.eyebrow}</span>
+          <h2 style="margin-bottom:20px">{a.story.title}</h2>
+          {a.story.paragraphs.map((p) => <p style="color:var(--ink-soft)">{p}</p>)}
+          {site.licence && <p class="licence-badge"><Icon name="shield" />{t.about.licence}: {site.licence}</p>}
+        </div>
+        <div class="split__media reveal">
+          <Img image="istanbul-galata" alt="" sizes="(max-width: 900px) 90vw, 560px" widths={[500, 800, 1100]} />
+          <Img image="cappadocia-balloons" alt="" class="img-frame--small" sizes="240px" widths={[300, 500]} />
+        </div>
       </div>
     </div>
   </section>

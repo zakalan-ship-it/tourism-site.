@@ -27,7 +27,7 @@ const newPage = async (opts = {}) => {
 const visibleCards = (page) => page.locator('[data-filter-list] [data-item]:visible');
 
 console.log('Pages & languages');
-for (const lang of ['en', 'zh', 'de', 'tr']) {
+for (const lang of ['en', 'zh']) {
   await test(`home /${lang}/ renders with correct lang and no JS errors`, async () => {
     const page = await newPage();
     await page.goto(`${BASE}/${lang}/`, { waitUntil: 'networkidle' });
@@ -43,10 +43,6 @@ await test('language switcher keeps the current page', async () => {
   const page = await newPage();
   await page.goto(`${BASE}/en/tours/grand-turkiye-11-days/`);
   await page.click('.lang-switch__btn');
-  await page.click('#lang-menu a[hreflang="de"]');
-  await page.waitForURL('**/de/tours/grand-turkiye-11-days/');
-  assert((await page.textContent('h1')).includes('Türkei'), 'German h1');
-  await page.click('.lang-switch__btn');
   await page.click('#lang-menu a[hreflang="zh-CN"]');
   await page.waitForURL('**/zh/tours/grand-turkiye-11-days/');
   assert((await page.textContent('h1')).includes('土耳其'), 'Chinese h1');
@@ -56,9 +52,9 @@ await test('language switcher keeps the current page', async () => {
 });
 
 await test('root URL redirects to the browser language', async () => {
-  const page = await newPage({ locale: 'de-DE' });
+  const page = await newPage({ locale: 'zh-CN' });
   await page.goto(`${BASE}/`);
-  await page.waitForURL('**/de/');
+  await page.waitForURL('**/zh/');
   await page.context().close();
 });
 
@@ -92,11 +88,11 @@ for (const dev of ['iPhone 13', 'iPad Mini']) {
     const page = await newPage({ ...devices[dev] });
     await page.goto(`${BASE}/en/tours/istanbul-highlights-4-days/`);
     await page.tap('.lang-switch__btn');
-    const link = page.locator('#lang-menu a[hreflang="tr"]');
+    const link = page.locator('#lang-menu a[hreflang="zh-CN"]');
     assert(await link.isVisible(), 'language menu visible after tap');
     await link.tap();
-    await page.waitForURL('**/tr/tours/istanbul-highlights-4-days/');
-    assert((await page.getAttribute('html', 'lang')) === 'tr', 'page in Turkish');
+    await page.waitForURL('**/zh/tours/istanbul-highlights-4-days/');
+    assert((await page.getAttribute('html', 'lang')) === 'zh-CN', 'page in Chinese');
     await page.context().close();
   });
 }
@@ -107,6 +103,32 @@ await test('language links inside the mobile menu', async () => {
   await page.tap('[data-menu-toggle]');
   await page.locator('.mobile-langs a[hreflang="zh-CN"]').tap();
   await page.waitForURL('**/zh/destinations/');
+  await page.context().close();
+});
+
+console.log('China readiness');
+await test('Chinese pages use WeChat, not WhatsApp, and the WeChat panel opens', async () => {
+  const page = await newPage({ ...devices['iPhone 13'] });
+  await page.goto(`${BASE}/zh/tours/istanbul-cappadocia-6-days/`);
+  assert((await page.locator('a[href*="wa.me"]').count()) === 0, 'no WhatsApp links on /zh/');
+  await page.tap('.wa-float');
+  assert(await page.isVisible('[data-wechat-dialog]'), 'WeChat panel visible');
+  await page.context().close();
+});
+
+await test('no requests to Google, Facebook or YouTube (blocked in mainland China)', async () => {
+  const page = await newPage();
+  const blocked = [];
+  page.on('request', (r) => { if (/google|gstatic|facebook|youtube|doubleclick/.test(new URL(r.url()).hostname)) blocked.push(r.url()); });
+  for (const p of ['/zh/', '/zh/tours/', '/zh/contact/', '/en/']) await page.goto(BASE + p, { waitUntil: 'networkidle' });
+  assert(blocked.length === 0, blocked.slice(0, 3).join(', '));
+  await page.context().close();
+});
+
+await test('English pages keep WhatsApp', async () => {
+  const page = await newPage();
+  await page.goto(`${BASE}/en/`);
+  assert((await page.locator('a.wa-float[href*="wa.me"]').count()) === 1, 'WhatsApp float on /en/');
   await page.context().close();
 });
 

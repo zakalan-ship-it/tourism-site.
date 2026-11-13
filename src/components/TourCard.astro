@@ -58,7 +58,7 @@ const filterAttrs = filterable
       {tour.highlights.slice(0, 3).map((h) => <li>{pick(h, lang)}</li>)}
     </ul>
     <div class="card__foot">
-      <Price lang={lang} amount={tour.priceFrom} offer={tour.offer} />
+      <Price lang={lang} amount={tour.priceFrom} offer={tour.offer} unit={tour.priceUnit} />
       <div class="card__actions">
         <a class="btn btn--outline btn--sm" href={href}>{t.common.viewDetails}</a>
         <a class="btn btn--primary btn--sm" href={`${url(lang, 'inquiry')}?product=tour:${tour.slug}`}>{t.common.inquire}</a>

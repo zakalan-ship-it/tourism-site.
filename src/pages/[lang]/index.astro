@@ -15,6 +15,8 @@ import { tours } from '../../data/tours';
 import { activities } from '../../data/activities';
 import { vehicles } from '../../data/transfers';
 import { testimonials, inspiration } from '../../data/content';
+import { guides } from '../../data/guides';
+import GuideCard from '../../components/GuideCard.astro';
 
 export const getStaticPaths = langPaths;
 const lang = Astro.params.lang as Lang;
@@ -30,7 +32,9 @@ const offerItems = [
 ].slice(0, 3);
 const istanbulActs = activities.filter((a) => a.destination === 'istanbul').slice(0, 4);
 const cultural = tours.filter((x) => (x.category === 'historical' || x.category === 'cultural') && !popular.includes(x)).slice(0, 3);
-const trustIcons = ['compass', 'headset', 'users', 'shield'];
+const trustIcons = ['award', 'bag', 'users', 'route'];
+// Chinese visitors meet their Chinese-speaking guide first.
+const orderedGuides = lang === 'zh' ? [...guides].reverse() : guides;
 const whyIcons = ['pin', 'globe', 'route', 'briefcase'];
 ---
 <BaseLayout lang={lang} title={t.meta.homeTitle} description={t.meta.homeDescription} overlayHeader>
@@ -80,6 +84,24 @@ const whyIcons = ['pin', 'globe', 'route', 'briefcase'];
       ))}
     </div>
   </div>
+
+  <!-- Meet your guides -->
+  <section class="section" aria-labelledby="guides-title">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">{h.guidesEyebrow}</span>
+          <h2 id="guides-title">{h.guidesTitle}</h2>
+          <p>{h.guidesText}</p>
+        </div>
+        <a class="link-arrow" href={url(lang, 'about')}>{h.guidesCta} <Icon name="arrow-right" /></a>
+      </div>
+      <div class="guides-intro">
+        {orderedGuides.map((g) => <GuideCard guide={g} lang={lang} />)}
+      </div>
+      <p class="guides-note"><Icon name="users" />{h.mixedGroups}</p>
+    </div>
+  </section>
 
   <!-- Featured destinations -->
   <section class="section" aria-labelledby="dest-title">
@@ -150,7 +172,7 @@ const whyIcons = ['pin', 'globe', 'route', 'briefcase'];
             <a class="mini" href={url(lang, `activities/${a.slug}`)}>
               <Img image={a.image} alt="" sizes="92px" widths={[200]} />
               <div><h3>{pick(a.title, lang)}</h3><p>{hoursLabel(lang, a.hours)} · {t.activityCategory[a.category]}</p></div>
-              <Price lang={lang} amount={a.priceFrom} offer={a.offer} />
+              <Price lang={lang} amount={a.priceFrom} offer={a.offer} unit={a.priceUnit} />
             </a>
           ))}
         </div>
@@ -249,7 +271,8 @@ const whyIcons = ['pin', 'globe', 'route', 'briefcase'];
     </div>
   </section>
 
-  <!-- Testimonials -->
+  <!-- Testimonials (shown only when real reviews are added in src/data/content.ts) -->
+  {testimonials.length > 0 && (
   <section class="section section--paper" aria-labelledby="test-title">
     <div class="container">
       <div class="section-head">
@@ -275,6 +298,7 @@ const whyIcons = ['pin', 'globe', 'route', 'briefcase'];
       </div>
     </div>
   </section>
+  )}
 
   <!-- Inspiration -->
   <section class="section" aria-labelledby="insp-title">

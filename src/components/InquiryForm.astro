@@ -26,7 +26,11 @@ const productLabel = (() => {
   return '';
 })();
 const summaryTitle = `WellXplore — ${f.title}${productLabel ? `: ${productLabel}` : ''}`;
-const guideLangs = ['English', '中文', 'Deutsch', 'Türkçe', 'Español', 'Français', 'Русский', 'العربية'];
+const guideLangs = [
+  { value: 'en', label: f.langEnglish },
+  { value: 'zh', label: f.langChinese },
+  { value: 'both', label: f.langBoth },
+];
 ---
 <form class="form-card" id={id} data-form="inquiry" data-summary-title={summaryTitle} novalidate>
   {title && <h2>{title}</h2>}
@@ -109,9 +113,26 @@ const guideLangs = ['English', '中文', 'Deutsch', 'Türkçe', 'Español', 'Fra
     <div class:list={['field', { 'span-2': compact }]}>
       <label for={`${id}-guide`}>{f.language}</label>
       <select class="input" id={`${id}-guide`} name="guideLanguage">
-        {guideLangs.map((g, i) => <option selected={(lang === 'zh' && i === 1) || (lang === 'de' && i === 2) || (lang === 'tr' && i === 3) || (lang === 'en' && i === 0)}>{g}</option>)}
+        {guideLangs.map((g) => <option value={g.value} selected={g.value === lang}>{g.label}</option>)}
       </select>
     </div>
+    {!compact && (
+      <>
+        <fieldset class="field span-2 interests">
+          <legend class="label">{f.interests} <span class="hint">({f.optional})</span></legend>
+          <div class="chips" style="margin:6px 0 0">
+            {f.interestOptions.map((o) => <label class="chip chip--check"><input type="checkbox" name="interests" value={o} data-label={f.interests} /> {o}</label>)}
+          </div>
+        </fieldset>
+        <div class="field span-2">
+          <label for={`${id}-budget`}>{f.budget}</label>
+          <select class="input" id={`${id}-budget`} name="budget">
+            <option value="">—</option>
+            {f.budgetOptions.map((o) => <option>{o}</option>)}
+          </select>
+        </div>
+      </>
+    )}
     <div class="field span-2">
       <label for={`${id}-message`}>{f.message} <span class="hint">({f.optional})</span></label>
       <textarea class="input" id={`${id}-message`} name="message" rows="4" data-prefill placeholder={f.messagePlaceholder}></textarea>

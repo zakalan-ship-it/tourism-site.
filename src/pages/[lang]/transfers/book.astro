@@ -1,10 +1,11 @@
 ---
+import ChatButton from '../../../components/ChatButton.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHero from '../../../components/PageHero.astro';
 import Icon from '../../../components/Icon.astro';
 import { fmt, langPaths, pick, url, useTranslations, type Lang } from '../../../i18n';
 import { locationSuggestions, routes, vehicles } from '../../../data/transfers';
-import { site, whatsappLink } from '../../../config/site';
+import { site } from '../../../config/site';
 
 export const getStaticPaths = langPaths;
 const lang = Astro.params.lang as Lang;
@@ -143,7 +144,7 @@ for (let h = 0; h < 24; h++) for (const m of [0, 15, 30, 45]) times.push(`${Stri
         <div class="price-box">
           <h2 style="font-size:1.6rem;color:#fff;margin-bottom:14px">{tr.included}</h2>
           <ul>{tr.includedList.map((i) => <li><Icon name="check" />{i}</li>)}</ul>
-          <a class="btn btn--whatsapp btn--block" href={whatsappLink(tr.bookTitle)} target="_blank" rel="noopener"><Icon name="whatsapp" />{t.common.chatWhatsapp}</a>
+          <ChatButton lang={lang} text={tr.bookTitle} class="btn--block" />
           <a class="btn btn--outline btn--block on-dark" style="margin-top:10px;color:#fff" href={`tel:${site.contact.phoneHref}`}><Icon name="phone" />{site.contact.phoneDisplay}</a>
         </div>
       </aside>

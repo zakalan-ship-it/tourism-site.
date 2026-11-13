@@ -7,7 +7,7 @@ interface Props {
   lang: Lang;
   amount: number | null;
   offer?: Offer;
-  unit?: 'person' | 'vehicle';
+  unit?: 'person' | 'vehicle' | 'group';
   class?: string;
 }
 const { lang, amount, offer, unit = 'person', class: className = '' } = Astro.props;
@@ -21,6 +21,6 @@ const final = amount !== null && offer ? offerPrice(amount, offer.discount) : am
     <small>{t.common.from}</small>
     {offer && <s>{formatPrice(amount, lang)}</s>}
     <strong>{formatPrice(final!, lang)}</strong>
-    <em> {unit === 'person' ? t.common.perPerson : t.common.perVehicle}</em>
+    <em> {unit === 'group' ? t.common.perGroup : unit === 'vehicle' ? t.common.perVehicle : t.common.perPerson}</em>
   </div>
 )}

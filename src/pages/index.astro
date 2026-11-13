@@ -16,7 +16,7 @@ const siteUrl = (Astro.site?.href ?? 'https://www.wellxplore.com/').replace(/\/$
     <meta http-equiv="refresh" content={`2; url=${base}/en/`} />
     <script is:inline define:vars={{ base }}>
       (function () {
-        var supported = ['en', 'zh', 'de', 'tr'];
+        var supported = ['en', 'zh'];
         var lang = null;
         try { lang = localStorage.getItem('wx-lang'); } catch (e) {}
         if (supported.indexOf(lang) === -1) {

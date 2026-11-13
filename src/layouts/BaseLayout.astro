@@ -1,10 +1,19 @@
 ---
+import ChatButton from '../components/ChatButton.astro';
+import WeChatDialog from '../components/WeChatDialog.astro';
+// Fonts are self-hosted (Google Fonts is blocked in mainland China). Chinese text uses system fonts.
+import '@fontsource/manrope/400.css';
+import '@fontsource/manrope/500.css';
+import '@fontsource/manrope/600.css';
+import '@fontsource/manrope/700.css';
+import '@fontsource/cormorant-garamond/500.css';
+import '@fontsource/cormorant-garamond/600.css';
+import '@fontsource/cormorant-garamond/500-italic.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import Icon from '../components/Icon.astro';
 import { asset, languages, langs, switchLangPath, url, useTranslations, type Lang } from '../i18n';
-import { site, whatsappLink } from '../config/site';
+import { site } from '../config/site';
 import { getImage } from '../data/images';
 import { getImage as getAstroImage } from 'astro:assets';
 
@@ -35,7 +44,7 @@ const orgLd = {
   telephone: site.contact.phoneDisplay,
   address: { '@type': 'PostalAddress', streetAddress: site.contact.address.line1, addressLocality: 'Istanbul', addressCountry: 'TR' },
   areaServed: 'TR',
-  availableLanguage: ['en', 'zh', 'de', 'tr'],
+  availableLanguage: ['en', 'zh'],
 };
 const ld = [orgLd, ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [])];
 
@@ -76,9 +85,6 @@ const clientI18n = {
     <link rel="icon" href={asset('/favicon-32.png')} type="image/png" sizes="32x32" />
     <link rel="icon" href={asset('/icon-512.png')} type="image/png" sizes="512x512" />
     <link rel="apple-touch-icon" href={asset('/apple-touch-icon.png')} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <script is:inline>document.documentElement.classList.remove('no-js');</script>
     <script type="application/ld+json" set:html={JSON.stringify(ld)} />
     <script type="application/json" id="i18n-data" set:html={JSON.stringify(clientI18n)} />
@@ -91,7 +97,8 @@ const clientI18n = {
     </main>
     <Footer lang={lang} />
 
-    <a class="wa-float" href={whatsappLink()} target="_blank" rel="noopener" aria-label={t.common.chatWhatsapp}><Icon name="whatsapp" /></a>
+    <ChatButton lang={lang} variant="float" />
+    {lang === 'zh' && <WeChatDialog lang={lang} />}
 
     <div class="cookie" role="dialog" aria-live="polite" aria-label={t.footer.cookieSettings} data-cookie hidden>
       <p>{t.cookie.text} <a href={url(lang, 'cookies')}>{t.cookie.more}</a></p>

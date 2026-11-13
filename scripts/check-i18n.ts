@@ -2,8 +2,6 @@
 // Run: npm run check:i18n
 import en from '../src/i18n/ui/en';
 import zh from '../src/i18n/ui/zh';
-import de from '../src/i18n/ui/de';
-import tr from '../src/i18n/ui/tr';
 import { langs } from '../src/i18n/languages';
 import { destinations, regions } from '../src/data/destinations';
 import { tours } from '../src/data/tours';
@@ -35,7 +33,7 @@ function compare(a: unknown, b: unknown, path: string, lang: string) {
     for (const k of Object.keys(a)) compare((a as any)[k], (b as any)?.[k], path ? `${path}.${k}` : k, lang);
   }
 }
-for (const [lang, dict] of Object.entries({ zh, de, tr })) compare(en, dict, '', lang);
+for (const [lang, dict] of Object.entries({ zh })) compare(en, dict, '', lang);
 
 // 2. Content data: every localised object has all languages, non-empty.
 const isL = (o: any) => o && typeof o === 'object' && !Array.isArray(o) && 'en' in o && Object.keys(o).every((k) => (langs as string[]).includes(k));

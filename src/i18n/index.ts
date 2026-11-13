@@ -1,13 +1,11 @@
 import { languages, type Lang, defaultLang } from './languages';
 import en from './ui/en';
 import zh from './ui/zh';
-import de from './ui/de';
-import tr from './ui/tr';
 import { site } from '../config/site';
 
 export * from './languages';
 
-const dictionaries = { en, zh, de, tr };
+const dictionaries = { en, zh };
 
 export function useTranslations(lang: Lang) {
   return dictionaries[lang] ?? dictionaries[defaultLang];
@@ -24,13 +22,13 @@ export const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
 /** Prefix a root-relative path with the base path: asset('/favicon-32.png'). */
 export const asset = (path: string) => `${base}${path}`;
 
-/** Build a localised URL: url('de', 'tours/x') -> /de/tours/x/ */
+/** Build a localised URL: url('zh', 'tours/x') -> /zh/tours/x/ */
 export function url(lang: Lang, path = '') {
   const clean = path.replace(/^\/+|\/+$/g, '');
   return `${base}/${lang}/${clean ? clean + '/' : ''}`;
 }
 
-/** Path without the base prefix, e.g. '/de/tours/'. */
+/** Path without the base prefix, e.g. '/zh/tours/'. */
 export function stripBase(pathname: string) {
   return base && pathname.startsWith(base) ? pathname.slice(base.length) || '/' : pathname;
 }
