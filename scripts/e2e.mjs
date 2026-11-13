@@ -87,6 +87,29 @@ await test('mobile menu opens and navigates', async () => {
   await page.context().close();
 });
 
+for (const dev of ['iPhone 13', 'iPad Mini']) {
+  await test(`language button works on touch screens (${dev})`, async () => {
+    const page = await newPage({ ...devices[dev] });
+    await page.goto(`${BASE}/en/tours/istanbul-highlights-4-days/`);
+    await page.tap('.lang-switch__btn');
+    const link = page.locator('#lang-menu a[hreflang="tr"]');
+    assert(await link.isVisible(), 'language menu visible after tap');
+    await link.tap();
+    await page.waitForURL('**/tr/tours/istanbul-highlights-4-days/');
+    assert((await page.getAttribute('html', 'lang')) === 'tr', 'page in Turkish');
+    await page.context().close();
+  });
+}
+
+await test('language links inside the mobile menu', async () => {
+  const page = await newPage({ ...devices['iPhone 13'] });
+  await page.goto(`${BASE}/en/destinations/`);
+  await page.tap('[data-menu-toggle]');
+  await page.locator('.mobile-langs a[hreflang="zh-CN"]').tap();
+  await page.waitForURL('**/zh/destinations/');
+  await page.context().close();
+});
+
 console.log('Search & filters');
 await test('home search → filtered tour list', async () => {
   const page = await newPage();

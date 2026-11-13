@@ -97,6 +97,14 @@ const activeKey = activeKeys[section];
           </li>
         ))}
       </ul>
+      <nav class="mobile-langs" aria-label={t.nav.language}>
+        <span class="mobile-langs__label"><Icon name="globe" />{t.nav.language}</span>
+        <div>
+          {langs.map((l) => (
+            <a href={switchLangPath(path, l)} hreflang={languages[l].htmlLang} lang={languages[l].htmlLang} aria-current={l === lang ? 'true' : undefined} data-lang-link={l}>{languages[l].label}</a>
+          ))}
+        </div>
+      </nav>
       <div class="mobile-cta">
         <a class="btn btn--primary" href={url(lang, 'inquiry')}>{t.nav.planTrip}</a>
         <a class="btn btn--whatsapp" href={whatsappLink()} target="_blank" rel="noopener"><Icon name="whatsapp" />{t.common.chatWhatsapp}</a>
