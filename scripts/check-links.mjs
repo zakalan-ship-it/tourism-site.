@@ -20,15 +20,20 @@ const idsOf = (file) => {
   if (!ids.has(file)) ids.set(file, new Set([...readFileSync(file, 'utf8').matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])));
   return ids.get(file);
 };
+const BASE = (process.env.BASE_PATH || '').replace(/\/+$/, '');
 const resolve = (path) => {
-  const clean = decodeURIComponent(path.split('?')[0].split('#')[0]);
+  let clean = decodeURIComponent(path.split('?')[0].split('#')[0]);
+  if (BASE) {
+    if (!clean.startsWith(BASE + '/')) return undefined; // must stay inside the base path
+    clean = clean.slice(BASE.length);
+  }
   const candidates = [join(dist, clean), join(dist, clean, 'index.html')];
   return candidates.find((c) => existsSync(c) && statSync(c).isFile());
 };
 
 for (const file of files) {
   const html = readFileSync(file, 'utf8');
-  const page = '/' + file.slice(dist.length).replace(/index\.html$/, '');
+  const page = BASE + '/' + file.slice(dist.length).replace(/index\.html$/, '');
   for (const m of html.matchAll(/\s(href|src|srcset)="([^"]+)"/g)) {
     const refs = m[1] === 'srcset' ? m[2].split(',').map((s) => s.trim().split(' ')[0]) : [m[2].replace(/&amp;/g, '&')];
     for (let ref of refs) {

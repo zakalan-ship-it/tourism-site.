@@ -1,5 +1,7 @@
 ---
 /** Root: send visitors to their saved or browser language (English by default). */
+import { base, langs, languages } from '../i18n';
+const siteUrl = (Astro.site?.href ?? 'https://www.wellxplore.com/').replace(/\/$/, '') + base;
 ---
 <!doctype html>
 <html lang="en">
@@ -8,31 +10,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>WellXplore — Tours & Travel in Türkiye</title>
     <meta name="robots" content="noindex" />
-    <link rel="canonical" href="https://www.wellxplore.com/en/" />
-    <link rel="alternate" hreflang="en" href="https://www.wellxplore.com/en/" />
-    <link rel="alternate" hreflang="zh-CN" href="https://www.wellxplore.com/zh/" />
-    <link rel="alternate" hreflang="de" href="https://www.wellxplore.com/de/" />
-    <link rel="alternate" hreflang="tr" href="https://www.wellxplore.com/tr/" />
-    <link rel="alternate" hreflang="x-default" href="https://www.wellxplore.com/en/" />
-    <meta http-equiv="refresh" content="2; url=/en/" />
-    <script is:inline>
+    <link rel="canonical" href={`${siteUrl}/en/`} />
+    {langs.map((l) => <link rel="alternate" hreflang={languages[l].htmlLang} href={`${siteUrl}/${l}/`} />)}
+    <link rel="alternate" hreflang="x-default" href={`${siteUrl}/en/`} />
+    <meta http-equiv="refresh" content={`2; url=${base}/en/`} />
+    <script is:inline define:vars={{ base }}>
       (function () {
         var supported = ['en', 'zh', 'de', 'tr'];
         var lang = null;
         try { lang = localStorage.getItem('wx-lang'); } catch (e) {}
         if (supported.indexOf(lang) === -1) {
+          lang = null;
           var prefs = navigator.languages || [navigator.language || 'en'];
           for (var i = 0; i < prefs.length && !lang; i++) {
             var code = String(prefs[i]).slice(0, 2).toLowerCase();
             if (supported.indexOf(code) !== -1) lang = code;
           }
         }
-        location.replace('/' + (lang || 'en') + '/' + location.search + location.hash);
+        location.replace(base + '/' + (lang || 'en') + '/' + location.search + location.hash);
       })();
     </script>
     <style>body{font-family:system-ui,sans-serif;background:#f7f3ec;color:#0f1c24;display:grid;place-items:center;min-height:100vh;margin:0}a{color:#1d6f6b}</style>
   </head>
   <body>
-    <p><a href="/en/">English</a> · <a href="/zh/">简体中文</a> · <a href="/de/">Deutsch</a> · <a href="/tr/">Türkçe</a></p>
+    <p>{langs.map((l, i) => <>{i > 0 && ' · '}<a href={`${base}/${l}/`}>{languages[l].label}</a></>)}</p>
   </body>
 </html>

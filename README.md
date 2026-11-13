@@ -27,8 +27,24 @@ npm run build      # production site in dist/
 npm run preview    # serve dist/ locally
 ```
 
-Deploy by uploading the `dist/` folder, or connect the repository to Netlify, Vercel,
-Cloudflare Pages or GitHub Pages with build command `npm run build` and output folder `dist`.
+Deploy by uploading the `dist/` folder, or connect the repository to Netlify, Vercel or
+Cloudflare Pages with build command `npm run build` and output folder `dist`
+(`netlify.toml` is included).
+
+### GitHub Pages (sub-path)
+
+GitHub Pages serves the site at `https://zakalan-ship-it.github.io/tourism-site./`, so build with
+the base path and publish `dist/` to the `gh-pages` branch:
+
+```bash
+SITE_URL=https://zakalan-ship-it.github.io BASE_PATH=/tourism-site. npm run build
+touch dist/.nojekyll   # lets GitHub serve the _astro/ folder
+```
+
+Then push the contents of `dist/` to the `gh-pages` branch, and in the repository's
+**Settings → Pages** choose *Deploy from a branch*, branch `gh-pages`, folder `/ (root)`.
+To test a sub-path build locally, pass the same `BASE_PATH` to `check:links`, `preview` and
+`BASE_URL=http://localhost:4321/tourism-site. npm run test:e2e`.
 
 ## Before going live — checklist
 

@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { languages, langs, pick, url, switchLangPath, useTranslations, type Lang } from '../i18n';
+import { languages, langs, pick, url, stripBase, switchLangPath, useTranslations, type Lang } from '../i18n';
 import { destinations } from '../data/destinations';
 import { activityCategories } from '../data/activities';
 import { whatsappLink } from '../config/site';
@@ -12,7 +12,7 @@ interface Props {
 const { lang, overlay = false } = Astro.props;
 const t = useTranslations(lang);
 const path = Astro.url.pathname;
-const section = path.split('/')[2] ?? '';
+const section = stripBase(path).split('/')[2] ?? '';
 
 type Item = { label: string; href: string; key: string; children?: { label: string; href: string }[]; all?: { label: string; href: string }; grid?: boolean };
 const items: Item[] = [

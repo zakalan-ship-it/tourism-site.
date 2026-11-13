@@ -18,19 +18,30 @@ export function fmt(template: string, vars: Record<string, string | number> = {}
   return template.replace(/\{(\w+)\}/g, (_, key) => (key in vars ? String(vars[key]) : `{${key}}`));
 }
 
+/** Base path the site is served from ('' at a domain root, '/tourism-site.' on GitHub Pages). */
+export const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
+/** Prefix a root-relative path with the base path: asset('/favicon.svg'). */
+export const asset = (path: string) => `${base}${path}`;
+
 /** Build a localised URL: url('de', 'tours/x') -> /de/tours/x/ */
 export function url(lang: Lang, path = '') {
   const clean = path.replace(/^\/+|\/+$/g, '');
-  return `/${lang}/${clean ? clean + '/' : ''}`;
+  return `${base}/${lang}/${clean ? clean + '/' : ''}`;
+}
+
+/** Path without the base prefix, e.g. '/de/tours/'. */
+export function stripBase(pathname: string) {
+  return base && pathname.startsWith(base) ? pathname.slice(base.length) || '/' : pathname;
 }
 
 /** The same page in another language. */
 export function switchLangPath(pathname: string, target: Lang) {
-  const parts = pathname.split('/');
+  const parts = stripBase(pathname).split('/');
   // Pages outside the language tree (e.g. the 404 page) link to each language's home page.
-  if (!parts[1] || !(parts[1] in languages)) return `/${target}/`;
+  if (!parts[1] || !(parts[1] in languages)) return `${base}/${target}/`;
   parts[1] = target;
-  return parts.join('/');
+  return base + parts.join('/');
 }
 
 export function formatPrice(amount: number, lang: Lang, currency: string = site.currency) {
