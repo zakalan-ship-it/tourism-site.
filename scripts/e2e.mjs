@@ -132,6 +132,20 @@ await test('English pages keep WhatsApp', async () => {
   await page.context().close();
 });
 
+await test('floating chat button is not covered by anything (e.g. a host badge)', async () => {
+  for (const [label, opts] of [['phone', { ...devices['iPhone 13'] }], ['desktop', {}]]) {
+    const page = await newPage(opts);
+    await page.goto(`${BASE}/en/`, { waitUntil: 'networkidle' });
+    const covered = await page.evaluate(() => {
+      const el = document.querySelector('.wa-float'); const r = el.getBoundingClientRect();
+      const top = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+      return !(top === el || el.contains(top));
+    });
+    assert(!covered, `chat button covered on ${label}`);
+    await page.context().close();
+  }
+});
+
 console.log('Search & filters');
 await test('home search → filtered tour list', async () => {
   const page = await newPage();

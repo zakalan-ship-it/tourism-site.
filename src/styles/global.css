@@ -683,7 +683,7 @@ textarea.input { min-height: 120px; resize: vertical; }
 @media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr 1fr; } .footer-contact { grid-column: 1 / -1; } }
 
 /* ---------------------------------------------------------------- Floating WhatsApp + cookie banner */
-.wa-float { position: fixed; z-index: 90; right: 20px; bottom: 20px; width: 58px; height: 58px; border-radius: 50%; background: #137a3d; color: #fff; display: grid; place-items: center; box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.4); transition: transform 0.25s var(--ease); }
+.wa-float { position: fixed; z-index: 90; right: 20px; bottom: 84px; /* clears Netlify's 64px corner badge */ width: 58px; height: 58px; border-radius: 50%; background: #137a3d; color: #fff; display: grid; place-items: center; box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.4); transition: transform 0.25s var(--ease); }
 .wa-float:hover { transform: scale(1.07); }
 .wa-float svg { width: 30px; height: 30px; }
 .cookie { position: fixed; z-index: 120; left: 20px; bottom: 20px; max-width: 440px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 22px; box-shadow: var(--shadow); font-size: 0.88rem; }
@@ -693,7 +693,7 @@ textarea.input { min-height: 120px; resize: vertical; }
 .cookie__prefs { display: grid; gap: 10px; margin: 0 0 16px; padding: 14px; background: var(--ivory); border-radius: 12px; }
 .cookie__prefs[hidden] { display: none; }
 .cookie__prefs small { display: block; color: var(--muted); }
-@media (max-width: 520px) { .cookie { left: 12px; right: 12px; bottom: 12px; max-width: none; } .wa-float { bottom: 16px; right: 16px; width: 52px; height: 52px; } }
+@media (max-width: 520px) { .cookie { left: 12px; right: 12px; bottom: 76px; max-width: none; } .wa-float { bottom: 80px; right: 16px; width: 52px; height: 52px; } }
 
 /* ---------------------------------------------------------------- Reveal on scroll */
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
