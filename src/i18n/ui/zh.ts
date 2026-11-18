@@ -162,6 +162,7 @@ const zh: UI = {
     guidesNote: '根据您的出行日期，由 Özlem 或 Mesut 亲自为您导游。旺季时可能由我们信赖的持证合作导游带团——我们一定会在预订前告知您。',
     guidesCta: '阅读我们的故事',
     photoSoon: '照片即将上线',
+    realPhotoCaption: 'Özlem 带领中国游客团在竞技场广场，背后是蓝色清真寺。',
     licenceNo: '导游证编号',
     mixedGroups: '我们两人都能用中文和英语带团。人数较多、中英文混合的团队，我们可以一起带领。',
     destinationsEyebrow: '目的地',

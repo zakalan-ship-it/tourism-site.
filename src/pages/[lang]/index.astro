@@ -101,6 +101,10 @@ const whyIcons = ['pin', 'globe', 'route', 'briefcase'];
       <div class="guides-intro">
         {orderedGuides.map((g) => <GuideCard guide={g} lang={lang} />)}
       </div>
+      <figure class="real-photo reveal">
+        <Img image="ozlem-group-hippodrome" alt={h.realPhotoCaption} sizes="(max-width: 1280px) 100vw, 1240px" widths={[600, 1000, 1500]} />
+        <figcaption>{h.realPhotoCaption}</figcaption>
+      </figure>
       <p class="guides-note"><Icon name="users" />{h.mixedGroups}</p>
     </div>
   </section>

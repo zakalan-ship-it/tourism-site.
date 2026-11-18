@@ -160,6 +160,7 @@ const en = {
     guidesNote: 'Depending on your dates, Mesut or Özlem will guide you. In our busiest weeks a trusted licensed partner guide may lead a tour — we always tell you before you book.',
     guidesCta: 'Read our story',
     photoSoon: 'Photo coming soon',
+    realPhotoCaption: 'Özlem guiding a group of Chinese guests at the Hippodrome, in front of the Blue Mosque.',
     licenceNo: 'Guide licence no.',
     mixedGroups: 'We both guide in English and Mandarin. Travelling as a larger mixed English- and Chinese-speaking group? We can guide together.',
     destinationsEyebrow: 'Destinations',

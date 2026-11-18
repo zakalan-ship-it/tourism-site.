@@ -24,8 +24,8 @@ export const tours: Tour[] = [
     destinations: ['istanbul'],
     // Topkapı closes on Tuesdays and the Grand Bazaar on Sundays.
     departures: { from: '2026-11-18', to: '2027-12-31', weekdays: [1, 3, 4, 5, 6] },
-    image: 'istanbul-hagia-sophia',
-    gallery: ['istanbul-blue-mosque', 'topkapi', 'grand-bazaar'],
+    image: 'ozlem-group-hippodrome',
+    gallery: ['istanbul-hagia-sophia', 'topkapi', 'grand-bazaar'],
     title: { en: 'Istanbul Old City — Private Chinese-Speaking Guide (1 Day)', zh: '伊斯坦布尔老城一日游 · 私人中文导游' },
     summary: {
       en: 'Hagia Sophia, the Blue Mosque, Topkapı Palace, the Basilica Cistern and the Grand Bazaar with your own licensed Mandarin-speaking guide.',
