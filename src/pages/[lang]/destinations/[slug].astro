@@ -8,7 +8,7 @@ import ActivityCard from '../../../components/ActivityCard.astro';
 import DestinationCard from '../../../components/DestinationCard.astro';
 import { fmt, langs, pick, url, useTranslations, type Lang } from '../../../i18n';
 import { destinations, regions } from '../../../data/destinations';
-import { tours } from '../../../data/tours';
+import { toursFor } from '../../../data/tours';
 import { activities } from '../../../data/activities';
 import type { Destination } from '../../../data/types';
 
@@ -19,7 +19,7 @@ const { destination: d } = Astro.props as { destination: Destination };
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 const name = pick(d.name, lang);
-const dTours = tours.filter((x) => x.destinations.includes(d.slug));
+const dTours = toursFor(lang).filter((x) => x.destinations.includes(d.slug));
 const dActs = activities.filter((a) => a.destination === d.slug);
 const others = destinations.filter((x) => x.slug !== d.slug && x.region === d.region).concat(destinations.filter((x) => x.region !== d.region)).slice(0, 4);
 const gallery = d.gallery?.length ? d.gallery.slice(0, 2) : [];

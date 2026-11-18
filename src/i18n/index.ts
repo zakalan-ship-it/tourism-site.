@@ -1,4 +1,4 @@
-import { languages, type Lang, defaultLang } from './languages';
+import { languages, langs, type Lang, defaultLang } from './languages';
 import en from './ui/en';
 import zh from './ui/zh';
 import { site } from '../config/site';
@@ -33,6 +33,14 @@ export function stripBase(pathname: string) {
   return base && pathname.startsWith(base) ? pathname.slice(base.length) || '/' : pathname;
 }
 
+/**
+ * Link to this page in another language. If the page does not exist in that language
+ * (e.g. a Chinese-only tour), link to the fallback section instead (default: the tour list).
+ */
+export function langHref(pathname: string, target: Lang, available: readonly Lang[] = langs, fallback = 'tours') {
+  return available.includes(target) ? switchLangPath(pathname, target) : url(target, fallback);
+}
+
 /** The same page in another language. */
 export function switchLangPath(pathname: string, target: Lang) {
   const parts = stripBase(pathname).split('/');
@@ -46,6 +54,7 @@ export function formatPrice(amount: number, lang: Lang, currency: string = site.
   return new Intl.NumberFormat(languages[lang].htmlLang, {
     style: 'currency',
     currency,
+    currencyDisplay: 'narrowSymbol',
     maximumFractionDigits: 0,
   }).format(amount);
 }

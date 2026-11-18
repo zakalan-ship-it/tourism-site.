@@ -67,7 +67,7 @@ export const vehicles: Vehicle[] = [
 const ist: L = { en: 'Istanbul Airport (IST)', zh: '伊斯坦布尔机场（IST）' };
 const saw: L = { en: 'Sabiha Gökçen Airport (SAW)', zh: '萨比哈·格克琴机场（SAW）' };
 
-/** PRICES ARE PLACEHOLDERS — one-way price per vehicle in site.currency. */
+/** PRICES ARE PLACEHOLDERS — one-way price per vehicle in site.currency (USD). */
 export const routes: TransferRoute[] = [
   {
     id: 'ist-sultanahmet',
@@ -75,7 +75,7 @@ export const routes: TransferRoute[] = [
     from: ist,
     to: { en: 'Sultanahmet / Old City', zh: '苏丹艾哈迈德 / 老城' },
     durationMin: 50,
-    prices: { sedan: 55, van: 65, vip: 90, minibus: 110 },
+    prices: { sedan: 60, van: 70, vip: 100, minibus: 120 },
   },
   {
     id: 'ist-taksim',
@@ -83,7 +83,7 @@ export const routes: TransferRoute[] = [
     from: ist,
     to: { en: 'Taksim / Beyoğlu', zh: '塔克西姆 / 贝伊奥卢' },
     durationMin: 45,
-    prices: { sedan: 50, van: 60, vip: 85, minibus: 105 },
+    prices: { sedan: 55, van: 65, vip: 95, minibus: 115 },
   },
   {
     id: 'saw-sultanahmet',
@@ -91,7 +91,7 @@ export const routes: TransferRoute[] = [
     from: saw,
     to: { en: 'Sultanahmet / Old City', zh: '苏丹艾哈迈德 / 老城' },
     durationMin: 60,
-    prices: { sedan: 60, van: 70, vip: 95, minibus: 120 },
+    prices: { sedan: 65, van: 75, vip: 105, minibus: 130 },
   },
   {
     id: 'cappadocia-airports',
@@ -99,7 +99,7 @@ export const routes: TransferRoute[] = [
     from: { en: 'Kayseri (ASR) or Nevşehir (NAV) Airport', zh: '开塞利（ASR）或内夫谢希尔（NAV）机场' },
     to: { en: 'Göreme / Uçhisar / Ürgüp hotels', zh: '格雷梅 / 乌奇希萨 / 于尔居普酒店' },
     durationMin: 60,
-    prices: { sedan: 60, van: 70, vip: 95, minibus: 115 },
+    prices: { sedan: 65, van: 75, vip: 105, minibus: 125 },
   },
   {
     id: 'ayt-antalya',
@@ -107,7 +107,7 @@ export const routes: TransferRoute[] = [
     from: { en: 'Antalya Airport (AYT)', zh: '安塔利亚机场（AYT）' },
     to: { en: 'Antalya city / Kaleiçi', zh: '安塔利亚市区 / 卡莱伊奇' },
     durationMin: 25,
-    prices: { sedan: 35, van: 40, vip: 60, minibus: 75 },
+    prices: { sedan: 40, van: 45, vip: 65, minibus: 80 },
   },
   {
     id: 'adb-kusadasi',
@@ -115,7 +115,7 @@ export const routes: TransferRoute[] = [
     from: { en: 'Izmir Airport (ADB)', zh: '伊兹密尔机场（ADB）' },
     to: { en: 'Kuşadası / Selçuk (Ephesus)', zh: '库沙达瑟 / 塞尔丘克（以弗所）' },
     durationMin: 60,
-    prices: { sedan: 65, van: 75, vip: 100, minibus: 125 },
+    prices: { sedan: 70, van: 80, vip: 110, minibus: 140 },
   },
   {
     id: 'istanbul-bursa',
@@ -123,7 +123,7 @@ export const routes: TransferRoute[] = [
     from: { en: 'Istanbul (any hotel)', zh: '伊斯坦布尔（任意酒店）' },
     to: { en: 'Bursa city centre', zh: '布尔萨市中心' },
     durationMin: 150,
-    prices: { sedan: 170, van: 190, vip: 240, minibus: 290 },
+    prices: { sedan: 185, van: 210, vip: 265, minibus: 320 },
   },
   {
     id: 'istanbul-canakkale',
@@ -131,7 +131,7 @@ export const routes: TransferRoute[] = [
     from: { en: 'Istanbul (any hotel)', zh: '伊斯坦布尔（任意酒店）' },
     to: { en: 'Çanakkale / Gallipoli', zh: '恰纳卡莱 / 加里波利' },
     durationMin: 270,
-    prices: { sedan: 280, van: 310, vip: 380, minibus: 450 },
+    prices: { sedan: 310, van: 340, vip: 420, minibus: 495 },
   },
   {
     id: 'istanbul-port',
@@ -139,7 +139,7 @@ export const routes: TransferRoute[] = [
     from: { en: 'Galataport cruise terminal', zh: '加拉塔港邮轮码头' },
     to: { en: 'Any Istanbul hotel', zh: '伊斯坦布尔任意酒店' },
     durationMin: 25,
-    prices: { sedan: 35, van: 45, vip: 65, minibus: 80 },
+    prices: { sedan: 40, van: 50, vip: 70, minibus: 90 },
   },
 ];
 

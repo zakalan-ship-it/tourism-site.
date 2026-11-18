@@ -5,7 +5,7 @@ import Img from '../../components/Img.astro';
 import Icon from '../../components/Icon.astro';
 import Price from '../../components/Price.astro';
 import { daysLabel, formatPrice, hoursLabel, langPaths, pick, url, useTranslations, type Lang } from '../../i18n';
-import { tours } from '../../data/tours';
+import { toursFor } from '../../data/tours';
 import { activities } from '../../data/activities';
 import { routes, vehicles } from '../../data/transfers';
 import { getDestination } from '../../data/destinations';
@@ -32,7 +32,7 @@ const cheapest = (prices: Partial<Record<string, number>>) => Math.min(...Object
           <span class="eyebrow">{c.collection}</span>
           <h2 style="margin-bottom:10px">{c.toursSection}</h2>
           {categories.map((cat) => {
-            const list = tours.filter((x) => x.category === cat);
+            const list = toursFor(lang).filter((x) => x.category === cat);
             return list.length > 0 && (
               <div style="margin-top:28px">
                 <h3 style="color:var(--gold-text);text-transform:uppercase;letter-spacing:.14em;font-size:.8rem">{t.tourCategory[cat]}</h3>

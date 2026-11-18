@@ -4,15 +4,16 @@ import Icon from './Icon.astro';
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo-header.png';
 import logoLight from '../assets/brand/logo-header-light.png';
-import { languages, langs, pick, url, stripBase, switchLangPath, useTranslations, type Lang } from '../i18n';
+import { languages, langs, pick, url, stripBase, langHref, useTranslations, type Lang } from '../i18n';
 import { destinations } from '../data/destinations';
 import { activityCategories } from '../data/activities';
 
 interface Props {
   lang: Lang;
   overlay?: boolean;
+  availableLangs?: Lang[];
 }
-const { lang, overlay = false } = Astro.props;
+const { lang, overlay = false, availableLangs = langs } = Astro.props;
 const t = useTranslations(lang);
 const path = Astro.url.pathname;
 const section = stripBase(path).split('/')[2] ?? '';
@@ -104,7 +105,7 @@ const activeKey = activeKeys[section];
         <span class="mobile-langs__label"><Icon name="globe" />{t.nav.language}</span>
         <div>
           {langs.map((l) => (
-            <a href={switchLangPath(path, l)} hreflang={languages[l].htmlLang} lang={languages[l].htmlLang} aria-current={l === lang ? 'true' : undefined} data-lang-link={l}>{languages[l].label}</a>
+            <a href={langHref(path, l, availableLangs)} hreflang={languages[l].htmlLang} lang={languages[l].htmlLang} aria-current={l === lang ? 'true' : undefined} data-lang-link={l}>{languages[l].label}</a>
           ))}
         </div>
       </nav>
@@ -123,7 +124,7 @@ const activeKey = activeKeys[section];
         <ul class="dropdown lang-switch__menu" id="lang-menu">
           {langs.map((l) => (
             <li>
-              <a href={switchLangPath(path, l)} hreflang={languages[l].htmlLang} lang={languages[l].htmlLang} aria-current={l === lang ? 'true' : undefined} data-lang-link={l}>
+              <a href={langHref(path, l, availableLangs)} hreflang={languages[l].htmlLang} lang={languages[l].htmlLang} aria-current={l === lang ? 'true' : undefined} data-lang-link={l}>
                 {languages[l].label}
               </a>
             </li>

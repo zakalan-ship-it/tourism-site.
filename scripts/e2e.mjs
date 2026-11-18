@@ -146,6 +146,27 @@ await test('floating chat button is not covered by anything (e.g. a host badge)'
   }
 });
 
+await test('Chinese-only guide tours: listed on /zh/ only, date rules, safe language switch', async () => {
+  const page = await newPage();
+  await page.goto(`${BASE}/zh/`);
+  const homeTours = await page.locator('[aria-labelledby="tours-title"] h3 a').evaluateAll((a) => a.map((x) => x.getAttribute('href')));
+  assert(homeTours[0].includes('istanbul-old-city-private-guide-day'), 'old-city guide day leads the Chinese homepage');
+  await page.goto(`${BASE}/en/tours/`);
+  assert((await page.locator('a[href*="istanbul-old-city-private-guide-day"]').count()) === 0, 'not listed in English');
+  await page.goto(`${BASE}/zh/tours/istanbul-old-city-private-guide-day/`);
+  assert((await page.textContent('.price-box')).includes('$250'), 'price $250');
+  await page.fill('#date-check', '2027-06-08'); // Tuesday — Topkapı closed
+  await page.dispatchEvent('#date-check', 'change');
+  assert((await page.getAttribute('[data-date-result]', 'class')).includes('is-no'), 'Tuesday rejected');
+  await page.fill('#date-check', '2027-06-09'); // Wednesday
+  await page.dispatchEvent('#date-check', 'change');
+  assert((await page.getAttribute('[data-date-result]', 'class')).includes('is-ok'), 'Wednesday accepted');
+  await page.click('.lang-switch__btn');
+  await page.click('#lang-menu a[hreflang="en"]');
+  await page.waitForURL('**/en/tours/');
+  await page.context().close();
+});
+
 console.log('Search & filters');
 await test('home search → filtered tour list', async () => {
   const page = await newPage();

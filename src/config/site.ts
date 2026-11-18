@@ -44,7 +44,7 @@ export const site = {
   },
 
   /** Currency used for all displayed prices. */
-  currency: 'EUR',
+  currency: 'USD',
 
   forms: {
     /**

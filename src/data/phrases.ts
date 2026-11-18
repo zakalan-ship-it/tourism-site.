@@ -27,6 +27,11 @@ export const phrases: Record<string, L> = {
   insurance: { en: 'Activity insurance', zh: '活动保险' },
   flightCertificate: { en: 'Flight certificate and celebration drink', zh: '飞行证书及庆祝饮品' },
 
+  guideOnly8h: { en: 'Your private licensed Mandarin-speaking guide (Mesut or Özlem) for about 8 hours', zh: '专属持证中文导游（Mesut 或 Özlem）全程讲解，约8小时' },
+  guideOnly2d: { en: 'Your private licensed Mandarin-speaking guide (Mesut or Özlem) for 2 days, about 8 hours a day', zh: '专属持证中文导游（Mesut 或 Özlem）两天全程讲解，每天约8小时' },
+  ticketAdvice: { en: 'Advice on buying entrance tickets online in advance, and timing to avoid the longest queues', zh: '协助提前在线购买门票，并合理安排时间避开长队' },
+  transportGuidance: { en: 'Your guide travels with you by tram, ferry and on foot', zh: '导游陪同您乘坐电车、渡轮并步行游览' },
+  restaurantTips: { en: 'Recommendations for local restaurants — no tourist-factory restaurants', zh: '推荐地道本地餐厅——不去团餐“工厂”餐厅' },
   // Not included
   intlFlights: { en: 'International flights', zh: '国际机票' },
   visa: { en: 'Visa fees (where required)', zh: '签证费（如需）' },
@@ -40,6 +45,11 @@ export const phrases: Record<string, L> = {
   domesticFlightsExcluded: { en: 'Flights to and from Cappadocia (we can book them for you)', zh: '往返卡帕多奇亚的机票（可代为预订）' },
   entrancesExcluded: { en: 'Museum and site entrance fees (paid locally, your guide arranges tickets)', zh: '博物馆及景点门票（当地支付，导游协助购票）' },
 
+  entranceTickets: { en: 'Entrance tickets (bought by you; your guide helps you buy them online in advance)', zh: '景点门票（由您自行购买，导游协助提前在线购票）' },
+  guideTips: { en: 'Tips for your guide (optional)', zh: '导游小费（自愿）' },
+  mealsExcluded: { en: 'Meals and drinks', zh: '餐饮' },
+  publicTransport: { en: 'Public transport fares (tram, ferry; about $1–2 per ride) and taxis', zh: '公共交通费用（电车、渡轮，每次约1–2美元）及出租车费' },
+  extraGuests: { en: 'Groups of more than 6, or more than 8 hours: price on request', zh: '超过6人或超过8小时：价格另询' },
   // Important
   passport: { en: 'Passports must be valid for at least 6 months from your arrival date.', zh: '护照有效期自入境之日起须至少6个月。' },
   orderMayChange: { en: 'The order of visits may change for operational or weather reasons; all listed visits are kept.', zh: '因运营或天气原因，参观顺序可能调整，但所列景点均会安排。' },
@@ -50,6 +60,9 @@ export const phrases: Record<string, L> = {
   childrenPolicy: { en: 'Children under 2 travel free; ages 2–11 receive a discount when sharing with two adults.', zh: '2岁以下儿童免费；2–11岁儿童与两名成人同住可享优惠。' },
   minAge: { en: 'Minimum age 12; participants must be in good health.', zh: '最低年龄12岁；参与者须身体健康。' },
   priceSeason: { en: 'Prices vary by season and hotel category; we confirm the exact price in our quote.', zh: '价格因季节和酒店档次而异，我们会在报价中确认具体价格。' },
+  closedTopkapi: { en: 'Topkapı Palace is closed on Tuesdays and the Grand Bazaar on Sundays — choose Monday or Wednesday to Saturday for this day.', zh: '托普卡帕宫周二闭馆，大巴扎周日休市——此日行程请选择周一或周三至周六。' },
+  closedDolmabahce: { en: 'Dolmabahçe Palace is closed on Mondays, so day 2 runs Tuesday to Sunday.', zh: '多尔玛巴赫切宫周一闭馆，第二天行程安排在周二至周日。' },
+  hagiaSophiaVisit: { en: 'Hagia Sophia is an active mosque: visitors enter the upper gallery with a paid ticket and it may close at prayer times.', zh: '圣索菲亚现为清真寺：游客需购票进入二楼参观廊，礼拜时间可能暂停开放。' },
 };
 
 /** Resolve a phrase key or an inline localised string. */

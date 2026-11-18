@@ -4,18 +4,19 @@ import PageHero from '../../../components/PageHero.astro';
 import TourCard from '../../../components/TourCard.astro';
 import Icon from '../../../components/Icon.astro';
 import { formatPrice, fmt, langPaths, pick, url, useTranslations, type Lang } from '../../../i18n';
-import { tours } from '../../../data/tours';
+import { toursFor } from '../../../data/tours';
 import { destinations } from '../../../data/destinations';
 
 export const getStaticPaths = langPaths;
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
+const list = toursFor(lang);
 const f = t.filters;
-const maxPrice = Math.ceil(Math.max(...tours.map((x) => x.priceFrom ?? 0)) / 100) * 100;
+const maxPrice = Math.ceil(Math.max(...list.map((x) => x.priceFrom ?? 0)) / 100) * 100;
 const ld = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  itemListElement: tours.map((x, i) => ({ '@type': 'ListItem', position: i + 1, url: new URL(url(lang, `tours/${x.slug}`), Astro.site).href, name: pick(x.title, lang) })),
+  itemListElement: list.map((x, i) => ({ '@type': 'ListItem', position: i + 1, url: new URL(url(lang, `tours/${x.slug}`), Astro.site).href, name: pick(x.title, lang) })),
 };
 ---
 <BaseLayout lang={lang} title={t.nav.allTours} description={`${t.home.toursText} ${t.meta.siteTagline}.`} image="pamukkale" jsonLd={ld}>
@@ -81,7 +82,7 @@ const ld = {
 
       <div>
         <div class="listing__bar">
-          <p class="listing__count" data-count aria-live="polite">{fmt(t.common.results, { n: tours.length })}</p>
+          <p class="listing__count" data-count aria-live="polite">{fmt(t.common.results, { n: list.length })}</p>
           <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
             <button class="btn btn--outline btn--sm filters-toggle" type="button" data-filter-open aria-controls="tour-filters" aria-expanded="false"><Icon name="filter" />{f.show}</button>
             <div class="field">
@@ -96,7 +97,7 @@ const ld = {
           </div>
         </div>
         <div class="listing__grid" data-filter-list>
-          {tours.map((x) => <TourCard tour={x} lang={lang} filterable headingLevel="h2" />)}
+          {list.map((x) => <TourCard tour={x} lang={lang} filterable headingLevel="h2" />)}
         </div>
         <div class="empty-state" data-empty hidden>
           <Icon name="compass" />

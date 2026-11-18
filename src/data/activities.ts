@@ -21,7 +21,7 @@ export const activities: Activity[] = [
     destination: 'istanbul',
     featured: true,
     hours: 3.5,
-    priceFrom: 55,
+    priceFrom: 60,
     image: 'istanbul-hagia-sophia',
     title: { en: 'Hagia Sophia & Blue Mosque Walking Tour', zh: '圣索菲亚与蓝色清真寺徒步游' },
     summary: {
@@ -43,7 +43,7 @@ export const activities: Activity[] = [
     category: 'historical',
     destination: 'istanbul',
     hours: 4,
-    priceFrom: 75,
+    priceFrom: 80,
     image: 'topkapi',
     title: { en: 'Topkapı Palace & Basilica Cistern', zh: '托普卡帕宫与地下水宫' },
     summary: {
@@ -66,7 +66,7 @@ export const activities: Activity[] = [
     destination: 'istanbul',
     featured: true,
     hours: 2.5,
-    priceFrom: 45,
+    priceFrom: 50,
     image: 'istanbul-skyline',
     offer: { discount: 20, validUntil: '2027-03-31' },
     title: { en: 'Bosphorus Sunset Cruise', zh: '博斯普鲁斯日落游船' },
@@ -86,7 +86,7 @@ export const activities: Activity[] = [
     category: 'bosphorus',
     destination: 'istanbul',
     hours: 3.5,
-    priceFrom: 85,
+    priceFrom: 95,
     image: 'bosphorus-ferry',
     title: { en: 'Bosphorus Dinner Cruise with Show', zh: '博斯普鲁斯晚餐游船及表演' },
     summary: {
@@ -106,7 +106,7 @@ export const activities: Activity[] = [
     destination: 'istanbul',
     featured: true,
     hours: 4,
-    priceFrom: 89,
+    priceFrom: 100,
     image: 'breakfast',
     title: { en: 'Two Continents Food Tour', zh: '两大洲美食之旅' },
     summary: {
@@ -152,7 +152,7 @@ export const activities: Activity[] = [
     category: 'private',
     destination: 'istanbul',
     hours: 8,
-    priceFrom: 220,
+    priceFrom: 250,
     priceUnit: 'group',
     image: 'istanbul-mosque-dusk',
     title: { en: 'Private Guide in Istanbul', zh: '伊斯坦布尔私人导游' },
@@ -161,8 +161,8 @@ export const activities: Activity[] = [
       zh: '聘请持证导游半天或全天，可选配车辆。',
     },
     description: {
-      en: 'Mesut (English) or Özlem (Mandarin) as your own guide, for exactly the places you want to see. Perfect for photographers, families and repeat visitors.',
-      zh: '由 Özlem（中文）或 Mesut（英语）担任您的专属导游，只带您去想看的地方。非常适合摄影爱好者、家庭和回访游客。',
+      en: 'Mesut or Özlem as your own guide, in English or Mandarin, for exactly the places you want to see. Perfect for photographers, families and repeat visitors.',
+      zh: '由 Mesut 或 Özlem 担任您的专属导游，中英文均可，只带您去想看的地方。非常适合摄影爱好者、家庭和回访游客。',
     },
     includes: ['privateGuide', { en: 'Optional private vehicle and driver', zh: '可选私人车辆及司机' }],
     meetingPoint: { en: 'Your hotel or any address in Istanbul', zh: '您的酒店或伊斯坦布尔任意地址' },
@@ -172,7 +172,7 @@ export const activities: Activity[] = [
     category: 'shopping',
     destination: 'istanbul',
     hours: 3,
-    priceFrom: 40,
+    priceFrom: 45,
     image: 'grand-bazaar',
     title: { en: 'Grand Bazaar & Artisan Shopping Walk', zh: '大巴扎与手工艺购物漫步' },
     summary: {
@@ -195,7 +195,7 @@ export const activities: Activity[] = [
     destination: 'antalya',
     featured: true,
     hours: 8,
-    priceFrom: 60,
+    priceFrom: 65,
     image: 'rafting',
     title: { en: 'Köprülü Canyon Rafting', zh: '科普鲁吕峡谷漂流' },
     summary: {
@@ -217,7 +217,7 @@ export const activities: Activity[] = [
     category: 'adventure',
     destination: 'cappadocia',
     hours: 2,
-    priceFrom: 50,
+    priceFrom: 55,
     image: 'goreme',
     title: { en: 'Cappadocia ATV Sunset Ride', zh: '卡帕多奇亚日落全地形车' },
     summary: {
@@ -236,7 +236,7 @@ export const activities: Activity[] = [
     category: 'family',
     destination: 'antalya',
     hours: 6,
-    priceFrom: 70,
+    priceFrom: 75,
     image: 'duden',
     title: { en: 'Antalya Family Day: Waterfalls, Old Town & Beach', zh: '安塔利亚亲子日：瀑布、老城与海滩' },
     summary: {
@@ -258,7 +258,7 @@ export const activities: Activity[] = [
     category: 'cultural',
     destination: 'istanbul',
     hours: 2,
-    priceFrom: 60,
+    priceFrom: 65,
     image: 'hammam',
     title: { en: 'Traditional Turkish Hammam', zh: '传统土耳其浴' },
     summary: {

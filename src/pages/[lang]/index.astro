@@ -11,7 +11,7 @@ import VehicleIcon from '../../components/VehicleIcon.astro';
 import Newsletter from '../../components/Newsletter.astro';
 import { hoursLabel, langPaths, pick, url, useTranslations, type Lang } from '../../i18n';
 import { destinations } from '../../data/destinations';
-import { tours } from '../../data/tours';
+import { tours, toursFor } from '../../data/tours';
 import { activities } from '../../data/activities';
 import { vehicles } from '../../data/transfers';
 import { testimonials, inspiration } from '../../data/content';
@@ -25,13 +25,15 @@ const h = t.home;
 
 const slides = ['istanbul-skyline', 'cappadocia-balloons', 'pamukkale', 'kas-beach'];
 const featuredDest = destinations.filter((d) => d.featured).slice(0, 5);
-const popular = tours.filter((x) => x.featured).slice(0, 3);
+const lt = toursFor(lang);
+// Chinese-only products (e.g. guide-only Istanbul days) lead the Chinese homepage.
+const popular = [...lt.filter((x) => x.langs?.length === 1 && x.langs[0] === lang), ...lt.filter((x) => x.featured && !x.langs)].slice(0, 3);
 const offerItems = [
-  ...tours.filter((x) => x.offer).map((x) => ({ kind: 'tour' as const, item: x })),
+  ...lt.filter((x) => x.offer).map((x) => ({ kind: 'tour' as const, item: x })),
   ...activities.filter((x) => x.offer).map((x) => ({ kind: 'activity' as const, item: x })),
 ].slice(0, 3);
 const istanbulActs = activities.filter((a) => a.destination === 'istanbul').slice(0, 4);
-const cultural = tours.filter((x) => (x.category === 'historical' || x.category === 'cultural') && !popular.includes(x)).slice(0, 3);
+const cultural = lt.filter((x) => (x.category === 'historical' || x.category === 'cultural') && !popular.includes(x)).slice(0, 3);
 const trustIcons = ['award', 'bag', 'users', 'route'];
 // Chinese visitors meet their Chinese-speaking guide first.
 const orderedGuides = lang === 'zh' ? [...guides].reverse() : guides;

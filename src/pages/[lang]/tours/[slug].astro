@@ -8,13 +8,13 @@ import Price from '../../../components/Price.astro';
 import TourCard from '../../../components/TourCard.astro';
 import InquiryForm from '../../../components/InquiryForm.astro';
 import { daysLabel, fmt, formatDate, joinList, langs, nightsLabel, pick, url, useTranslations, type Lang } from '../../../i18n';
-import { tours, offerPrice } from '../../../data/tours';
+import { toursFor, offerPrice } from '../../../data/tours';
 import { getDestination } from '../../../data/destinations';
 import { phrase } from '../../../data/phrases';
 import type { Tour } from '../../../data/types';
 
 export function getStaticPaths() {
-  return langs.flatMap((lang) => tours.map((tour) => ({ params: { lang, slug: tour.slug }, props: { tour } })));
+  return langs.flatMap((lang) => toursFor(lang).map((tour) => ({ params: { lang, slug: tour.slug }, props: { tour } })));
 }
 const { tour } = Astro.props as { tour: Tour };
 const lang = Astro.params.lang as Lang;
@@ -25,7 +25,7 @@ const places = tour.destinations.map((d) => getDestination(d)).filter((d) => !!d
 const durationText = tour.nights > 0 ? `${daysLabel(lang, tour.days)} / ${nightsLabel(lang, tour.nights)}` : daysLabel(lang, tour.days);
 const mealName = { B: tt.mealB, L: tt.mealL, D: tt.mealD };
 const gallery = [tour.image, ...(tour.gallery ?? [])].slice(0, 3);
-const related = tours
+const related = toursFor(lang)
   .filter((x) => x.slug !== tour.slug)
   .map((x) => ({ x, score: x.destinations.filter((d) => tour.destinations.includes(d)).length + (x.category === tour.category ? 1 : 0) }))
   .sort((a, b) => b.score - a.score)
@@ -58,7 +58,7 @@ const ld = {
 };
 const waText = `${t.tour.inquireTitle}: ${title}`;
 ---
-<BaseLayout lang={lang} title={title} description={pick(tour.summary, lang)} image={tour.image} jsonLd={ld}>
+<BaseLayout lang={lang} availableLangs={tour.langs} title={title} description={pick(tour.summary, lang)} image={tour.image} jsonLd={ld}>
   <PageHero lang={lang} title={title} eyebrow={t.tourCategory[tour.category]} lead={pick(tour.summary, lang)} image={tour.image} crumbs={[{ label: t.nav.tours, href: url(lang, 'tours') }, { label: title }]}>
     <div class="page-hero__meta">
       <span class="badge"><Icon name="clock" />{durationText}</span>

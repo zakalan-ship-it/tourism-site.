@@ -1,4 +1,4 @@
-import type { L } from '../i18n/languages';
+import type { L, Lang } from '../i18n/languages';
 
 /** Key of a photo in src/assets/images (file name without extension). See images.ts. */
 export type ImageKey = string;
@@ -79,6 +79,8 @@ export interface Tour {
   gallery?: ImageKey[];
   offer?: Offer;
   featured?: boolean;
+  /** Languages the tour is offered in (default: all). E.g. ['zh'] for Chinese-only products. */
+  langs?: Lang[];
 }
 
 export type ActivityCategory =

@@ -6,7 +6,7 @@ import ActivityCard from '../../components/ActivityCard.astro';
 import Newsletter from '../../components/Newsletter.astro';
 import Icon from '../../components/Icon.astro';
 import { langPaths, useTranslations, type Lang } from '../../i18n';
-import { tours } from '../../data/tours';
+import { toursFor } from '../../data/tours';
 import { activities } from '../../data/activities';
 
 export const getStaticPaths = langPaths;
@@ -14,7 +14,7 @@ const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 // Only offers that can still be booked at build time are shown.
 const today = new Date().toISOString().slice(0, 10);
-const tourOffers = tours.filter((x) => x.offer && x.offer.validUntil >= today);
+const tourOffers = toursFor(lang).filter((x) => x.offer && x.offer.validUntil >= today);
 const actOffers = activities.filter((x) => x.offer && x.offer.validUntil >= today);
 const none = tourOffers.length + actOffers.length === 0;
 ---

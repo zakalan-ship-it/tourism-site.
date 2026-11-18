@@ -1,12 +1,110 @@
 import type { Tour } from './types';
+import type { Lang } from '../i18n/languages';
 
 /**
- * PRICES ARE PLACEHOLDERS based on 2026 market benchmarks (private guided day ≈ €200–260 per group,
- * multi-day private touring ≈ €180–300 per person per day). Replace with your own rates.
+ * PRICES in US dollars (site.currency). The guide-only Istanbul days are WellXplore's rates
+ * ($250 per day for up to 6 guests, 2 days $480). Other tours are still PLACEHOLDERS based on
+ * 2026 market benchmarks — replace them with your own rates.
  * To add a tour, copy one object below. Its card, detail page and search entry are
  * generated automatically in every language.
  */
 export const tours: Tour[] = [
+  // ---- Chinese-only, guide-only Istanbul days (what most Chinese inquiries ask for) ----
+  {
+    slug: 'istanbul-old-city-private-guide-day',
+    langs: ['zh'],
+    featured: true,
+    category: 'historical',
+    type: 'private',
+    days: 1,
+    nights: 0,
+    priceFrom: 250,
+    priceUnit: 'group',
+    maxGroup: 6,
+    destinations: ['istanbul'],
+    // Topkapı closes on Tuesdays and the Grand Bazaar on Sundays.
+    departures: { from: '2026-11-18', to: '2027-12-31', weekdays: [1, 3, 4, 5, 6] },
+    image: 'istanbul-hagia-sophia',
+    gallery: ['istanbul-blue-mosque', 'topkapi', 'grand-bazaar'],
+    title: { en: 'Istanbul Old City — Private Chinese-Speaking Guide (1 Day)', zh: '伊斯坦布尔老城一日游 · 私人中文导游' },
+    summary: {
+      en: 'Hagia Sophia, the Blue Mosque, Topkapı Palace, the Basilica Cistern and the Grand Bazaar with your own licensed Mandarin-speaking guide.',
+      zh: '圣索菲亚、蓝色清真寺、托普卡帕宫、地下水宫和大巴扎——专属持证中文导游带您深度游览老城。',
+    },
+    overview: {
+      en: 'A full day in the historic peninsula with Mesut or Özlem as your private guide. You buy your own tickets and choose where to eat — we help you book tickets in advance, plan the best order to avoid queues, and bring 1,500 years of history to life in fluent Mandarin. No shopping stops, no group restaurants.',
+      zh: '由 Mesut 或 Özlem 担任您的私人中文导游，用一整天深度游览伊斯坦布尔历史半岛。门票由您自行购买、餐厅自由选择——我们协助您提前购票、规划最佳路线避开排队，用流利的普通话讲述1500年的历史。不进购物店，不吃团餐。',
+    },
+    highlights: [
+      { en: 'Hagia Sophia and the Blue Mosque', zh: '圣索菲亚大教堂与蓝色清真寺' },
+      { en: 'Topkapı Palace, home of the sultans (Harem optional)', zh: '苏丹居所托普卡帕宫（后宫可选）' },
+      { en: 'The Basilica Cistern', zh: '地下水宫' },
+      { en: 'The Grand Bazaar — at your own pace', zh: '大巴扎——按您的节奏逛' },
+    ],
+    itinerary: [
+      {
+        title: { en: 'Historic peninsula with your private guide (about 8 hours)', zh: '历史半岛深度游（约8小时）' },
+        text: {
+          en: 'Meet your guide at your hotel or in Sultanahmet around 09:00. Morning: Hagia Sophia and the Blue Mosque (timed around prayer times), then the Basilica Cistern. Lunch at a local restaurant of your choice. Afternoon: Topkapı Palace and its treasury (Harem optional), ending with a walk through the Grand Bazaar around 17:00.',
+          zh: '约09:00在酒店或苏丹艾哈迈德区与导游会合。上午：圣索菲亚和蓝色清真寺（避开礼拜时间），随后参观地下水宫。午餐自选本地餐厅。下午：托普卡帕宫及珍宝馆（后宫可选），约17:00在大巴扎漫步结束行程。',
+        },
+      },
+    ],
+    included: ['guideOnly8h', 'ticketAdvice', 'transportGuidance', 'restaurantTips'],
+    excluded: ['entranceTickets', 'mealsExcluded', 'publicTransport', 'guideTips'],
+    important: ['closedTopkapi', 'hagiaSophiaVisit', 'dressCode', 'mosqueClosures', 'extraGuests'],
+  },
+  {
+    slug: 'istanbul-2-day-private-guide',
+    langs: ['zh'],
+    featured: true,
+    category: 'cultural',
+    type: 'private',
+    days: 2,
+    nights: 0,
+    priceFrom: 480,
+    priceUnit: 'group',
+    maxGroup: 6,
+    destinations: ['istanbul'],
+    // Day 1 cannot be Tuesday (Topkapı) or Sunday (Grand Bazaar); day 2 cannot be Monday (Dolmabahçe).
+    departures: { from: '2026-11-18', to: '2027-12-30', weekdays: [1, 3, 4, 5, 6] },
+    image: 'bosphorus-ferry',
+    gallery: ['istanbul-hagia-sophia', 'istanbul-galata', 'istanbul-tram'],
+    title: { en: 'Istanbul in 2 Days — Private Chinese-Speaking Guide', zh: '伊斯坦布尔两日游 · 私人中文导游' },
+    summary: {
+      en: 'Day 1: the old city and its great monuments. Day 2: Dolmabahçe Palace, a Bosphorus cruise, Galata Tower and Taksim — with your own licensed Mandarin-speaking guide.',
+      zh: '第一天：老城经典古迹；第二天：多尔玛巴赫切宫、博斯普鲁斯海峡游船、加拉塔塔和塔克西姆广场——专属持证中文导游全程陪同。',
+    },
+    overview: {
+      en: 'The two days most of our Chinese guests ask for. Mesut or Özlem guides you privately in Mandarin, you buy your own tickets (we help you book them in advance) and eat where you like. We move by tram, ferry and on foot — the way locals do — and keep the pace comfortable. $480 for both days instead of $500.',
+      zh: '我们的中文客人最常预订的两日行程。Mesut 或 Özlem 全程中文私人讲解，门票自行购买（我们协助提前预订），餐厅自由选择。我们像本地人一样乘电车、渡轮并步行游览，节奏舒适。两天合计480美元（原价500美元）。',
+    },
+    highlights: [
+      { en: 'Hagia Sophia, Blue Mosque, Topkapı, Basilica Cistern, Grand Bazaar', zh: '圣索菲亚、蓝色清真寺、托普卡帕宫、地下水宫、大巴扎' },
+      { en: 'Dolmabahçe Palace on the Bosphorus', zh: '博斯普鲁斯海峡畔的多尔玛巴赫切宫' },
+      { en: 'Bosphorus cruise between Europe and Asia', zh: '横跨欧亚的博斯普鲁斯游船' },
+      { en: 'Galata Tower, İstiklal Street and Taksim Square', zh: '加拉塔塔、独立大街与塔克西姆广场' },
+    ],
+    itinerary: [
+      {
+        title: { en: 'Day 1: Historic peninsula (about 8 hours)', zh: '第一天：历史半岛（约8小时）' },
+        text: {
+          en: 'Hagia Sophia and the Blue Mosque, the Basilica Cistern, lunch at a local restaurant of your choice, Topkapı Palace (Harem optional) and the Grand Bazaar.',
+          zh: '圣索菲亚和蓝色清真寺、地下水宫，午餐自选本地餐厅，下午参观托普卡帕宫（后宫可选）并逛大巴扎。',
+        },
+      },
+      {
+        title: { en: 'Day 2: Bosphorus, Galata and Taksim (about 8 hours)', zh: '第二天：博斯普鲁斯、加拉塔与塔克西姆（约8小时）' },
+        text: {
+          en: 'Morning at Dolmabahçe Palace, then a Bosphorus cruise from nearby Kabataş or Beşiktaş past palaces and waterside mansions. Afternoon: Galata Tower and its views, then a walk up İstiklal Street to Taksim Square.',
+          zh: '上午参观多尔玛巴赫切宫，随后从附近的卡巴塔什或贝西克塔什乘船游览博斯普鲁斯海峡，欣赏沿岸宫殿与水岸别墅。下午登加拉塔塔观景，再沿独立大街步行至塔克西姆广场。',
+        },
+      },
+    ],
+    included: ['guideOnly2d', 'ticketAdvice', 'transportGuidance', 'restaurantTips'],
+    excluded: ['entranceTickets', 'mealsExcluded', 'publicTransport', 'guideTips'],
+    important: ['closedTopkapi', 'closedDolmabahce', 'hagiaSophiaVisit', 'dressCode', 'extraGuests'],
+  },
   {
     slug: 'istanbul-highlights-4-days',
     featured: true,
@@ -14,7 +112,7 @@ export const tours: Tour[] = [
     type: 'group',
     days: 4,
     nights: 3,
-    priceFrom: 790,
+    priceFrom: 870,
     maxGroup: 10,
     destinations: ['istanbul'],
     departures: { from: '2026-11-15', to: '2027-12-20' },
@@ -83,7 +181,7 @@ export const tours: Tour[] = [
     type: 'group',
     days: 6,
     nights: 5,
-    priceFrom: 1390,
+    priceFrom: 1530,
     maxGroup: 10,
     destinations: ['istanbul', 'cappadocia'],
     departures: { from: '2026-11-15', to: '2027-12-20', weekdays: [1, 3, 5, 6] },
@@ -150,7 +248,7 @@ export const tours: Tour[] = [
     type: 'group',
     days: 11,
     nights: 10,
-    priceFrom: 2690,
+    priceFrom: 2960,
     maxGroup: 12,
     destinations: ['istanbul', 'cappadocia', 'pamukkale', 'ephesus', 'izmir', 'troy', 'gallipoli', 'bursa'],
     departures: { from: '2027-03-01', to: '2027-11-30', weekdays: [1, 6] },
@@ -245,7 +343,7 @@ export const tours: Tour[] = [
     type: 'group',
     days: 7,
     nights: 6,
-    priceFrom: 1590,
+    priceFrom: 1750,
     maxGroup: 10,
     destinations: ['izmir', 'ephesus', 'pamukkale', 'troy', 'gallipoli'],
     departures: { from: '2027-03-15', to: '2027-11-15', weekdays: [7] },
@@ -317,7 +415,7 @@ export const tours: Tour[] = [
     type: 'group',
     days: 3,
     nights: 2,
-    priceFrom: 690,
+    priceFrom: 760,
     maxGroup: 10,
     destinations: ['cappadocia'],
     departures: { from: '2026-11-15', to: '2027-12-20' },
@@ -368,7 +466,7 @@ export const tours: Tour[] = [
     type: 'group',
     days: 5,
     nights: 4,
-    priceFrom: 990,
+    priceFrom: 1090,
     maxGroup: 10,
     destinations: ['antalya'],
     departures: { from: '2027-04-01', to: '2027-10-31', weekdays: [2, 4, 6] },
@@ -428,7 +526,7 @@ export const tours: Tour[] = [
     type: 'private',
     days: 1,
     nights: 0,
-    priceFrom: 230,
+    priceFrom: 250,
     priceUnit: 'group',
     maxGroup: 8,
     destinations: ['istanbul'],
@@ -447,7 +545,7 @@ export const tours: Tour[] = [
     highlights: [
       { en: 'Hotel pickup in a private vehicle', zh: '私人车辆酒店接送' },
       { en: 'Flexible route and timing', zh: '路线和时间灵活' },
-      { en: 'Guided by Mesut in English or Özlem in 中文', zh: '由 Özlem（中文）或 Mesut（英语）亲自导游' },
+      { en: 'Guided by Mesut or Özlem, in English or 中文', zh: '由 Mesut 或 Özlem 亲自导游，中英文均可' },
     ],
     itinerary: [
       {
@@ -469,7 +567,7 @@ export const tours: Tour[] = [
     type: 'group',
     days: 2,
     nights: 1,
-    priceFrom: 420,
+    priceFrom: 460,
     maxGroup: 10,
     destinations: ['gallipoli', 'troy'],
     departures: { from: '2026-11-15', to: '2027-12-15', weekdays: [2, 5, 7] },
@@ -514,7 +612,7 @@ export const tours: Tour[] = [
     type: 'day',
     days: 1,
     nights: 0,
-    priceFrom: 190,
+    priceFrom: 210,
     maxGroup: 10,
     destinations: ['bursa'],
     departures: { from: '2026-11-15', to: '2027-12-20', weekdays: [3, 6] },
@@ -551,6 +649,9 @@ export const tours: Tour[] = [
 ];
 
 export const getTour = (slug: string) => tours.find((t) => t.slug === slug);
+
+/** Tours offered in a language (some products are Chinese-only). */
+export const toursFor = (lang: Lang) => tours.filter((t) => !t.langs || t.langs.includes(lang));
 
 /** Price after offer discount (rounded to 5). */
 export function offerPrice(price: number, discount: number) {

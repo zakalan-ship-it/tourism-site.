@@ -3,12 +3,12 @@ import ChatButton from './ChatButton.astro';
 import Icon from './Icon.astro';
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo-full-light.png';
-import { languages, langs, pick, url, switchLangPath, useTranslations, type Lang } from '../i18n';
+import { languages, langs, pick, url, langHref, useTranslations, type Lang } from '../i18n';
 import { destinations } from '../data/destinations';
 import { site } from '../config/site';
 
-interface Props { lang: Lang }
-const { lang } = Astro.props;
+interface Props { lang: Lang; availableLangs?: Lang[] }
+const { lang, availableLangs = langs } = Astro.props;
 const t = useTranslations(lang);
 const path = Astro.url.pathname;
 const year = new Date().getFullYear();
@@ -37,7 +37,7 @@ const iconFor: Record<string, string> = { instagram: 'instagram', facebook: 'fac
         )}
         <nav class="footer-langs" aria-label={t.nav.language}>
           {langs.map((l) => (
-            <a href={switchLangPath(path, l)} lang={languages[l].htmlLang} hreflang={languages[l].htmlLang} aria-current={l === lang ? 'true' : undefined} data-lang-link={l}>{languages[l].label}</a>
+            <a href={langHref(path, l, availableLangs)} lang={languages[l].htmlLang} hreflang={languages[l].htmlLang} aria-current={l === lang ? 'true' : undefined} data-lang-link={l}>{languages[l].label}</a>
           ))}
         </nav>
       </div>

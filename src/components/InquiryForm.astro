@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { fmt, pick, url, useTranslations, type Lang } from '../i18n';
-import { tours } from '../data/tours';
+import { tours, toursFor } from '../data/tours';
 import { activities } from '../data/activities';
 
 interface Props {
@@ -45,7 +45,7 @@ const guideLangs = [
         <select class="input" id={`${id}-product`} name="product" data-prefill>
           <option value="">{f.productGeneral}</option>
           <optgroup label={t.nav.tours}>
-            {tours.map((x) => <option value={`tour:${x.slug}`} selected={product === `tour:${x.slug}`}>{pick(x.title, lang)}</option>)}
+            {toursFor(lang).map((x) => <option value={`tour:${x.slug}`} selected={product === `tour:${x.slug}`}>{pick(x.title, lang)}</option>)}
           </optgroup>
           <optgroup label={t.nav.activities}>
             {activities.map((x) => <option value={`activity:${x.slug}`} selected={product === `activity:${x.slug}`}>{pick(x.title, lang)}</option>)}

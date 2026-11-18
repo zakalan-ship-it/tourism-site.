@@ -25,8 +25,10 @@ interface Props {
   overlayHeader?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
+  /** Languages this page exists in (default: all). Used for hreflang and the language switcher. */
+  availableLangs?: Lang[];
 }
-const { lang, title, description, image, overlayHeader = false, jsonLd, noindex = false } = Astro.props;
+const { lang, title, description, image, overlayHeader = false, jsonLd, noindex = false, availableLangs = langs } = Astro.props;
 const t = useTranslations(lang);
 const path = Astro.url.pathname;
 const canonical = new URL(path, Astro.site ?? site.url).href;
@@ -69,10 +71,10 @@ const clientI18n = {
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
-    {langs.map((l) => (
+    {availableLangs.map((l) => (
       <link rel="alternate" hreflang={languages[l].htmlLang} href={new URL(switchLangPath(path, l), Astro.site ?? site.url).href} />
     ))}
-    <link rel="alternate" hreflang="x-default" href={new URL(switchLangPath(path, 'en'), Astro.site ?? site.url).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(switchLangPath(path, availableLangs.includes('en') ? 'en' : availableLangs[0]), Astro.site ?? site.url).href} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="WellXplore" />
     <meta property="og:title" content={fullTitle} />
@@ -91,11 +93,11 @@ const clientI18n = {
   </head>
   <body>
     <a class="skip-link" href="#main">{t.nav.skipToContent}</a>
-    <Header lang={lang} overlay={overlayHeader} />
+    <Header lang={lang} overlay={overlayHeader} availableLangs={availableLangs} />
     <main id="main">
       <slot />
     </main>
-    <Footer lang={lang} />
+    <Footer lang={lang} availableLangs={availableLangs} />
 
     <ChatButton lang={lang} variant="float" />
     {lang === 'zh' && <WeChatDialog lang={lang} />}

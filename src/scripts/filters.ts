@@ -103,7 +103,7 @@ export function initFilters() {
     });
     if (rangeOut) {
       const range = form.querySelector<HTMLInputElement>('input[type="range"]');
-      if (range) rangeOut.textContent = range.value === range.max ? rangeOut.dataset.any ?? '' : new Intl.NumberFormat(i18n.locale, { style: 'currency', currency: i18n.config.currency, maximumFractionDigits: 0 }).format(Number(range.value));
+      if (range) rangeOut.textContent = range.value === range.max ? rangeOut.dataset.any ?? '' : new Intl.NumberFormat(i18n.locale, { style: 'currency', currency: i18n.config.currency, currencyDisplay: 'narrowSymbol', maximumFractionDigits: 0 }).format(Number(range.value));
     }
 
     // Sync URL

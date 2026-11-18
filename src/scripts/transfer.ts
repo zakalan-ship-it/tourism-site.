@@ -3,7 +3,7 @@ export function initTransferForm() {
   const form = document.querySelector<HTMLFormElement>('[data-transfer-form]');
   if (!form) return;
   const i18n = JSON.parse(document.getElementById('i18n-data')?.textContent ?? '{}');
-  const money = (n: number) => new Intl.NumberFormat(i18n.locale, { style: 'currency', currency: i18n.config.currency, maximumFractionDigits: 0 }).format(n);
+  const money = (n: number) => new Intl.NumberFormat(i18n.locale, { style: 'currency', currency: i18n.config.currency, currencyDisplay: 'narrowSymbol', maximumFractionDigits: 0 }).format(n);
 
   const returnBlock = form.querySelector<HTMLElement>('[data-return]');
   const routeSel = form.querySelector<HTMLSelectElement>('[name="route"]');
