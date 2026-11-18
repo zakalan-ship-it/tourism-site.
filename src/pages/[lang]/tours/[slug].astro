@@ -24,7 +24,9 @@ const title = pick(tour.title, lang);
 const places = tour.destinations.map((d) => getDestination(d)).filter((d) => !!d);
 const durationText = tour.nights > 0 ? `${daysLabel(lang, tour.days)} / ${nightsLabel(lang, tour.nights)}` : daysLabel(lang, tour.days);
 const mealName = { B: tt.mealB, L: tt.mealL, D: tt.mealD };
-const gallery = [tour.image, ...(tour.gallery ?? [])].slice(0, 3);
+// Our own photos (ozlem-*, mesut-*) lead the gallery; otherwise the tour image does.
+const own = (tour.gallery ?? []).filter((g) => /^(ozlem|mesut)-/.test(g));
+const gallery = [...own, tour.image, ...(tour.gallery ?? []).filter((g) => !own.includes(g))].slice(0, 3);
 const related = toursFor(lang)
   .filter((x) => x.slug !== tour.slug)
   .map((x) => ({ x, score: x.destinations.filter((d) => tour.destinations.includes(d)).length + (x.category === tour.category ? 1 : 0) }))
@@ -78,7 +80,7 @@ const waText = `${t.tour.inquireTitle}: ${title}`;
     <div>
       <section class="detail-section" id="overview" aria-labelledby="h-overview">
         <div class:list={['gallery', `gallery--${gallery.length}`]}>
-          {gallery.map((img, i) => <Img image={img} alt={i === 0 ? title : ''} sizes={i === 0 ? '(max-width: 1024px) 100vw, 560px' : '280px'} widths={i === 0 ? [600, 900, 1300] : [400, 600]} eager={i === 0} />)}
+          {gallery.map((img, i) => <Img image={img} alt={i === 0 ? title : ''} sizes={i === 0 ? '(max-width: 1024px) 100vw, 560px' : '280px'} widths={i === 0 ? [600, 900, 1300] : [400, 600]} eager={i === 0} quality={/^(ozlem|mesut)-/.test(img) ? 90 : 72} />)}
         </div>
         <h2 id="h-overview" style="margin-top:36px">{tt.overview}</h2>
         <p class="lead">{pick(tour.overview, lang)}</p>
