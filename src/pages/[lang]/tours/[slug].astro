@@ -80,7 +80,7 @@ const waText = `${t.tour.inquireTitle}: ${title}`;
     <div>
       <section class="detail-section" id="overview" aria-labelledby="h-overview">
         <div class:list={['gallery', `gallery--${gallery.length}`]}>
-          {gallery.map((img, i) => <Img image={img} alt={i === 0 ? title : ''} sizes={i === 0 ? '(max-width: 1024px) 100vw, 560px' : '280px'} widths={i === 0 ? [600, 900, 1300] : [400, 600]} eager={i === 0} quality={/^(ozlem|mesut)-/.test(img) ? 90 : 72} />)}
+          {gallery.map((img, i) => <Img image={img} alt={i === 0 ? title : ''} sizes={i === 0 ? '(max-width: 1024px) 100vw, 560px' : '280px'} widths={i === 0 ? [600, 900, 1300, 2000] : [400, 600, 900]} eager={i === 0} quality={/^(ozlem|mesut)-/.test(img) ? 90 : 72} />)}
         </div>
         <h2 id="h-overview" style="margin-top:36px">{tt.overview}</h2>
         <p class="lead">{pick(tour.overview, lang)}</p>

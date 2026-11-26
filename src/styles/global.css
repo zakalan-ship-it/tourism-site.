@@ -769,7 +769,7 @@ h1, h2, .hero__title { text-wrap: balance; }
 :lang(zh) .hero__title { word-break: keep-all; }
 @media (max-width: 760px) { :lang(zh) .hero__title { font-size: clamp(2.2rem, 10vw, 3rem); } }
 /* Real photos of our own tours */
-.real-photo { margin: 28px auto 0; max-width: 900px; }
+.real-photo { margin: 28px auto 0; }
 .real-photo .img-frame { aspect-ratio: 3 / 2; border-radius: var(--radius-lg); }
 .real-photo figcaption { margin-top: 10px; font-size: 0.86rem; color: var(--muted); text-align: center; }
 .real-photo--side { margin: 0; }
