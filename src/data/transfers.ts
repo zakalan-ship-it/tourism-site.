@@ -9,14 +9,14 @@ export const vehicles: Vehicle[] = [
   {
     id: 'van',
     image: 'vehicle-vito',
-    models: 'Mercedes-Benz Vito Tourer or similar',
+    models: 'Mercedes-Benz Vito VIP',
     passengers: 6,
     luggage: 6,
-    name: { en: 'Mercedes Vito', zh: '奔驰 Vito 商务车' },
+    name: { en: 'VIP Vito', zh: 'VIP 奔驰 Vito' },
     tagline: { en: 'Private transfer', zh: '私人接送' },
     features: [
-      { en: 'Families and small groups', zh: '适合家庭和小团体' },
-      { en: 'Child seats on request', zh: '可按需提供儿童座椅' },
+      { en: 'Leather lounge seats and privacy curtains', zh: '真皮休息座椅与私密窗帘' },
+      { en: 'Ideal for couples, families and small groups', zh: '适合情侣、家庭和小团体' },
     ],
   },
   {
@@ -28,7 +28,7 @@ export const vehicles: Vehicle[] = [
     name: { en: 'VIP Sprinter', zh: 'VIP 奔驰 Sprinter' },
     tagline: { en: 'Lounge-style cabin', zh: '贵宾休息舱' },
     features: [
-      { en: 'Quilted leather lounge seats and starlight ceiling', zh: '菱格真皮座椅与星空顶' },
+      { en: 'Quilted leather lounge seats', zh: '菱格真皮休息座椅' },
       { en: 'Privacy blinds, Wi-Fi, USB charging and refreshments', zh: '私密遮光帘、Wi-Fi、USB 充电和茶点' },
     ],
   },
