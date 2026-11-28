@@ -23,7 +23,7 @@ export const vehicles: Vehicle[] = [
     id: 'vip',
     image: 'vehicle-vip-sprinter',
     models: 'Mercedes-Benz Sprinter VIP conversion',
-    passengers: 8,
+    passengers: 10,
     luggage: 8,
     name: { en: 'VIP Sprinter', zh: 'VIP 奔驰 Sprinter' },
     tagline: { en: 'Lounge-style cabin', zh: '贵宾休息舱' },
