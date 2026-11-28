@@ -8,7 +8,6 @@ import type { L } from '../i18n/languages';
 export const vehicles: Vehicle[] = [
   {
     id: 'van',
-    image: 'vehicle-vito',
     models: 'Mercedes-Benz Vito Tourer or similar',
     passengers: 6,
     luggage: 6,
@@ -21,21 +20,21 @@ export const vehicles: Vehicle[] = [
   },
   {
     id: 'vip',
-    image: 'vehicle-vip-vito',
-    models: 'Mercedes-Benz Vito VIP or V-Class',
-    passengers: 6,
-    luggage: 5,
-    name: { en: 'VIP Vito', zh: 'VIP 奔驰 Vito' },
+    image: 'vehicle-vip-sprinter',
+    models: 'Mercedes-Benz Sprinter VIP conversion',
+    passengers: 8,
+    luggage: 8,
+    name: { en: 'VIP Sprinter', zh: 'VIP 奔驰 Sprinter' },
     tagline: { en: 'Lounge-style cabin', zh: '贵宾休息舱' },
     features: [
-      { en: 'Leather lounge seats and privacy partition', zh: '真皮座椅及私密隔断' },
-      { en: 'USB charging, Wi-Fi and refreshments', zh: 'USB 充电、Wi-Fi 和茶点' },
+      { en: 'Quilted leather lounge seats and starlight ceiling', zh: '菱格真皮座椅与星空顶' },
+      { en: 'Privacy blinds, Wi-Fi, USB charging and refreshments', zh: '私密遮光帘、Wi-Fi、USB 充电和茶点' },
     ],
   },
   {
     id: 'minibus',
     image: 'vehicle-sprinter',
-    models: 'Mercedes-Benz Sprinter or similar',
+    models: 'Mercedes-Benz Sprinter',
     passengers: 14,
     luggage: 14,
     name: { en: 'Mercedes Sprinter', zh: '奔驰 Sprinter' },

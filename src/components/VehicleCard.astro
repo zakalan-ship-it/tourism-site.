@@ -18,7 +18,9 @@ const name = pick(v.name, lang);
 ---
 <article class="fleet-card reveal">
   <div class="fleet-card__media">
-    <Img image={v.image} alt={`${name} — ${v.models}`} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px" widths={[480, 800, 1200]} quality={88} />
+    {v.image ? <Img image={v.image} alt={`${name} — ${v.models}`} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px" widths={[480, 800, 1200]} quality={88} /> : (
+      <div class="fleet-card__noimg" role="img" aria-label={`${name} — ${v.models}`}><span>{v.models.replace(' or similar', '')}</span></div>
+    )}
     <span class="fleet-card__tag">{pick(v.tagline, lang)}</span>
   </div>
   <div class="fleet-card__body">

@@ -420,6 +420,8 @@ body.menu-open .site-header .brand__logo--light { display: none; }
 .fleet-card__media { position: relative; }
 .fleet-card__media .img-frame { aspect-ratio: 4 / 3; }
 .fleet-card__media .img-frame::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(10, 20, 26, 0.35)); pointer-events: none; }
+.fleet-card__noimg { aspect-ratio: 4 / 3; display: grid; place-items: center; padding: 24px; text-align: center; background: radial-gradient(120% 90% at 50% 0%, var(--ink-2), var(--ink)); }
+.fleet-card__noimg span { font: italic 500 1.7rem/1.2 var(--serif); color: var(--gold-soft); }
 .fleet-card:hover .img-frame img { transform: scale(1.04); }
 .fleet-card__tag { position: absolute; left: 16px; bottom: 16px; z-index: 1; padding: 6px 12px; border-radius: 999px; background: rgba(255, 253, 249, 0.92); color: var(--ink); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; backdrop-filter: blur(6px); }
 .fleet-card__body { padding: 22px 24px 24px; display: flex; flex-direction: column; flex: 1; }
