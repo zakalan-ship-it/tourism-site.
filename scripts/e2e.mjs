@@ -281,9 +281,9 @@ await test('transfer form: route preset, estimate, round trip, capacity check', 
   const two = await page.textContent('[data-estimate-value]');
   assert(Number(two.replace(/\D/g, '')) === 2 * Number(one.replace(/\D/g, '')), `round trip doubles price (${one} → ${two})`);
   await page.fill('#tf-pax', '8');
-  await page.selectOption('#tf-vehicle', 'sedan');
+  await page.selectOption('#tf-vehicle', 'van');
   await page.click('#transfer-form button[type="submit"]');
-  assert((await page.textContent('#tf-vehicle-error')).includes('up to 3'), 'capacity error');
+  assert((await page.textContent('#tf-vehicle-error')).includes('up to 6'), 'capacity error');
   assert((await page.getAttribute('#tf-rdate', 'aria-invalid')) === 'true', 'return date required for round trip');
   await page.context().close();
 });

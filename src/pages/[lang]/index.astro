@@ -7,7 +7,7 @@ import TourCard from '../../components/TourCard.astro';
 import ActivityCard from '../../components/ActivityCard.astro';
 import DestinationCard from '../../components/DestinationCard.astro';
 import Price from '../../components/Price.astro';
-import VehicleIcon from '../../components/VehicleIcon.astro';
+import VehicleCard from '../../components/VehicleCard.astro';
 import Newsletter from '../../components/Newsletter.astro';
 import { hoursLabel, langPaths, pick, url, useTranslations, type Lang } from '../../i18n';
 import { destinations } from '../../data/destinations';
@@ -239,18 +239,8 @@ const whyIcons = ['pin', 'globe', 'route', 'briefcase'];
           <a class="btn btn--outline" href={url(lang, 'transfers')}>{t.common.learnMore}</a>
         </div>
       </div>
-      <div class="grid grid--4">
-        {vehicles.slice(0, 4).map((v) => (
-          <div class="vehicle reveal">
-            <div class="vehicle__icon"><VehicleIcon type={v.icon} /></div>
-            <h3>{pick(v.name, lang)}</h3>
-            <p class="vehicle__models">{v.models}</p>
-            <div class="vehicle__caps">
-              <span><Icon name="users" />{v.passengers}</span>
-              <span><Icon name="luggage" />{v.luggage}</span>
-            </div>
-          </div>
-        ))}
+      <div class="grid grid--3">
+        {vehicles.map((v) => <VehicleCard vehicle={v} lang={lang} />)}
       </div>
     </div>
   </section>

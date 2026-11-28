@@ -2,7 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHero from '../../../components/PageHero.astro';
 import Icon from '../../../components/Icon.astro';
-import VehicleIcon from '../../../components/VehicleIcon.astro';
+import VehicleCard from '../../../components/VehicleCard.astro';
 import { fmt, formatPrice, langPaths, pick, url, useTranslations, type Lang } from '../../../i18n';
 import { routes, vehicles } from '../../../data/transfers';
 
@@ -45,20 +45,8 @@ const mins = (m: number) => (m >= 60 ? `${Math.floor(m / 60)} h${m % 60 ? ` ${m 
   <section class="section section--ink" id="fleet" aria-labelledby="h-fleet">
     <div class="container">
       <div class="section-head"><div><span class="eyebrow">{tr.fleet}</span><h2 id="h-fleet">{tr.fleet}</h2></div></div>
-      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(210px,1fr))">
-        {vehicles.map((v) => (
-          <div class="vehicle reveal">
-            <div class="vehicle__icon"><VehicleIcon type={v.icon} /></div>
-            <h3>{pick(v.name, lang)}</h3>
-            <p class="vehicle__models">{v.models}</p>
-            <div class="vehicle__caps">
-              <span title={tr.passengers}><Icon name="users" /><span class="sr-only">{tr.passengers}:</span>{v.passengers}</span>
-              <span title={tr.luggage}><Icon name="luggage" /><span class="sr-only">{tr.luggage}:</span>{v.luggage}</span>
-            </div>
-            <ul>{v.features.map((f) => <li>{pick(f, lang)}</li>)}</ul>
-            <a class="link-arrow" style="margin-top:auto;padding-top:16px;color:var(--gold-soft)" href={`${url(lang, 'transfers/book')}?vehicle=${v.id}`}>{t.nav.bookTransfer} <Icon name="arrow-right" /></a>
-          </div>
-        ))}
+      <div class="grid grid--3">
+        {vehicles.map((v) => <VehicleCard vehicle={v} lang={lang} detailed />)}
       </div>
     </div>
   </section>

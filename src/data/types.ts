@@ -120,7 +120,10 @@ export interface Vehicle {
   passengers: number;
   luggage: number;
   features: L[];
-  icon: 'sedan' | 'van' | 'vip' | 'minibus' | 'coach';
+  /** Short label shown on the photo, e.g. "Private transfer". */
+  tagline: L;
+  /** Photo key in src/assets/images. */
+  image?: string;
 }
 
 export interface TransferRoute {
