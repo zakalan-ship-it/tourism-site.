@@ -31,7 +31,7 @@ export const guides: Guide[] = [
       zh: '常驻伊斯坦布尔的持证专业导游，中文、英语都流利。Mesut 亲自带领客人，从机场迎接到最后送别全程陪同。',
     },
     specialities: [],
-    photo: undefined,
+    photo: 'mesut',
     licence: '',
   },
   {

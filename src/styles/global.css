@@ -414,20 +414,35 @@ body.menu-open .site-header .brand__logo--light { display: none; }
 .section--ink .feature__icon { background: rgba(185, 139, 69, 0.16); color: var(--gold-soft); }
 
 /* Vehicles */
-.vehicle { padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: var(--paper); display: flex; flex-direction: column; }
-.section--ink .vehicle { background: var(--ink-2); border-color: rgba(255, 255, 255, 0.08); }
-.vehicle__icon { height: 64px; color: var(--teal); margin-bottom: 14px; }
-.section--ink .vehicle__icon { color: var(--gold-soft); }
-.vehicle__icon svg { height: 100%; width: auto; }
-.vehicle h3 { font: 500 1.4rem var(--serif); margin-bottom: 2px; }
-:lang(zh) .vehicle h3 { font-weight: 600; font-size: 1.2rem; }
-.vehicle__models { font-size: 0.8rem; color: var(--muted); margin-bottom: 14px; }
-.section--ink .vehicle__models { color: #94a1a7; }
-.vehicle__caps { display: flex; gap: 16px; font-size: 0.86rem; font-weight: 600; margin-bottom: 12px; }
-.vehicle__caps span { display: inline-flex; align-items: center; gap: 6px; }
-.vehicle__caps svg { width: 17px; height: 17px; color: var(--gold); }
-.vehicle ul { padding-left: 18px; margin: 0; font-size: 0.86rem; color: var(--ink-soft); }
-.section--ink .vehicle ul { color: #b9c2c6; }
+/* Fleet — photo-led vehicle cards */
+.fleet-card { display: flex; flex-direction: column; background: var(--paper); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: box-shadow 0.4s var(--ease), transform 0.4s var(--ease); }
+.fleet-card:hover { box-shadow: var(--shadow); transform: translateY(-3px); }
+.fleet-card__media { position: relative; }
+.fleet-card__media .img-frame { aspect-ratio: 4 / 3; }
+.fleet-card__media .img-frame::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(10, 20, 26, 0.35)); pointer-events: none; }
+.fleet-card__noimg { aspect-ratio: 4 / 3; display: grid; place-items: center; padding: 24px; text-align: center; background: radial-gradient(120% 90% at 50% 0%, var(--ink-2), var(--ink)); }
+.fleet-card__noimg span { font: italic 500 1.7rem/1.2 var(--serif); color: var(--gold-soft); }
+.fleet-card:hover .img-frame img { transform: scale(1.04); }
+.fleet-card__tag { position: absolute; left: 16px; bottom: 16px; z-index: 1; padding: 6px 12px; border-radius: 999px; background: rgba(255, 253, 249, 0.92); color: var(--ink); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; backdrop-filter: blur(6px); }
+.fleet-card__body { padding: 22px 24px 24px; display: flex; flex-direction: column; flex: 1; }
+.fleet-card h3 { font: 500 1.55rem/1.15 var(--serif); margin: 0 0 4px; }
+:lang(zh) .fleet-card h3 { font-weight: 600; font-size: 1.3rem; }
+.fleet-card__models { font-size: 0.82rem; color: var(--muted); margin: 0 0 18px; }
+.fleet-card__specs { display: grid; grid-template-columns: 1fr 1fr; margin: 0; border-top: 1px solid var(--line); }
+.fleet-card__specs > div { padding: 14px 0 0; }
+.fleet-card__specs > div + div { padding-left: 18px; border-left: 1px solid var(--line); }
+.fleet-card__specs dt { display: flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-text); }
+.fleet-card__specs dt svg { width: 15px; height: 15px; }
+.fleet-card__specs dd { margin: 4px 0 0; font: 500 1.6rem/1 var(--serif); color: var(--ink); }
+.fleet-card__features { margin: 18px 0 0; padding-left: 18px; font-size: 0.86rem; color: var(--ink-soft); }
+.fleet-card__cta { margin-top: auto; padding-top: 18px; }
+.section--ink .fleet-card { background: var(--ink-2); box-shadow: none; border: 1px solid rgba(255, 255, 255, 0.08); }
+.section--ink .fleet-card h3, .section--ink .fleet-card__specs dd { color: #fff; }
+.section--ink .fleet-card__models { color: #94a1a7; }
+.section--ink .fleet-card__specs, .section--ink .fleet-card__specs > div + div { border-color: rgba(255, 255, 255, 0.12); }
+.section--ink .fleet-card__specs dt, .section--ink .fleet-card__cta { color: var(--gold-soft); }
+.section--ink .fleet-card__features { color: #b9c2c6; }
+@media (prefers-reduced-motion: reduce) { .fleet-card, .fleet-card:hover { transform: none; } }
 
 /* Testimonials */
 .quote-card { padding: 32px; border-radius: var(--radius-lg); background: var(--paper); border: 1px solid var(--line); display: flex; flex-direction: column; }

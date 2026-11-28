@@ -1,65 +1,48 @@
 import type { TransferRoute, Vehicle } from './types';
 import type { L } from '../i18n/languages';
 
+/**
+ * Boutique fleet — licensed (D2) tourism vehicles only, no sedans or coaches.
+ * `image` is a photo key in src/assets/images (see src/data/images.ts).
+ */
 export const vehicles: Vehicle[] = [
   {
-    id: 'sedan',
-    icon: 'sedan',
-    models: 'Mercedes E-Class, Skoda Superb or similar',
-    passengers: 3,
-    luggage: 3,
-    name: { en: 'Business sedan', zh: '商务轿车' },
-    features: [
-      { en: 'Ideal for couples and business travellers', zh: '适合情侣和商务旅客' },
-      { en: 'Wi-Fi and bottled water', zh: 'Wi-Fi 与瓶装水' },
-    ],
-  },
-  {
     id: 'van',
-    icon: 'van',
-    models: 'Mercedes Vito, VW Transporter or similar',
+    image: 'vehicle-vito',
+    models: 'Mercedes-Benz Vito VIP',
     passengers: 6,
     luggage: 6,
-    name: { en: 'Minivan', zh: '商务面包车' },
+    name: { en: 'VIP Vito', zh: 'VIP 奔驰 Vito' },
+    tagline: { en: 'Private transfer', zh: '私人接送' },
     features: [
-      { en: 'Great for families and small groups', zh: '适合家庭和小团体' },
-      { en: 'Child seats on request', zh: '可按需提供儿童座椅' },
+      { en: 'Leather lounge seats and privacy curtains', zh: '真皮休息座椅与私密窗帘' },
+      { en: 'Ideal for couples, families and small groups', zh: '适合情侣、家庭和小团体' },
     ],
   },
   {
     id: 'vip',
-    icon: 'vip',
-    models: 'Mercedes Vito VIP / V-Class or similar',
-    passengers: 6,
-    luggage: 5,
-    name: { en: 'VIP van', zh: 'VIP 商务车' },
+    image: 'vehicle-vip-sprinter',
+    models: 'Mercedes-Benz Sprinter VIP conversion',
+    passengers: 10,
+    luggage: 8,
+    name: { en: 'VIP Sprinter', zh: 'VIP 奔驰 Sprinter' },
+    tagline: { en: 'Lounge-style cabin', zh: '贵宾休息舱' },
     features: [
-      { en: 'Leather lounge seats and privacy partition', zh: '真皮座椅及私密隔断' },
-      { en: 'USB charging, Wi-Fi and refreshments', zh: 'USB 充电、Wi-Fi 和茶点' },
+      { en: 'Quilted leather lounge seats', zh: '菱格真皮休息座椅' },
+      { en: 'Privacy blinds, Wi-Fi, USB charging and refreshments', zh: '私密遮光帘、Wi-Fi、USB 充电和茶点' },
     ],
   },
   {
     id: 'minibus',
-    icon: 'minibus',
-    models: 'Mercedes Sprinter or similar',
+    image: 'vehicle-sprinter',
+    models: 'Mercedes-Benz Sprinter',
     passengers: 14,
     luggage: 14,
-    name: { en: 'Minibus', zh: '中型巴士' },
+    name: { en: 'Mercedes Sprinter', zh: '奔驰 Sprinter' },
+    tagline: { en: 'Private group', zh: '私人团体' },
     features: [
-      { en: 'For groups and extended families', zh: '适合团体和大家庭' },
+      { en: 'Groups and extended families', zh: '适合团体和大家庭' },
       { en: 'Large luggage compartment', zh: '大型行李舱' },
-    ],
-  },
-  {
-    id: 'coach',
-    icon: 'coach',
-    models: 'Midi-coach or coach, 27–46 seats',
-    passengers: 46,
-    luggage: 46,
-    name: { en: 'Coach', zh: '大巴' },
-    features: [
-      { en: 'Tour groups, events and MICE', zh: '旅行团、活动和会奖旅游' },
-      { en: 'Microphone and air-conditioning', zh: '配备麦克风和空调' },
     ],
   },
 ];
@@ -75,7 +58,7 @@ export const routes: TransferRoute[] = [
     from: ist,
     to: { en: 'Sultanahmet / Old City', zh: '苏丹艾哈迈德 / 老城' },
     durationMin: 50,
-    prices: { sedan: 60, van: 70, vip: 100, minibus: 120 },
+    prices: { van: 70, vip: 100, minibus: 120 },
   },
   {
     id: 'ist-taksim',
@@ -83,7 +66,7 @@ export const routes: TransferRoute[] = [
     from: ist,
     to: { en: 'Taksim / Beyoğlu', zh: '塔克西姆 / 贝伊奥卢' },
     durationMin: 45,
-    prices: { sedan: 55, van: 65, vip: 95, minibus: 115 },
+    prices: { van: 65, vip: 95, minibus: 115 },
   },
   {
     id: 'saw-sultanahmet',
@@ -91,7 +74,7 @@ export const routes: TransferRoute[] = [
     from: saw,
     to: { en: 'Sultanahmet / Old City', zh: '苏丹艾哈迈德 / 老城' },
     durationMin: 60,
-    prices: { sedan: 65, van: 75, vip: 105, minibus: 130 },
+    prices: { van: 75, vip: 105, minibus: 130 },
   },
   {
     id: 'cappadocia-airports',
@@ -99,7 +82,7 @@ export const routes: TransferRoute[] = [
     from: { en: 'Kayseri (ASR) or Nevşehir (NAV) Airport', zh: '开塞利（ASR）或内夫谢希尔（NAV）机场' },
     to: { en: 'Göreme / Uçhisar / Ürgüp hotels', zh: '格雷梅 / 乌奇希萨 / 于尔居普酒店' },
     durationMin: 60,
-    prices: { sedan: 65, van: 75, vip: 105, minibus: 125 },
+    prices: { van: 75, vip: 105, minibus: 125 },
   },
   {
     id: 'ayt-antalya',
@@ -107,7 +90,7 @@ export const routes: TransferRoute[] = [
     from: { en: 'Antalya Airport (AYT)', zh: '安塔利亚机场（AYT）' },
     to: { en: 'Antalya city / Kaleiçi', zh: '安塔利亚市区 / 卡莱伊奇' },
     durationMin: 25,
-    prices: { sedan: 40, van: 45, vip: 65, minibus: 80 },
+    prices: { van: 45, vip: 65, minibus: 80 },
   },
   {
     id: 'adb-kusadasi',
@@ -115,7 +98,7 @@ export const routes: TransferRoute[] = [
     from: { en: 'Izmir Airport (ADB)', zh: '伊兹密尔机场（ADB）' },
     to: { en: 'Kuşadası / Selçuk (Ephesus)', zh: '库沙达瑟 / 塞尔丘克（以弗所）' },
     durationMin: 60,
-    prices: { sedan: 70, van: 80, vip: 110, minibus: 140 },
+    prices: { van: 80, vip: 110, minibus: 140 },
   },
   {
     id: 'istanbul-bursa',
@@ -123,7 +106,7 @@ export const routes: TransferRoute[] = [
     from: { en: 'Istanbul (any hotel)', zh: '伊斯坦布尔（任意酒店）' },
     to: { en: 'Bursa city centre', zh: '布尔萨市中心' },
     durationMin: 150,
-    prices: { sedan: 185, van: 210, vip: 265, minibus: 320 },
+    prices: { van: 210, vip: 265, minibus: 320 },
   },
   {
     id: 'istanbul-canakkale',
@@ -131,7 +114,7 @@ export const routes: TransferRoute[] = [
     from: { en: 'Istanbul (any hotel)', zh: '伊斯坦布尔（任意酒店）' },
     to: { en: 'Çanakkale / Gallipoli', zh: '恰纳卡莱 / 加里波利' },
     durationMin: 270,
-    prices: { sedan: 310, van: 340, vip: 420, minibus: 495 },
+    prices: { van: 340, vip: 420, minibus: 495 },
   },
   {
     id: 'istanbul-port',
@@ -139,7 +122,7 @@ export const routes: TransferRoute[] = [
     from: { en: 'Galataport cruise terminal', zh: '加拉塔港邮轮码头' },
     to: { en: 'Any Istanbul hotel', zh: '伊斯坦布尔任意酒店' },
     durationMin: 25,
-    prices: { sedan: 40, van: 50, vip: 70, minibus: 90 },
+    prices: { van: 50, vip: 70, minibus: 90 },
   },
 ];
 

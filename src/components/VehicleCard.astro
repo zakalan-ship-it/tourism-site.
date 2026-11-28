@@ -1,0 +1,36 @@
+---
+/** Photo-led vehicle card used on the home page and the transfers page. */
+import Img from './Img.astro';
+import Icon from './Icon.astro';
+import { pick, url, useTranslations, type Lang } from '../i18n';
+import type { Vehicle } from '../data/types';
+
+interface Props {
+  vehicle: Vehicle;
+  lang: Lang;
+  /** Show the feature list and a booking link (transfers page). */
+  detailed?: boolean;
+}
+const { vehicle: v, lang, detailed = false } = Astro.props;
+const t = useTranslations(lang);
+const tr = t.transfers;
+const name = pick(v.name, lang);
+---
+<article class="fleet-card reveal">
+  <div class="fleet-card__media">
+    {v.image ? <Img image={v.image} alt={`${name} — ${v.models}`} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px" widths={[480, 800, 1200]} quality={88} /> : (
+      <div class="fleet-card__noimg" role="img" aria-label={`${name} — ${v.models}`}><span>{v.models.replace(' or similar', '')}</span></div>
+    )}
+    <span class="fleet-card__tag">{pick(v.tagline, lang)}</span>
+  </div>
+  <div class="fleet-card__body">
+    <h3>{name}</h3>
+    <p class="fleet-card__models">{v.models}</p>
+    <dl class="fleet-card__specs">
+      <div><dt><Icon name="users" />{tr.passengers}</dt><dd>{v.passengers}</dd></div>
+      <div><dt><Icon name="luggage" />{tr.luggage}</dt><dd>{v.luggage}</dd></div>
+    </dl>
+    {detailed && <ul class="fleet-card__features">{v.features.map((f) => <li>{pick(f, lang)}</li>)}</ul>}
+    {detailed && <a class="link-arrow fleet-card__cta" href={`${url(lang, 'transfers/book')}?vehicle=${v.id}`}>{t.nav.bookTransfer} <Icon name="arrow-right" /></a>}
+  </div>
+</article>
