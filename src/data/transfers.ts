@@ -8,6 +8,7 @@ import type { L } from '../i18n/languages';
 export const vehicles: Vehicle[] = [
   {
     id: 'van',
+    image: 'vehicle-vito',
     models: 'Mercedes-Benz Vito Tourer or similar',
     passengers: 6,
     luggage: 6,
