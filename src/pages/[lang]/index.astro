@@ -26,8 +26,8 @@ const h = t.home;
 const slides = ['istanbul-skyline', 'cappadocia-balloons', 'pamukkale', 'kas-beach'];
 const featuredDest = destinations.filter((d) => d.featured).slice(0, 5);
 const lt = toursFor(lang);
-// Chinese-only products (e.g. guide-only Istanbul days) lead the Chinese homepage.
-const popular = [...lt.filter((x) => x.langs?.length === 1 && x.langs[0] === lang), ...lt.filter((x) => x.featured && !x.langs)].slice(0, 3);
+// Featured tours lead the homepage, in the order they appear in data/tours.ts.
+const popular = lt.filter((x) => x.featured).slice(0, 3);
 const offerItems = [
   ...lt.filter((x) => x.offer).map((x) => ({ kind: 'tour' as const, item: x })),
   ...activities.filter((x) => x.offer).map((x) => ({ kind: 'activity' as const, item: x })),
@@ -218,7 +218,7 @@ const whyIcons = ['pin', 'globe', 'route', 'briefcase'];
           {h.privatePoints.map((p) => <li><Icon name="check-circle" />{p}</li>)}
         </ul>
         <div class="hero__ctas">
-          <a class="btn btn--gold" href={`${url(lang, 'inquiry')}?product=tour:private-istanbul-day-tour`}>{h.privateCta} <Icon name="arrow-right" /></a>
+          <a class="btn btn--gold" href={`${url(lang, 'inquiry')}?product=tour:istanbul-bosphorus-balat-private-car-tour`}>{h.privateCta} <Icon name="arrow-right" /></a>
           <a class="btn btn--outline" href={`${url(lang, 'tours')}?type=private`}>{t.nav.privateTours}</a>
         </div>
       </div>

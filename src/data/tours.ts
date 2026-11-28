@@ -9,10 +9,9 @@ import type { Lang } from '../i18n/languages';
  * generated automatically in every language.
  */
 export const tours: Tour[] = [
-  // ---- Chinese-only, guide-only Istanbul days (what most Chinese inquiries ask for) ----
+  // ---- Core Istanbul day tours (guide $250/day; private car with driver +$200) ----
   {
     slug: 'istanbul-old-city-private-guide-day',
-    langs: ['zh'],
     featured: true,
     category: 'historical',
     type: 'private',
@@ -23,38 +22,123 @@ export const tours: Tour[] = [
     maxGroup: 6,
     destinations: ['istanbul'],
     // Topkapı closes on Tuesdays and the Grand Bazaar on Sundays.
-    departures: { from: '2026-11-18', to: '2027-12-31', weekdays: [1, 3, 4, 5, 6] },
+    departures: { from: '2026-11-28', to: '2027-12-31', weekdays: [1, 3, 4, 5, 6] },
     image: 'istanbul-blue-mosque',
-    // Our own photo leads the gallery (shown at a size where it stays sharp).
     gallery: ['ozlem-group-hippodrome', 'istanbul-hagia-sophia', 'topkapi'],
-    title: { en: 'Istanbul Old City — Private Chinese-Speaking Guide (1 Day)', zh: '伊斯坦布尔老城一日游 · 私人中文导游' },
+    title: { en: 'Istanbul Old City Walking Tour with a Private Guide', zh: '伊斯坦布尔老城徒步一日游 · 私人导游' },
     summary: {
-      en: 'Hagia Sophia, the Blue Mosque, Topkapı Palace, the Basilica Cistern and the Grand Bazaar with your own licensed Mandarin-speaking guide.',
-      zh: '圣索菲亚、蓝色清真寺、托普卡帕宫、地下水宫和大巴扎——专属持证中文导游带您深度游览老城。',
+      en: 'The Blue Mosque, the Hippodrome, Hagia Sophia, the Basilica Cistern, the Grand Bazaar and Topkapı Palace — on foot, with your own licensed guide.',
+      zh: '蓝色清真寺、古竞技场、圣索菲亚、地下水宫、大巴扎和托普卡帕宫——由专属持证导游带您步行深度游览。',
     },
     overview: {
-      en: 'A full day in the historic peninsula with Mesut or Özlem as your private guide. You buy your own tickets and choose where to eat — we help you book tickets in advance, plan the best order to avoid queues, and bring 1,500 years of history to life in fluent Mandarin. No shopping stops, no group restaurants.',
-      zh: '由 Mesut 或 Özlem 担任您的私人中文导游，用一整天深度游览伊斯坦布尔历史半岛。门票由您自行购买、餐厅自由选择——我们协助您提前购票、规划最佳路线避开排队，用流利的普通话讲述1500年的历史。不进购物店，不吃团餐。',
+      en: 'All the great sights of the historic peninsula are within walking distance, so this day is on foot with Mesut or Özlem as your private guide, in English or Chinese. You buy your own tickets (we help you book them online in advance) and choose where to eat. No shopping stops, no group restaurants.',
+      zh: '历史半岛的主要景点都在步行范围内，这一天由 Mesut 或 Özlem 担任您的私人导游，中英文讲解，全程步行。门票由您自行购买（我们协助提前在线预订），餐厅自由选择。不进购物店，不吃团餐。',
     },
     highlights: [
-      { en: 'Hagia Sophia and the Blue Mosque', zh: '圣索菲亚大教堂与蓝色清真寺' },
+      { en: 'Blue Mosque and the ancient Hippodrome', zh: '蓝色清真寺与古竞技场' },
+      { en: 'Hagia Sophia and the Basilica Cistern', zh: '圣索菲亚与地下水宫' },
       { en: 'Topkapı Palace, home of the sultans (Harem optional)', zh: '苏丹居所托普卡帕宫（后宫可选）' },
-      { en: 'The Basilica Cistern', zh: '地下水宫' },
       { en: 'The Grand Bazaar — at your own pace', zh: '大巴扎——按您的节奏逛' },
     ],
     itinerary: [
       {
-        title: { en: 'Historic peninsula with your private guide (about 8 hours)', zh: '历史半岛深度游（约8小时）' },
+        title: { en: 'Historic peninsula on foot (about 8 hours)', zh: '历史半岛徒步游（约8小时）' },
         text: {
-          en: 'Meet your guide at your hotel or in Sultanahmet around 09:00. Morning: Hagia Sophia and the Blue Mosque (timed around prayer times), then the Basilica Cistern. Lunch at a local restaurant of your choice. Afternoon: Topkapı Palace and its treasury (Harem optional), ending with a walk through the Grand Bazaar around 17:00.',
-          zh: '约09:00在酒店或苏丹艾哈迈德区与导游会合。上午：圣索菲亚和蓝色清真寺（避开礼拜时间），随后参观地下水宫。午餐自选本地餐厅。下午：托普卡帕宫及珍宝馆（后宫可选），约17:00在大巴扎漫步结束行程。',
+          en: 'Meet your guide at your hotel or in Sultanahmet around 09:00. Morning: the Blue Mosque (Sultanahmet Mosque), the Hippodrome with its Egyptian obelisk, Hagia Sophia and the Basilica Cistern. Lunch at a local restaurant of your choice. Afternoon: Topkapı Palace and its treasury (Harem optional), ending in the Grand Bazaar around 17:00.',
+          zh: '约09:00在酒店或苏丹艾哈迈德区与导游会合。上午：蓝色清真寺（苏丹艾哈迈德清真寺）、竖立着埃及方尖碑的古竞技场、圣索菲亚和地下水宫。午餐自选本地餐厅。下午：托普卡帕宫及珍宝馆（后宫可选），约17:00在大巴扎结束行程。',
         },
       },
     ],
-    included: ['guideOnly8h', 'ticketAdvice', 'transportGuidance', 'restaurantTips'],
-    excluded: ['entranceTickets', 'mealsExcluded', 'publicTransport', 'guideTips'],
-    important: ['closedTopkapi', 'hagiaSophiaVisit', 'dressCode', 'mosqueClosures', 'extraGuests'],
+    included: ['guideDay', 'ticketAdvice', 'restaurantTips'],
+    excluded: ['entranceTickets', 'mealsExcluded', 'guideTips'],
+    important: ['closedTopkapi', 'hagiaSophiaVisit', 'dressCode', 'mosqueClosures', 'bigGroups'],
   },
+  {
+    slug: 'istanbul-bosphorus-balat-private-car-tour',
+    featured: true,
+    category: 'cultural',
+    type: 'private',
+    days: 1,
+    nights: 0,
+    priceFrom: 450,
+    priceUnit: 'group',
+    maxGroup: 6,
+    destinations: ['istanbul'],
+    // Dolmabahçe closes on Mondays.
+    departures: { from: '2026-11-28', to: '2027-12-31', weekdays: [2, 3, 4, 5, 6, 7] },
+    image: 'bosphorus-ferry',
+    gallery: ['istanbul-galata', 'istanbul-tram', 'istanbul-skyline'],
+    title: { en: 'Bosphorus, Balat & Pierre Loti — Private Guide and Car', zh: '博斯普鲁斯、巴拉特与皮埃尔·洛蒂一日游 · 私人导游+专车' },
+    summary: {
+      en: 'Dolmabahçe Palace, a Bosphorus cruise, Ortaköy, colourful Balat, the Pierre Loti viewpoint and İstiklal Street — with your own guide and a private car.',
+      zh: '多尔玛巴赫切宫、博斯普鲁斯游船、奥塔科伊、彩色街区巴拉特、皮埃尔·洛蒂观景台和独立大街——专属导游+私人专车。',
+    },
+    overview: {
+      en: 'Istanbul beyond the old city, without the hassle of getting around: a private car and driver take you between neighbourhoods while Mesut or Özlem guides you in English or Chinese. Palaces on the water, a cruise between Europe and Asia, the colourful streets of Balat and tea with a view over the Golden Horn.',
+      zh: '老城之外的伊斯坦布尔，交通全程无忧：私人专车接送穿梭各个街区，由 Mesut 或 Özlem 中英文讲解。水岸宫殿、横跨欧亚的游船、巴拉特的彩色街巷，还有俯瞰金角湾的下午茶。',
+    },
+    highlights: [
+      { en: 'Dolmabahçe Palace on the Bosphorus', zh: '博斯普鲁斯海峡畔的多尔玛巴赫切宫' },
+      { en: 'Bosphorus cruise and Ortaköy', zh: '博斯普鲁斯游船与奥塔科伊' },
+      { en: 'Balat’s colourful houses and the Pierre Loti viewpoint', zh: '巴拉特彩色房屋与皮埃尔·洛蒂观景台' },
+      { en: 'İstiklal Street and Taksim Square', zh: '独立大街与塔克西姆广场' },
+    ],
+    itinerary: [
+      {
+        title: { en: 'Palaces, the Bosphorus and old neighbourhoods (about 8 hours)', zh: '宫殿、海峡与老街区（约8小时）' },
+        text: {
+          en: 'Hotel pickup around 09:00. Morning: Dolmabahçe Palace, then a Bosphorus cruise past palaces, fortresses and waterside mansions. Lunch in Ortaköy beside the mosque and the bridge. Afternoon: drive to Balat for its colourful houses and old churches and synagogues, then up to the Pierre Loti hill for tea and the view over the Golden Horn. Finish with a walk along İstiklal Street to Taksim Square, and drop-off at your hotel around 17:00.',
+          zh: '约09:00酒店接您。上午：参观多尔玛巴赫切宫，随后乘船游览博斯普鲁斯海峡，欣赏沿岸宫殿、城堡和水岸别墅。午餐在奥塔科伊清真寺与大桥旁。下午：驱车前往巴拉特，漫步彩色房屋与古老的教堂和犹太会堂，再登上皮埃尔·洛蒂山喝茶俯瞰金角湾。最后沿独立大街步行至塔克西姆广场，约17:00送回酒店。',
+        },
+      },
+    ],
+    included: ['guideDay', 'carDriver', 'hotelPickupDrop', 'ticketAdvice', 'restaurantTips'],
+    excluded: ['entranceTickets', 'cruiseTicket', 'pierreLotiCable', 'mealsExcluded', 'guideTips'],
+    important: ['closedDolmabahceDay', 'dressCode', 'bigGroups'],
+  },
+  {
+    slug: 'istanbul-express-private-car-tour',
+    featured: true,
+    category: 'cultural',
+    type: 'private',
+    days: 1,
+    nights: 0,
+    priceFrom: 450,
+    priceUnit: 'group',
+    maxGroup: 6,
+    destinations: ['istanbul'],
+    // Dolmabahçe closes on Mondays.
+    departures: { from: '2026-11-28', to: '2027-12-31', weekdays: [2, 3, 4, 5, 6, 7] },
+    image: 'istanbul-skyline',
+    gallery: ['istanbul-hagia-sophia', 'istanbul-galata', 'bosphorus-ferry'],
+    title: { en: 'Istanbul Express — Highlights in One Day with Private Guide and Car', zh: '伊斯坦布尔精华快线一日游 · 私人导游+专车' },
+    summary: {
+      en: 'Only one day in Istanbul? Hagia Sophia, the Basilica Cistern, Dolmabahçe Palace, a Bosphorus cruise, Ortaköy and Galata Tower — with your own guide and a private car.',
+      zh: '只有一天时间？圣索菲亚、地下水宫、多尔玛巴赫切宫、博斯普鲁斯游船、奥塔科伊和加拉塔塔——专属导游+私人专车，一天看遍精华。',
+    },
+    overview: {
+      en: 'Made for travellers with a single day, a stopover or a cruise-ship visit. Your private car saves time between the old city, the Bosphorus and Galata, and Mesut or Özlem plans the order to avoid queues — guiding you in English or Chinese.',
+      zh: '专为只有一天、转机停留或邮轮靠港的旅客设计。私人专车在老城、海峡和加拉塔之间节省时间，Mesut 或 Özlem 合理安排顺序避开排队，中英文讲解。',
+    },
+    highlights: [
+      { en: 'Hagia Sophia and the Basilica Cistern', zh: '圣索菲亚与地下水宫' },
+      { en: 'Dolmabahçe Palace and a Bosphorus cruise', zh: '多尔玛巴赫切宫与博斯普鲁斯游船' },
+      { en: 'Ortaköy and Galata Tower', zh: '奥塔科伊与加拉塔塔' },
+    ],
+    itinerary: [
+      {
+        title: { en: 'Istanbul’s highlights in one day (about 9 hours)', zh: '一天游遍伊斯坦布尔精华（约9小时）' },
+        text: {
+          en: 'Hotel pickup around 08:30. Start early at Hagia Sophia and the Basilica Cistern to beat the queues. Drive to Dolmabahçe Palace, then take a Bosphorus cruise between Europe and Asia. Lunch in Ortaköy by the water. End the day at Galata Tower for the view over the city, with drop-off at your hotel around 17:30.',
+          zh: '约08:30酒店接您。一早参观圣索菲亚和地下水宫，避开排队人潮。驱车前往多尔玛巴赫切宫，随后乘船畅游横跨欧亚的博斯普鲁斯海峡。午餐在奥塔科伊海边。最后登上加拉塔塔俯瞰全城，约17:30送回酒店。',
+        },
+      },
+    ],
+    included: ['guideDay', 'carDriver', 'hotelPickupDrop', 'ticketAdvice', 'restaurantTips'],
+    excluded: ['entranceTickets', 'cruiseTicket', 'mealsExcluded', 'guideTips'],
+    important: ['closedDolmabahceDay', 'expressPace', 'hagiaSophiaVisit', 'dressCode', 'bigGroups'],
+  },
+  // ---- Chinese-only, guide-only Istanbul days (what most Chinese inquiries ask for) ----
   {
     slug: 'istanbul-2-day-private-guide',
     langs: ['zh'],
@@ -108,7 +192,6 @@ export const tours: Tour[] = [
   },
   {
     slug: 'istanbul-highlights-4-days',
-    featured: true,
     category: 'cultural',
     type: 'group',
     days: 4,
@@ -177,7 +260,6 @@ export const tours: Tour[] = [
   },
   {
     slug: 'istanbul-cappadocia-6-days',
-    featured: true,
     category: 'cultural',
     type: 'group',
     days: 6,
@@ -244,7 +326,6 @@ export const tours: Tour[] = [
   },
   {
     slug: 'grand-turkiye-11-days',
-    featured: true,
     category: 'combined',
     type: 'group',
     days: 11,
@@ -519,48 +600,6 @@ export const tours: Tour[] = [
       { city: 'antalya', hotel: { en: '4★ boutique hotel in Kaleiçi, or similar', zh: '卡莱伊奇四星精品酒店或同级' } },
     ],
     important: ['passport', 'childrenPolicy', 'priceSeason'],
-  },
-  {
-    slug: 'private-istanbul-day-tour',
-    featured: true,
-    category: 'cultural',
-    type: 'private',
-    days: 1,
-    nights: 0,
-    priceFrom: 250,
-    priceUnit: 'group',
-    maxGroup: 8,
-    destinations: ['istanbul'],
-    departures: null,
-    image: 'istanbul-galata',
-    gallery: ['istanbul-hagia-sophia', 'istanbul-tram'],
-    title: { en: 'Private Istanbul Day with Your Own Guide', zh: '伊斯坦布尔私人导游一日游' },
-    summary: {
-      en: 'Your guide, your vehicle, your choice of sights — tailored to your interests and pace.',
-      zh: '专属导游、专属车辆、自选景点——按您的兴趣和节奏量身定制。',
-    },
-    overview: {
-      en: 'Ideal for families, couples and first-time visitors who prefer not to join a group. Choose from the old city, the Bosphorus, Galata and Beyoğlu or the Asian side — we will suggest the best order to avoid queues.',
-      zh: '非常适合不想跟团的家庭、情侣和首次来访者。可选择老城、博斯普鲁斯海峡、加拉塔与贝伊奥卢或亚洲区——我们会建议最佳顺序以避开排队。',
-    },
-    highlights: [
-      { en: 'Hotel pickup in a private vehicle', zh: '私人车辆酒店接送' },
-      { en: 'Flexible route and timing', zh: '路线和时间灵活' },
-      { en: 'Guided by Mesut or Özlem, in English or 中文', zh: '由 Mesut 或 Özlem 亲自导游，中英文均可' },
-    ],
-    itinerary: [
-      {
-        title: { en: 'Your day in Istanbul', zh: '您的伊斯坦布尔一日' },
-        text: {
-          en: 'Pickup from your hotel around 09:00. A typical day: Hagia Sophia, the Blue Mosque and the Cistern in the morning, lunch, then a Bosphorus boat ride and Galata in the afternoon. Return around 17:00.',
-          zh: '约09:00从酒店接您。典型行程：上午参观圣索菲亚大教堂、蓝色清真寺和地下水宫，午餐后乘船游博斯普鲁斯海峡并游览加拉塔。约17:00返回。',
-        },
-        meals: ['L'],
-      },
-    ],
-    included: ['privateGuide', 'privateTransport', 'hotelPickup', 'lunch', 'water'],
-    excluded: ['entrancesExcluded', 'tips', 'drinks'],
-    important: ['dressCode', 'mosqueClosures', 'priceSeason'],
   },
   {
     slug: 'gallipoli-troy-2-days',

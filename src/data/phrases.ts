@@ -32,6 +32,9 @@ export const phrases: Record<string, L> = {
   ticketAdvice: { en: 'Advice on buying entrance tickets online in advance, and timing to avoid the longest queues', zh: '协助提前在线购买门票，并合理安排时间避开长队' },
   transportGuidance: { en: 'Your guide travels with you by tram, ferry and on foot', zh: '导游陪同您乘坐电车、渡轮并步行游览' },
   restaurantTips: { en: 'Recommendations for local restaurants — no tourist-factory restaurants', zh: '推荐地道本地餐厅——不去团餐“工厂”餐厅' },
+  guideDay: { en: 'Your private licensed guide (Mesut or Özlem) in English or Chinese, about 8 hours', zh: '专属持证导游（Mesut 或 Özlem），中英文讲解，约8小时' },
+  carDriver: { en: 'Private air-conditioned car with driver for the whole day', zh: '全天私人空调车辆及司机' },
+  hotelPickupDrop: { en: 'Pickup and drop-off at your hotel in central Istanbul', zh: '伊斯坦布尔市中心酒店接送' },
   // Not included
   intlFlights: { en: 'International flights', zh: '国际机票' },
   visa: { en: 'Visa fees (where required)', zh: '签证费（如需）' },
@@ -50,6 +53,9 @@ export const phrases: Record<string, L> = {
   mealsExcluded: { en: 'Meals and drinks', zh: '餐饮' },
   publicTransport: { en: 'Public transport fares (tram, ferry; about $1–2 per ride) and taxis', zh: '公共交通费用（电车、渡轮，每次约1–2美元）及出租车费' },
   extraGuests: { en: 'Groups of more than 6, or more than 8 hours: price on request', zh: '超过6人或超过8小时：价格另询' },
+  cruiseTicket: { en: 'Bosphorus cruise ticket (about $10–25 per person, depending on the boat)', zh: '博斯普鲁斯游船船票（每人约10–25美元，视船型而定）' },
+  pierreLotiCable: { en: 'Pierre Loti cable car (optional, a few dollars)', zh: '皮埃尔·洛蒂山缆车（自选，费用很低）' },
+  bigGroups: { en: 'Groups of more than 6 or extra hours: price on request', zh: '超过6人或超时：价格另询' },
   // Important
   passport: { en: 'Passports must be valid for at least 6 months from your arrival date.', zh: '护照有效期自入境之日起须至少6个月。' },
   orderMayChange: { en: 'The order of visits may change for operational or weather reasons; all listed visits are kept.', zh: '因运营或天气原因，参观顺序可能调整，但所列景点均会安排。' },
@@ -63,6 +69,8 @@ export const phrases: Record<string, L> = {
   closedTopkapi: { en: 'Topkapı Palace is closed on Tuesdays and the Grand Bazaar on Sundays — choose Monday or Wednesday to Saturday for this day.', zh: '托普卡帕宫周二闭馆，大巴扎周日休市——此日行程请选择周一或周三至周六。' },
   closedDolmabahce: { en: 'Dolmabahçe Palace is closed on Mondays, so day 2 runs Tuesday to Sunday.', zh: '多尔玛巴赫切宫周一闭馆，第二天行程安排在周二至周日。' },
   hagiaSophiaVisit: { en: 'Hagia Sophia is an active mosque: visitors enter the upper gallery with a paid ticket and it may close at prayer times.', zh: '圣索菲亚现为清真寺：游客需购票进入二楼参观廊，礼拜时间可能暂停开放。' },
+  closedDolmabahceDay: { en: 'Dolmabahçe Palace is closed on Mondays — this tour runs Tuesday to Sunday.', zh: '多尔玛巴赫切宫周一闭馆——此行程安排在周二至周日。' },
+  expressPace: { en: 'An express day: we visit Hagia Sophia and the Basilica Cistern early to beat the queues, and keep each stop focused.', zh: '紧凑一日游：一早参观圣索菲亚和地下水宫以避开排队，每个景点重点游览。' },
 };
 
 /** Resolve a phrase key or an inline localised string. */

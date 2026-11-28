@@ -146,24 +146,29 @@ await test('floating chat button is not covered by anything (e.g. a host badge)'
   }
 });
 
-await test('Chinese-only guide tours: listed on /zh/ only, date rules, safe language switch', async () => {
+await test('Istanbul day tours lead the homepage; Chinese-only 2-day tour; date rules; safe language switch', async () => {
   const page = await newPage();
-  await page.goto(`${BASE}/zh/`);
-  const homeTours = await page.locator('[aria-labelledby="tours-title"] h3 a').evaluateAll((a) => a.map((x) => x.getAttribute('href')));
-  assert(homeTours[0].includes('istanbul-old-city-private-guide-day'), 'old-city guide day leads the Chinese homepage');
+  for (const l of ['en', 'zh']) {
+    await page.goto(`${BASE}/${l}/`);
+    const homeTours = await page.locator('[aria-labelledby="tours-title"] h3 a').evaluateAll((a) => a.map((x) => x.getAttribute('href')));
+    assert(homeTours[0].includes('istanbul-old-city-private-guide-day') && homeTours.some((h) => h.includes('express')), `Istanbul day tours on /${l}/`);
+  }
+  await page.goto(`${BASE}/en/tours/istanbul-bosphorus-balat-private-car-tour/`);
+  assert((await page.textContent('.price-box')).includes('$450'), 'car tour $450');
   await page.goto(`${BASE}/en/tours/`);
-  assert((await page.locator('a[href*="istanbul-old-city-private-guide-day"]').count()) === 0, 'not listed in English');
+  assert((await page.locator('a[href*="istanbul-2-day-private-guide"]').count()) === 0, '2-day guide tour not listed in English');
+  await page.goto(`${BASE}/zh/tours/istanbul-2-day-private-guide/`);
+  await page.click('.lang-switch__btn');
+  await page.click('#lang-menu a[hreflang="en"]');
+  await page.waitForURL('**/en/tours/');
   await page.goto(`${BASE}/zh/tours/istanbul-old-city-private-guide-day/`);
-  assert((await page.textContent('.price-box')).includes('$250'), 'price $250');
+  assert((await page.textContent('.price-box')).includes('$250'), 'walking tour $250');
   await page.fill('#date-check', '2027-06-08'); // Tuesday — Topkapı closed
   await page.dispatchEvent('#date-check', 'change');
   assert((await page.getAttribute('[data-date-result]', 'class')).includes('is-no'), 'Tuesday rejected');
   await page.fill('#date-check', '2027-06-09'); // Wednesday
   await page.dispatchEvent('#date-check', 'change');
   assert((await page.getAttribute('[data-date-result]', 'class')).includes('is-ok'), 'Wednesday accepted');
-  await page.click('.lang-switch__btn');
-  await page.click('#lang-menu a[hreflang="en"]');
-  await page.waitForURL('**/en/tours/');
   await page.context().close();
 });
 
@@ -187,7 +192,8 @@ await test('tour filters: type, duration, date, price, empty state, reset', asyn
   await page.goto(`${BASE}/en/tours/`);
   const total = await visibleCards(page).count();
   await page.selectOption('#f-type', 'private');
-  assert((await visibleCards(page).count()) === 1, 'one private tour');
+  const priv = await visibleCards(page).evaluateAll((els) => els.map((e) => e.dataset.type));
+  assert(priv.length >= 3 && priv.every((x) => x === 'private'), `private tours: ${priv}`);
   await page.selectOption('#f-type', '');
   await page.selectOption('#f-dur', '10+');
   assert((await visibleCards(page).count()) === 1, 'one 10+ day tour');
